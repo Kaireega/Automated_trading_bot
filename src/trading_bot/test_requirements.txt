@@ -1,0 +1,96 @@
+# Test Dependencies for Market Adaptive Trading Bot
+# Install with: pip install -r test_requirements.txt
+
+# Core Testing Framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-html>=3.2.0
+pytest-xdist>=3.3.0
+
+# Additional Testing Utilities
+pytest-mock>=3.11.0
+pytest-timeout>=2.1.0
+pytest-repeat>=0.9.1
+pytest-rerunfailures>=12.0
+pytest-randomly>=3.15.0
+
+# Coverage and Reporting
+coverage>=7.3.0
+pytest-cov>=4.1.0
+
+# Mocking and Stubbing
+responses>=0.23.0
+httpx>=0.24.0
+aioresponses>=0.7.0
+
+# Data Generation and Testing
+factory-boy>=3.3.0
+faker>=19.0.0
+
+# Performance Testing
+pytest-benchmark>=4.0.0
+
+# Code Quality Testing
+pylint>=2.17.0
+flake8>=6.0.0
+black>=23.0.0
+isort>=5.12.0
+
+# Security Testing
+bandit>=1.7.0
+
+# Documentation Testing
+pytest-docstyle>=2.0.0
+
+# Integration Testing
+# pytest-selenium>=4.0.0  # Commented out - requires browser drivers
+# pytest-playwright>=0.4.0  # Commented out - requires browser setup
+
+# Database Testing
+pytest-postgresql>=4.1.0
+# pytest-mysql>=4.1.0  # Commented out - version not available
+
+# API Testing
+pytest-httpx>=0.24.0
+pytest-aiohttp>=1.0.0
+
+# Environment and Configuration Testing
+pytest-env>=1.1.0
+pytest-dotenv>=1.0.0
+
+# Logging and Debugging
+pytest-logger>=0.5.1
+pytest-capturelog>=0.7
+
+# Parallel Testing
+pytest-xdist>=3.3.0
+
+# Test Data Management
+pytest-datadir>=1.4.0
+pytest-datafiles>=3.0.0
+
+# Fixture Management
+# pytest-fixture-classes>=0.1.0  # Commented out - not available
+
+# Test Discovery and Organization
+# pytest-collection>=0.1.0  # Commented out - not available
+
+# Test Result Analysis
+pytest-json-report>=1.5.0
+pytest-html>=3.2.0
+
+# Continuous Integration
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.0
+
+# Development Tools
+pre-commit>=3.3.0
+tox>=4.6.0
+
+# Optional: Advanced Testing Features
+# pytest-bdd>=6.1.0  # Behavior Driven Development
+# pytest-gherkin>=0.4.0  # Gherkin syntax support
+# pytest-mock>=3.11.0  # Enhanced mocking
+# pytest-freezegun>=0.4.2  # Time mocking
+# pytest-mock-resources>=2.8.0 

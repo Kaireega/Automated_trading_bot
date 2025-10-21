@@ -1,0 +1,1601 @@
+2025-09-25 16:03:06,909 - trading_bot.src.testing.mock_run_system - INFO - 🚀 Starting comprehensive system harmony tests...
+2025-09-25 16:03:06,909 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing component initialization...
+2025-09-25 16:03:06,909 - trading_bot.src.testing.mock_run_system - INFO -   Testing DataLayer...
+2025-09-25 16:03:06,910 - trading_bot.src.data.data_layer - INFO - ✅ Scraping data integration initialized
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - ERROR - Component initialization failed: 'QuickTestConfig' object has no attribute 'oanda_api_key'
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing data flow between components...
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - ERROR - Data flow test failed: 'QuickTestConfig' object has no attribute 'risk_management'
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing error handling...
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - INFO -   Testing invalid pair handling...
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - WARNING - Pair INVALID_PAIR not found in INVESTING_COM_PAIRS
+2025-09-25 16:03:06,910 - trading_bot.src.testing.mock_run_system - INFO -   Testing empty data handling...
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO -   Testing cache handling...
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO - Cache cleared
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing performance benchmarks...
+2025-09-25 16:03:07,468 - trading_bot.src.testing.mock_run_system - INFO -   Testing scraping data performance...
+2025-09-25 16:03:07,798 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:08,116 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:08,119 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:08,607 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:08,925 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:08,935 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:08,935 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:08,936 - trading_bot.src.testing.mock_run_system - INFO -   Testing technical analysis performance...
+2025-09-25 16:03:08,937 - trading_bot.src.testing.mock_run_system - ERROR - Error generating market context: type object 'MarketCondition' has no attribute 'TRENDING'
+2025-09-25 16:03:08,937 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Starting technical indicator calculation for 100 candles...
+2025-09-25 16:03:08,937 - trading_bot.src.ai.technical_analysis_layer - INFO - 📊 Filtered 100 candles to 100 candles
+2025-09-25 16:03:08,938 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Using 100 filtered candles for analysis
+2025-09-25 16:03:08,972 - trading_bot.src.testing.mock_run_system - INFO -   Testing memory usage...
+2025-09-25 16:03:08,972 - trading_bot.src.testing.mock_run_system - INFO - ✅ Harmony tests completed: 6/8 passed (75.0%)
+2025-09-25 16:03:08,972 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing with 10 concurrent requests...
+2025-09-25 16:03:09,253 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:09,419 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:09,420 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:10,004 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:10,245 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:10,248 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:10,249 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:10,531 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:10,714 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:10,715 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:11,384 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:11,943 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:11,950 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:11,951 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:12,332 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:12,567 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:12,570 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:13,380 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:15,731 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:15,735 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:15,736 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:16,571 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:16,810 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:16,813 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:18,911 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:19,907 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:19,909 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:19,909 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:20,190 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:20,454 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:20,455 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:20,899 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:21,104 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:21,105 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:21,105 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:21,354 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:21,520 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:21,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:22,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:22,853 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:22,860 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:22,860 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:24,298 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:24,943 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:24,945 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:26,019 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:26,212 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:26,215 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:26,215 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:26,948 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:27,502 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:27,505 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:28,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:28,522 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:28,526 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:28,526 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:28,827 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:29,051 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:29,052 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:30,280 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:30,476 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:30,478 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:30,478 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:30,784 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:30,970 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:30,972 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:31,876 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:32,831 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:32,837 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:32,837 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:32,839 - trading_bot.src.testing.mock_run_system - INFO - ✅ Concurrent stress test completed: 10/10 successful
+2025-09-25 16:03:32,840 - trading_bot.src.testing.mock_run_system - INFO -    Avg response time: 2.386s
+2025-09-25 16:03:32,840 - trading_bot.src.testing.mock_run_system - INFO -    Requests per second: 0.4
+2025-09-25 16:03:32,840 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing memory usage for 10 seconds...
+2025-09-25 16:03:34,103 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:34,483 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:34,486 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:35,669 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:36,144 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:36,148 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:36,148 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:36,424 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:36,427 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:36,427 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:36,910 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:03:36,913 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:03:36,913 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:03:37,329 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:03:37,335 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:03:37,335 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:03:38,433 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:03:38,437 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:03:38,437 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:03:39,228 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:39,665 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:39,667 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:40,437 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:41,207 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:41,210 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:41,210 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:41,442 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:41,445 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:41,445 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:41,718 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:03:41,722 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:03:41,723 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:03:41,907 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:03:41,912 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:03:41,913 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:03:42,309 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:03:42,313 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:03:42,313 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:03:42,707 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:03:43,106 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:03:43,108 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:03:43,741 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:03:44,001 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:03:44,003 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:03:44,003 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:03:44,383 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:03:44,389 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:03:44,389 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:03:44,643 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:03:44,649 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:03:44,650 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:03:45,132 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:03:45,135 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:03:45,136 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:03:46,612 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:03:46,616 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:03:46,616 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:03:46,723 - trading_bot.src.testing.mock_run_system - INFO - ✅ Memory stress test completed: 3 iterations
+2025-09-25 16:03:46,723 - trading_bot.src.testing.mock_run_system - INFO -    Max memory: 189.2MB
+2025-09-25 16:03:46,723 - trading_bot.src.testing.mock_run_system - INFO -    Memory increase: 11.6MB
+2025-09-25 16:04:18,515 - trading_bot.src.testing.mock_run_system - INFO - 🚀 Starting comprehensive system harmony tests...
+2025-09-25 16:04:18,515 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing component initialization...
+2025-09-25 16:04:18,515 - trading_bot.src.testing.mock_run_system - INFO -   Testing DataLayer...
+2025-09-25 16:04:18,515 - trading_bot.src.data.data_layer - INFO - ✅ Scraping data integration initialized
+2025-09-25 16:04:18,515 - trading_bot.src.data.data_layer - INFO - ✅ Using real OANDA API data
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO -   Testing ScrapingDataIntegration...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO -   Testing TechnicalAnalysisLayer...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO -   Testing TechnicalDecisionLayer...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - ERROR - Component initialization failed: 'obj' object has no attribute 'correlation_limit'
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing data flow between components...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - ERROR - Data flow test failed: 'obj' object has no attribute 'correlation_limit'
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing error handling...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - INFO -   Testing invalid pair handling...
+2025-09-25 16:04:18,516 - trading_bot.src.testing.mock_run_system - WARNING - Pair INVALID_PAIR not found in INVESTING_COM_PAIRS
+2025-09-25 16:04:18,517 - trading_bot.src.testing.mock_run_system - INFO -   Testing empty data handling...
+2025-09-25 16:04:19,144 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:19,144 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:04:19,144 - trading_bot.src.testing.mock_run_system - INFO -   Testing cache handling...
+2025-09-25 16:04:19,145 - trading_bot.src.testing.mock_run_system - INFO - Cache cleared
+2025-09-25 16:04:19,145 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing performance benchmarks...
+2025-09-25 16:04:19,145 - trading_bot.src.testing.mock_run_system - INFO -   Testing scraping data performance...
+2025-09-25 16:04:19,418 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:19,765 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:19,766 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:20,323 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:20,631 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:20,634 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:20,635 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:20,635 - trading_bot.src.testing.mock_run_system - INFO -   Testing technical analysis performance...
+2025-09-25 16:04:20,636 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Starting technical indicator calculation for 100 candles...
+2025-09-25 16:04:20,637 - trading_bot.src.ai.technical_analysis_layer - INFO - 📊 Filtered 100 candles to 100 candles
+2025-09-25 16:04:20,637 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Using 100 filtered candles for analysis
+2025-09-25 16:04:20,658 - trading_bot.src.testing.mock_run_system - INFO -   Testing memory usage...
+2025-09-25 16:04:20,658 - trading_bot.src.testing.mock_run_system - INFO - ✅ Harmony tests completed: 9/11 passed (81.8%)
+2025-09-25 16:04:20,658 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing with 10 concurrent requests...
+2025-09-25 16:04:20,930 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:21,090 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:21,092 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:21,651 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:21,914 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:21,916 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:21,916 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:22,144 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:22,353 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:22,355 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:22,955 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:23,189 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:23,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:23,192 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:23,516 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:23,780 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:23,782 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:24,937 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:25,217 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:25,219 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:25,219 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:25,497 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:25,652 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:25,653 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:26,140 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:26,319 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:26,321 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:26,321 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:26,572 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:26,759 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:26,761 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:27,239 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:27,435 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:27,438 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:27,438 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:27,699 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:27,976 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:27,978 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:28,484 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:28,744 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:28,748 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:28,748 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:29,112 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:29,405 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:29,408 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:30,027 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:30,215 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:30,217 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:30,217 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:30,481 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:30,670 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:30,672 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:31,248 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:31,438 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:31,440 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:31,441 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:31,693 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:32,036 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:32,037 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:32,612 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:32,815 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:32,821 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:32,821 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:33,107 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:33,293 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:33,294 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:33,757 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:33,978 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:33,981 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:33,982 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:33,982 - trading_bot.src.testing.mock_run_system - INFO - ✅ Concurrent stress test completed: 10/10 successful
+2025-09-25 16:04:33,982 - trading_bot.src.testing.mock_run_system - INFO -    Avg response time: 1.332s
+2025-09-25 16:04:33,982 - trading_bot.src.testing.mock_run_system - INFO -    Requests per second: 0.8
+2025-09-25 16:04:33,982 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing memory usage for 10 seconds...
+2025-09-25 16:04:34,237 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:34,421 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:34,423 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:34,850 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:35,052 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:35,054 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:35,054 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:35,322 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:35,324 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:35,325 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:35,501 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:04:35,505 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:04:35,505 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:04:35,659 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:04:35,662 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:04:35,662 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:04:35,812 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:04:35,814 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:04:35,814 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:04:36,364 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:36,493 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:36,494 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:36,938 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:37,159 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:37,161 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:37,161 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:37,315 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:37,318 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:37,319 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:37,607 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:04:37,609 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:04:37,609 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:04:37,983 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:04:37,986 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:04:37,987 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:04:38,174 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:04:38,178 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:04:38,179 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:04:38,606 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:38,851 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:38,852 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:39,341 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:39,531 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:39,534 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:39,534 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:39,706 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:39,708 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:39,709 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:39,876 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:04:39,878 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:04:39,878 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:04:40,087 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:04:40,090 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:04:40,090 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:04:40,363 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:04:40,366 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:04:40,367 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:04:40,850 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:41,098 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:41,102 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:41,748 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:41,971 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:41,974 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:41,975 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:42,419 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:42,423 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:42,423 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:43,000 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:04:43,003 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:04:43,004 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:04:43,390 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:04:43,393 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:04:43,394 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:04:43,692 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:04:43,697 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:04:43,697 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:04:44,096 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:04:44,284 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:04:44,286 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:04:44,831 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:04:45,082 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:04:45,084 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:04:45,085 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:04:45,839 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:04:45,842 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:04:45,843 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:04:46,333 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:04:46,335 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:04:46,335 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:04:46,747 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:04:46,750 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:04:46,751 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:04:47,321 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:04:47,324 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:04:47,324 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.090, Consensus: -0.177, Confidence: 0.631
+2025-09-25 16:04:47,441 - trading_bot.src.testing.mock_run_system - INFO - ✅ Memory stress test completed: 5 iterations
+2025-09-25 16:04:47,442 - trading_bot.src.testing.mock_run_system - INFO -    Max memory: 187.5MB
+2025-09-25 16:04:47,442 - trading_bot.src.testing.mock_run_system - INFO -    Memory increase: 11.7MB
+2025-09-25 16:05:13,722 - trading_bot.src.testing.mock_run_system - INFO - ✅ Configuration loaded successfully
+2025-09-25 16:05:13,723 - trading_bot.src.testing.mock_run_system - INFO - 🚀 Starting comprehensive mock run test...
+2025-09-25 16:05:13,723 - trading_bot.src.testing.mock_run_system - INFO - 📋 Phase 1: System Harmony Testing
+2025-09-25 16:05:13,723 - trading_bot.src.testing.mock_run_system - INFO - 🚀 Starting comprehensive system harmony tests...
+2025-09-25 16:05:13,723 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing component initialization...
+2025-09-25 16:05:13,723 - trading_bot.src.testing.mock_run_system - INFO -   Testing DataLayer...
+2025-09-25 16:05:13,723 - trading_bot.src.data.data_layer - INFO - ✅ Scraping data integration initialized
+2025-09-25 16:05:13,724 - trading_bot.src.data.data_layer - INFO - ✅ Using real OANDA API data
+2025-09-25 16:05:13,724 - trading_bot.src.testing.mock_run_system - INFO -   Testing ScrapingDataIntegration...
+2025-09-25 16:05:13,724 - trading_bot.src.testing.mock_run_system - INFO -   Testing TechnicalAnalysisLayer...
+2025-09-25 16:05:13,724 - trading_bot.src.testing.mock_run_system - INFO -   Testing TechnicalDecisionLayer...
+2025-09-25 16:05:13,725 - trading_bot.src.testing.mock_run_system - INFO -   Testing FundamentalAnalyzer...
+2025-09-25 16:05:13,725 - trading_bot.src.core.fundamental_analyzer - INFO - FundamentalAnalyzer initialized with ScrapingDataIntegration
+2025-09-25 16:05:13,725 - trading_bot.src.testing.mock_run_system - INFO -   Testing AdvancedRiskManager...
+2025-09-25 16:05:13,725 - trading_bot.src.testing.mock_run_system - INFO -   Testing MarketRegimeDetector...
+2025-09-25 16:05:13,726 - trading_bot.src.testing.mock_run_system - INFO -   Testing PerformanceTracker...
+2025-09-25 16:05:13,726 - trading_bot.src.testing.mock_run_system - INFO -   Testing NotificationLayer...
+2025-09-25 16:05:14,114 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing data flow between components...
+2025-09-25 16:05:14,115 - trading_bot.src.core.fundamental_analyzer - INFO - FundamentalAnalyzer initialized with ScrapingDataIntegration
+2025-09-25 16:05:14,116 - trading_bot.src.testing.mock_run_system - INFO -   Testing technical analysis data flow...
+2025-09-25 16:05:14,116 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Starting technical indicator calculation for 50 candles...
+2025-09-25 16:05:14,116 - trading_bot.src.ai.technical_analysis_layer - INFO - 📊 Filtered 50 candles to 50 candles
+2025-09-25 16:05:14,116 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Using 50 filtered candles for analysis
+2025-09-25 16:05:14,136 - trading_bot.src.testing.mock_run_system - INFO -   Testing decision making data flow...
+2025-09-25 16:05:14,136 - trading_bot.src.decision.technical_decision_layer - INFO - 🎯 Starting technical decision making for EUR_USD...
+2025-09-25 16:05:14,136 - trading_bot.src.decision.technical_decision_layer - ERROR - Error in technical decision making for EUR_USD: 'tuple' object has no attribute 'get'
+2025-09-25 16:05:14,136 - trading_bot.src.testing.mock_run_system - INFO -   Testing fundamental analysis data flow...
+2025-09-25 16:05:14,459 - trading_bot.src.core.fundamental_analyzer - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:14,938 - trading_bot.src.core.fundamental_analyzer - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:15,145 - trading_bot.src.core.fundamental_analyzer - INFO - Retrieved 19 news articles
+2025-09-25 16:05:15,145 - trading_bot.src.core.fundamental_analyzer - INFO - Fundamental analysis completed for EUR_USD: Bias=NEUTRAL, Sentiment=0.030, Risk=low
+2025-09-25 16:05:15,145 - trading_bot.src.testing.mock_run_system - INFO -   Testing scraping data integration...
+2025-09-25 16:05:15,396 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:15,657 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:15,659 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:16,254 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:16,488 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:16,493 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:16,493 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:16,494 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing error handling...
+2025-09-25 16:05:16,494 - trading_bot.src.testing.mock_run_system - INFO -   Testing invalid pair handling...
+2025-09-25 16:05:16,494 - trading_bot.src.testing.mock_run_system - WARNING - Pair INVALID_PAIR not found in INVESTING_COM_PAIRS
+2025-09-25 16:05:16,494 - trading_bot.src.testing.mock_run_system - INFO -   Testing empty data handling...
+2025-09-25 16:05:16,920 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:16,921 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:05:16,921 - trading_bot.src.testing.mock_run_system - INFO -   Testing cache handling...
+2025-09-25 16:05:16,921 - trading_bot.src.testing.mock_run_system - INFO - Cache cleared
+2025-09-25 16:05:16,921 - trading_bot.src.testing.mock_run_system - INFO - 🧪 Testing performance benchmarks...
+2025-09-25 16:05:16,921 - trading_bot.src.testing.mock_run_system - INFO -   Testing scraping data performance...
+2025-09-25 16:05:17,221 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:17,475 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:17,477 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:17,936 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:18,187 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:18,190 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:18,190 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:18,191 - trading_bot.src.testing.mock_run_system - INFO -   Testing technical analysis performance...
+2025-09-25 16:05:18,192 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Starting technical indicator calculation for 100 candles...
+2025-09-25 16:05:18,193 - trading_bot.src.ai.technical_analysis_layer - INFO - 📊 Filtered 100 candles to 100 candles
+2025-09-25 16:05:18,193 - trading_bot.src.ai.technical_analysis_layer - INFO - 📈 Using 100 filtered candles for analysis
+2025-09-25 16:05:18,210 - trading_bot.src.testing.mock_run_system - INFO -   Testing memory usage...
+2025-09-25 16:05:18,211 - trading_bot.src.testing.mock_run_system - INFO - ✅ Harmony tests completed: 19/19 passed (100.0%)
+2025-09-25 16:05:18,211 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Phase 2: Stress Testing
+2025-09-25 16:05:18,211 - trading_bot.src.testing.mock_run_system - INFO - 🚀 Starting comprehensive stress testing...
+2025-09-25 16:05:18,211 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing with 50 concurrent requests...
+2025-09-25 16:05:18,695 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:18,889 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:18,891 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:19,371 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:19,583 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:19,586 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:19,587 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:19,836 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:20,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:20,194 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:20,706 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:20,944 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:20,946 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:20,946 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:21,243 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:21,440 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:21,443 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:22,005 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:22,242 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:22,245 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:22,245 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:22,557 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:22,930 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:22,931 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:23,482 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:23,711 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:23,715 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:23,716 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:24,016 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:24,188 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:24,191 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:24,975 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:25,391 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:25,400 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:25,400 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:25,783 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:26,055 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:26,059 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:26,558 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:26,815 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:26,819 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:26,819 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:27,073 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:27,219 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:27,221 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:28,134 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:28,365 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:28,370 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:28,371 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:28,651 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:28,903 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:28,906 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:29,429 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:29,696 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:29,699 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:29,699 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:30,005 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:30,159 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:30,161 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:30,963 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:31,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:31,194 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:31,195 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:31,518 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:31,671 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:31,672 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:32,268 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:32,499 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:32,501 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:32,502 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:32,836 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:33,104 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:33,105 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:33,743 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:33,976 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:33,983 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:33,983 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:34,271 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:34,445 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:34,449 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:35,120 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:35,416 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:35,419 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:35,419 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:35,753 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:36,008 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:36,010 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:36,584 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:36,853 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:36,859 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:36,859 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:37,601 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:37,881 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:37,883 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:38,532 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:38,792 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:38,798 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:38,799 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:39,103 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:39,240 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:39,243 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:39,844 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:40,107 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:40,113 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:40,113 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:40,414 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:40,733 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:40,736 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:41,295 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:41,563 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:41,566 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:41,566 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:41,823 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:42,115 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:42,117 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:42,683 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:42,932 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:42,938 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:42,938 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:43,236 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:43,615 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:43,616 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:44,346 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:44,526 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:44,528 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:44,529 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:44,795 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:45,055 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:45,058 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:45,545 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:45,859 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:45,867 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:45,867 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:46,155 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:46,479 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:46,482 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:46,998 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:47,285 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:47,293 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:47,294 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:47,622 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:47,838 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:47,841 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:48,434 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:48,665 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:48,668 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:48,668 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.101, Consensus: 0.191, Confidence: 0.637
+2025-09-25 16:05:49,161 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:49,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:49,524 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:50,223 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:50,913 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:50,917 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:50,917 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:51,275 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:51,471 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:51,473 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:52,053 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:52,333 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:52,340 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:52,340 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:05:52,841 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:53,116 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:53,118 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:53,682 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:53,908 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:53,911 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:53,911 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:54,282 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:54,570 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:54,572 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:55,141 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:55,397 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:55,400 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:55,400 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:05:55,821 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:56,221 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:56,223 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:56,727 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:56,951 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:56,955 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:56,956 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:05:57,293 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:57,458 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:05:57,475 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:58,310 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:58,553 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:58,559 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:05:58,559 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:05:58,939 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:05:59,109 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:05:59,111 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:05:59,737 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:05:59,933 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:05:59,937 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:05:59,938 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:00,333 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:00,518 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:00,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:01,091 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:01,316 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:01,320 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:01,320 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:01,600 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:01,780 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:01,781 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:02,427 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:02,760 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:02,764 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:02,764 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:03,271 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:03,468 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:03,470 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:04,358 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:04,565 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:04,571 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:04,571 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:04,906 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:05,144 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:05,146 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:05,824 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:06,060 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:06,064 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:06,064 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:06,404 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:06,588 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:06,590 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:07,322 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:07,534 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:07,541 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:07,541 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:07,872 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:08,159 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:08,161 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:08,946 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:09,158 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:09,161 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:09,162 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:09,525 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:09,675 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:09,677 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:10,601 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:11,013 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:11,017 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:11,017 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:11,765 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:11,994 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:11,995 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:12,764 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:13,048 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:13,051 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:13,051 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:13,527 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:13,931 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:13,934 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:14,613 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:14,882 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:14,887 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:14,887 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:15,262 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:15,447 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:15,449 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:16,239 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:16,538 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:16,546 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:16,546 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:16,919 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:17,138 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:17,139 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:17,893 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:18,247 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:18,250 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:18,251 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:18,649 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:18,805 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:18,808 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:20,025 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:20,369 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:20,375 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:20,376 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:20,860 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:21,197 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:21,198 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:21,998 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:22,381 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:22,384 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:22,385 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:22,839 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:22,997 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:23,000 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:23,765 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:24,010 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:24,013 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:24,014 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:24,353 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:24,569 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:24,572 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:25,295 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:25,542 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:25,546 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:25,547 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:26,017 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:26,194 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:26,197 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:27,528 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:27,787 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:27,791 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:27,791 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:28,186 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:28,424 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:28,426 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:29,199 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:29,457 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:29,461 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:29,461 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:29,828 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:30,248 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:30,252 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:31,008 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:31,256 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:31,261 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:31,262 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:31,637 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:31,807 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:31,809 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:32,552 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:32,792 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:32,795 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:32,796 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:33,145 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:33,455 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:33,457 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:34,248 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:34,750 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:34,754 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:34,754 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:35,530 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:35,676 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:35,678 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:36,524 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:36,808 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:36,813 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:36,813 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:37,145 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:37,422 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:37,424 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:38,227 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:38,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:38,525 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:38,525 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:38,526 - trading_bot.src.testing.mock_run_system - INFO - ✅ Concurrent stress test completed: 50/50 successful
+2025-09-25 16:06:38,526 - trading_bot.src.testing.mock_run_system - INFO -    Avg response time: 1.606s
+2025-09-25 16:06:38,526 - trading_bot.src.testing.mock_run_system - INFO -    Requests per second: 0.6
+2025-09-25 16:06:38,527 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing memory usage for 30 seconds...
+2025-09-25 16:06:38,874 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:39,042 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:39,044 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:39,823 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:40,123 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:40,129 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:40,129 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:40,303 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:40,308 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:40,308 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:40,488 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:40,493 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:40,493 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:40,974 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:40,981 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:40,982 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:41,223 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:41,228 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:41,229 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:41,756 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:41,988 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:41,990 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:42,745 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:42,981 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:42,985 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:42,986 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:43,153 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:43,159 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:43,159 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:43,550 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:43,555 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:43,555 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:43,762 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:43,770 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:43,771 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:44,126 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:44,129 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:44,129 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:44,610 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:44,979 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:44,981 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:46,009 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:46,346 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:46,354 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:46,355 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:46,547 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:46,552 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:46,552 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:46,745 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:46,750 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:46,750 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:46,936 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:46,940 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:46,940 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:47,169 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:47,173 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:47,173 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:47,605 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:48,031 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:48,033 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:48,732 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:49,028 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:49,031 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:49,032 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:49,356 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:49,359 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:49,359 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:49,512 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:49,517 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:49,518 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:49,686 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:49,689 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:49,690 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:49,852 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:49,855 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:49,856 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:50,273 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:50,560 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:50,562 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:51,162 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:51,428 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:51,432 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:51,432 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:51,591 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:51,594 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:51,594 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:51,900 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:51,904 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:51,904 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:52,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:52,196 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:52,197 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:52,526 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:52,530 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:52,530 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:52,975 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:53,274 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:53,275 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:53,979 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:54,253 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:54,256 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:54,256 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:54,432 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:54,440 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:54,441 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:54,763 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:54,768 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:54,768 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:54,940 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:54,943 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:54,944 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:55,228 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:55,231 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:55,232 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:55,999 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:56,337 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:56,338 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:56,989 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:57,221 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:57,224 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:57,224 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:57,401 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:57,405 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:57,405 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:06:57,628 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:06:57,631 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:06:57,632 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:06:58,002 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:06:58,005 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:06:58,006 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:58,379 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:06:58,383 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:06:58,384 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:06:58,790 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:06:58,954 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:06:58,956 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:06:59,568 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:06:59,796 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:06:59,801 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:06:59,801 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:06:59,988 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:06:59,990 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:06:59,991 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:07:00,169 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:07:00,172 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:07:00,173 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:07:00,454 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:07:00,457 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:07:00,457 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:00,605 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:07:00,608 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:07:00,608 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:07:01,011 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:01,224 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:01,226 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:01,890 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:02,116 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:02,120 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:02,120 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:02,658 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:07:02,662 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:07:02,662 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:07:03,203 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:07:03,206 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:07:03,207 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:07:03,486 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:07:03,488 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:07:03,489 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:03,808 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:07:03,812 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:07:03,812 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:07:04,224 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:04,498 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:04,501 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:05,158 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:05,445 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:05,450 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:05,450 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:05,891 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:07:05,896 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:07:05,897 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:07:06,049 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:07:06,052 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:07:06,052 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:07:06,798 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:07:06,802 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:07:06,803 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:06,975 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:07:06,978 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:07:06,978 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:07:07,389 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:07,556 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:07,558 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:08,228 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:08,458 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:08,461 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:08,462 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:08,733 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for GBP_USD (quality: 0.72)
+2025-09-25 16:07:08,737 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for GBP_USD
+2025-09-25 16:07:08,737 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.568, Consensus: -0.475, Confidence: 0.826
+2025-09-25 16:07:09,116 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_JPY (quality: 0.72)
+2025-09-25 16:07:09,120 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_JPY
+2025-09-25 16:07:09,120 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.246, Consensus: 0.236, Confidence: 0.954
+2025-09-25 16:07:09,286 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for AUD_USD (quality: 0.72)
+2025-09-25 16:07:09,289 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for AUD_USD
+2025-09-25 16:07:09,289 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:09,470 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for USD_CAD (quality: 0.72)
+2025-09-25 16:07:09,473 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for USD_CAD
+2025-09-25 16:07:09,474 - trading_bot.src.testing.mock_run_system - INFO - Overall score: -0.061, Consensus: -0.160, Confidence: 0.609
+2025-09-25 16:07:09,584 - trading_bot.src.testing.mock_run_system - INFO - ✅ Memory stress test completed: 11 iterations
+2025-09-25 16:07:09,585 - trading_bot.src.testing.mock_run_system - INFO -    Max memory: 210.3MB
+2025-09-25 16:07:09,585 - trading_bot.src.testing.mock_run_system - INFO -    Memory increase: 0.7MB
+2025-09-25 16:07:09,585 - trading_bot.src.testing.mock_run_system - INFO - 🔥 Stress testing error recovery with 30% error rate...
+2025-09-25 16:07:09,899 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:10,155 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:10,157 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:10,733 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:11,022 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:11,027 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:11,027 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:11,350 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:11,523 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:11,526 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:12,183 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:12,399 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:12,404 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:12,404 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:12,733 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:13,056 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:13,058 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:13,748 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:14,044 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:14,050 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:14,050 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:14,836 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:15,045 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:15,047 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:15,658 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:15,874 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:15,877 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:15,877 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:16,180 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:16,357 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:16,359 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:16,961 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:17,191 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:17,194 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:17,194 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:17,851 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:17,851 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:18,148 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:18,338 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:18,341 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:18,974 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:19,195 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:19,199 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:19,200 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:19,528 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:19,800 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:19,801 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:20,476 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:21,054 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:21,059 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:21,059 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:21,400 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:21,534 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:21,536 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:22,216 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:22,537 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:22,541 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:22,542 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:22,901 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:23,114 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:23,115 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:23,832 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:24,199 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:24,203 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:24,203 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:24,537 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:24,987 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:24,990 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:25,603 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:25,840 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:25,844 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:25,844 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:26,200 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:26,367 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:26,369 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:27,255 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:27,517 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:27,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:27,521 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:27,842 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:27,977 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:27,978 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:28,917 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:29,485 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:29,488 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:29,488 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:29,827 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:30,089 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:30,091 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:30,666 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:31,034 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:31,037 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:31,037 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:31,321 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:31,461 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:31,464 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:32,106 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:32,358 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:32,360 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:32,361 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:32,666 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:32,919 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:32,921 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:33,586 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:33,793 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:33,798 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:33,798 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:34,087 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:34,253 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:34,255 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:35,496 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:35,743 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:35,746 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:35,746 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:36,084 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:36,445 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:36,447 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:37,020 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:37,242 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:37,244 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:37,245 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:37,827 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:37,828 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:38,143 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:38,504 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:38,509 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:39,136 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:39,369 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:39,373 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:39,373 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:39,689 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:39,856 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:39,857 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:40,483 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:40,723 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:40,726 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:40,727 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:41,703 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:41,703 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:42,270 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:42,270 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:42,587 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:42,752 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:42,754 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:43,406 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:43,627 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:43,632 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:43,632 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:43,964 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:44,119 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:44,121 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:44,814 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:45,009 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:45,013 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:45,014 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:45,341 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:45,524 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:45,525 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:46,129 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:46,375 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:46,379 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:46,380 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:47,322 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:47,322 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:47,659 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:47,962 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:47,964 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:48,646 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:48,867 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:48,870 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:48,870 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:49,158 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:49,350 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:49,354 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:49,990 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:50,197 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:50,200 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:50,200 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:50,784 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:50,784 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:51,118 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:51,385 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:51,387 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:52,019 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:52,261 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:52,264 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:52,265 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:52,568 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:52,969 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:52,972 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:53,892 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:54,112 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:54,115 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:54,115 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:54,692 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:54,692 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:07:55,036 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:55,341 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:55,342 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:55,914 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:56,100 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:56,103 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:56,104 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:56,389 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:56,660 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:56,662 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:57,203 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:57,719 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:57,722 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:57,722 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:07:58,026 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:07:58,308 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:07:58,310 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:07:58,967 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:07:59,141 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:07:59,145 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:07:59,146 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:00,092 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:00,092 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:00,368 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:08:00,705 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:00,706 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:01,252 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:01,617 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:01,649 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:01,650 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:02,176 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:02,176 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:02,724 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:02,724 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:03,052 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:08:03,346 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:03,348 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:03,898 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:04,101 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:04,105 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:04,105 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:04,431 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 6 economic calendar events (quality: 0.90)
+2025-09-25 16:08:04,746 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:04,747 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:05,581 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:05,840 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:05,843 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:05,843 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:06,356 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:06,357 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:06,912 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:06,913 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:07,012 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:07,375 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:07,378 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:07,839 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:08,059 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:08,063 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:08,064 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:08,603 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:08,603 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:08,705 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:09,138 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:09,139 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:09,614 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:09,810 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:09,814 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:09,814 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:09,910 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:10,097 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:10,098 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:10,955 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:11,134 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:11,138 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:11,138 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:11,676 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:11,676 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:12,188 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:12,188 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:12,865 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:12,865 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:12,966 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:13,271 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:13,272 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:13,804 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:14,036 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:14,038 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:14,038 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:14,139 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:14,424 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:14,427 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:15,010 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:15,447 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:15,450 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:15,450 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:16,552 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:16,728 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:16,732 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:17,581 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:17,807 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:17,809 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:17,810 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:17,909 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:18,245 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:18,247 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:18,879 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:19,057 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:19,059 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:19,060 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:19,154 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:19,434 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:19,435 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:19,953 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:20,160 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:20,162 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:20,162 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:20,256 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:20,428 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:20,430 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:20,926 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:21,128 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:21,130 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:21,130 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:21,230 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:21,655 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:21,659 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:22,219 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:22,432 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:22,436 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:22,436 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:22,529 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:22,663 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:22,666 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:23,171 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:23,370 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:23,372 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:23,372 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:24,401 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:24,401 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:24,528 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:24,669 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:24,671 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:25,228 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:25,424 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:25,429 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:25,429 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:25,537 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:25,672 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:25,673 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:26,225 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:26,452 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:26,454 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:26,455 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:26,597 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:26,756 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:26,759 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:27,275 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:27,478 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:27,481 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:27,481 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:27,623 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:28,074 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:28,075 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:28,687 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:28,901 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:28,904 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:28,904 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:29,008 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:29,271 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:29,274 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:29,736 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:30,210 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:30,213 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:30,213 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:30,331 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:30,507 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:30,508 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:30,930 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:31,131 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:31,134 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:31,134 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:31,230 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:31,720 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:31,722 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:32,259 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:32,480 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:32,484 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:32,484 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:32,602 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:32,886 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:32,890 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:33,402 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:33,641 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:33,647 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:33,647 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:33,742 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:34,012 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:34,013 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:34,540 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:34,735 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:34,739 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:34,739 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:34,835 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:35,084 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:35,086 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:35,772 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:35,969 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:35,971 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:35,971 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:36,103 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:36,272 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:36,275 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:37,183 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:37,392 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:37,395 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:37,395 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:37,514 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:37,780 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:37,781 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:38,333 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:38,545 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:38,548 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:38,548 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:38,648 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:39,387 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:39,389 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:39,916 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:40,093 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:40,098 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:40,098 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:40,956 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:40,957 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:41,053 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:41,355 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:41,359 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:42,069 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:42,251 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:42,253 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:42,253 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:42,349 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:42,699 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:42,700 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:43,137 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:43,300 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:43,302 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:43,302 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:43,434 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:43,726 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:43,727 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:44,531 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:44,717 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:44,719 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:44,719 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:44,813 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:45,313 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:45,314 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:45,721 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:45,882 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:45,884 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:45,884 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:46,055 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:46,240 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:46,241 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:46,674 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:46,860 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:46,862 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:46,863 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:47,287 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:47,287 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:47,382 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:47,520 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:47,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:47,961 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:48,127 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:48,129 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:48,129 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:48,554 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:48,554 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:48,672 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:48,814 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:48,815 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:49,391 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:49,558 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:49,560 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:49,560 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:49,679 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:49,821 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:49,822 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:50,207 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:50,413 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:50,414 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:50,414 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:50,515 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:50,814 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:50,816 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:51,210 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:51,375 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:51,377 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:51,377 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:51,471 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:51,780 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:51,781 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:52,139 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:52,292 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:52,293 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:52,293 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:52,448 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:52,575 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:52,575 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:52,947 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:53,130 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:53,133 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:53,133 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:53,293 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:53,447 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:53,448 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:53,948 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:54,181 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:54,182 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:54,182 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:54,279 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:54,546 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:54,547 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:54,988 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:55,152 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:55,153 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:55,154 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:55,255 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:55,520 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:55,521 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:55,887 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:56,059 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:56,061 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:56,061 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:56,158 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:56,438 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:56,439 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:56,860 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:57,036 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:57,038 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:57,038 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:57,138 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:57,484 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:57,485 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:57,879 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:58,063 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:58,066 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:58,066 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:58,492 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:58,492 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:08:58,586 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:08:58,743 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:08:58,744 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:08:59,544 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:08:59,736 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:08:59,738 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:08:59,738 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:08:59,859 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:09:00,040 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:09:00,041 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:09:00,480 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:00,673 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:09:00,675 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:09:00,675 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:09:01,110 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:01,110 - trading_bot.src.testing.mock_run_system - INFO - Using fallback market data for EUR_USD
+2025-09-25 16:09:01,213 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:09:01,510 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:09:01,511 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:09:02,036 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:02,241 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:09:02,250 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:09:02,250 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:09:02,358 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:09:02,585 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:09:02,586 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:09:03,078 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:03,246 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:09:03,251 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:09:03,251 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:09:03,351 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:09:03,530 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:09:03,531 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:09:03,964 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:04,151 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:09:04,157 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:09:04,157 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:09:04,316 - trading_bot.src.testing.mock_run_system - ERROR - Failed to get economic calendar data: 'NoneType' object has no attribute 'children'
+2025-09-25 16:09:04,632 - trading_bot.src.testing.mock_run_system - INFO - Retrieved technical analysis for EUR_USD (quality: 0.72)
+2025-09-25 16:09:04,633 - trading_bot.src.testing.mock_run_system - INFO - Retrieved sentiment data for 5 pairs
+2025-09-25 16:09:05,001 - trading_bot.src.testing.mock_run_system - INFO - Retrieved MyFXBook sentiment data for 72 pairs
+2025-09-25 16:09:05,190 - trading_bot.src.testing.mock_run_system - INFO - Retrieved 19 news articles
+2025-09-25 16:09:05,192 - trading_bot.src.testing.mock_run_system - INFO - Retrieved comprehensive market data for EUR_USD
+2025-09-25 16:09:05,192 - trading_bot.src.testing.mock_run_system - INFO - Overall score: 0.099, Consensus: 0.190, Confidence: 0.635
+2025-09-25 16:09:05,203 - trading_bot.src.testing.mock_run_system - INFO - ✅ Error recovery stress test completed
+2025-09-25 16:09:05,204 - trading_bot.src.testing.mock_run_system - INFO -    Success rate: 100/100
+2025-09-25 16:09:05,204 - trading_bot.src.testing.mock_run_system - INFO -    Recovery rate: 100.0%
+2025-09-25 16:09:05,204 - trading_bot.src.testing.mock_run_system - INFO - ✅ Stress testing completed in 227.0s
+2025-09-25 16:09:05,204 - trading_bot.src.testing.mock_run_system - INFO -    Overall status: PASSED
+2025-09-25 16:09:05,205 - trading_bot.src.testing.mock_run_system - INFO - 📄 Results saved to: logs/testing/mock_run_results_20250925_160905.json
