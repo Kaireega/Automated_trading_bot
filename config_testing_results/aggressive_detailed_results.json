@@ -1,0 +1,341 @@
+{
+  "test_timestamp": "2025-10-17T03:18:07.327173",
+  "total_configs_tested": 8,
+  "test_duration_days": 7,
+  "test_pairs": [
+    "EUR_USD",
+    "GBP_USD",
+    "USD_JPY"
+  ],
+  "config_type": "aggressive",
+  "rankings": [
+    {
+      "rank": 1,
+      "variant_name": "aggressive_config_variant_1_ultra_aggressive",
+      "metadata": {
+        "variant_number": 1,
+        "variant_name": "Ultra Aggressive",
+        "description": "Maximum trade volume with very low thresholds",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 2,
+      "variant_name": "aggressive_config_variant_2_high_volume",
+      "metadata": {
+        "variant_number": 2,
+        "variant_name": "High Volume",
+        "description": "High trade frequency with moderate risk",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 3,
+      "variant_name": "aggressive_config_variant_3_rsi_extreme",
+      "metadata": {
+        "variant_number": 3,
+        "variant_name": "RSI Extreme",
+        "description": "Trade on extreme RSI levels (inverted logic)",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 4,
+      "variant_name": "aggressive_config_variant_4_fast_scalping_pro",
+      "metadata": {
+        "variant_number": 4,
+        "variant_name": "Fast Scalping Pro",
+        "description": "Ultra-fast scalping with minimal filters",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 5,
+      "variant_name": "aggressive_config_variant_5_volume_optimized",
+      "metadata": {
+        "variant_number": 5,
+        "variant_name": "Volume Optimized",
+        "description": "Optimized for maximum daily trade volume",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 6,
+      "variant_name": "aggressive_config_variant_6_breakout_hunter",
+      "metadata": {
+        "variant_number": 6,
+        "variant_name": "Breakout Hunter",
+        "description": "Aggressive breakout trading strategy",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 7,
+      "variant_name": "aggressive_config_variant_7_momentum_chaser",
+      "metadata": {
+        "variant_number": 7,
+        "variant_name": "Momentum Chaser",
+        "description": "Chase momentum with low entry barriers",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    },
+    {
+      "rank": 8,
+      "variant_name": "aggressive_config_variant_8_mean_reversion_pro",
+      "metadata": {
+        "variant_number": 8,
+        "variant_name": "Mean Reversion Pro",
+        "description": "Aggressive mean reversion with wide RSI range",
+        "target": "5-10 trades/day, ~60% win rate, consistent returns",
+        "type": "aggressive"
+      },
+      "metrics": {
+        "total_trades": 1.0,
+        "win_rate": 100.0,
+        "total_return": 1.98,
+        "total_return_amount": 198.44,
+        "final_balance": 10198.44,
+        "max_drawdown": 0.0,
+        "sharpe_ratio": -0.15,
+        "signal_evaluations": 867.0,
+        "trade_execution_rate": 0.35,
+        "trades_per_day": 0.14285714285714285,
+        "average_daily_return": 0.28285714285714286,
+        "trade_details": [
+          [
+            "USD_JPY",
+            "sell",
+            "+$198.44"
+          ]
+        ],
+        "winning_trades": 1,
+        "losing_trades": 0
+      },
+      "scores": {
+        "composite_score": 0.3755142857142857,
+        "volume_score": 0.019047619047619046,
+        "winrate_score": 1.0,
+        "return_score": 0.066,
+        "consistency_score": 1.0,
+        "profitability_score": 0
+      }
+    }
+  ]
+}

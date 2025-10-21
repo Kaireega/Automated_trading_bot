@@ -1,0 +1,65 @@
+{
+  "timestamp": "2025-10-19T05:05:55.404431",
+  "contexts": [
+    {
+      "function_name": "<module>",
+      "file_name": "<string>",
+      "line_number": 14,
+      "timestamp": "2025-10-19T05:05:55.284863",
+      "variables": {},
+      "performance_metrics": {},
+      "memory_usage": {},
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "function_name": "__enter__",
+      "file_name": "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py",
+      "line_number": 141,
+      "timestamp": "2025-10-19T05:05:55.297088",
+      "variables": {
+        "test_string": "Hello Debug World!",
+        "test_number": 42,
+        "test_list": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "test_dict": {
+          "key": "value",
+          "number": 123
+        }
+      },
+      "performance_metrics": {
+        "test_operation": 0.10092782974243164,
+        "Debug System Test": 0.10285425186157227
+      },
+      "memory_usage": {
+        "rss": 20.515625,
+        "vms": 32879.13671875,
+        "percent": 0.12521743774414062
+      },
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "performance_summary": {
+    "test_operation": {
+      "count": 1,
+      "total": 0.10092782974243164,
+      "average": 0.10092782974243164,
+      "min": 0.10092782974243164,
+      "max": 0.10092782974243164
+    },
+    "Debug System Test": {
+      "count": 1,
+      "total": 0.10285425186157227,
+      "average": 0.10285425186157227,
+      "min": 0.10285425186157227,
+      "max": 0.10285425186157227
+    }
+  },
+  "error_summary": {}
+}
