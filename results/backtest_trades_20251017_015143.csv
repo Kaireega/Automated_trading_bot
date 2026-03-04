@@ -1,2 +1,0 @@
-Trade_ID,Pair,Signal,Entry_Time,Exit_Time,Entry_Price,Exit_Price,Stop_Loss,Take_Profit,Units,Risk_Amount,P&L,Exit_Reason,Duration_Minutes,Status,Balance_After
-backtest_1,EUR_USD,sell,2025-07-15 12:55:00,2025-07-15 16:30:00,1.168125,1.16022,1.1614425,1.16568,171.21455323702514,200.000,1.3534510433386924,FORCE_CLOSE_TIME,215.0,CLOSED,10001.3534510433386924

@@ -38,8 +38,8 @@ def main():
     
     # Define parameters
     pairs = ["EUR_USD", "GBP_USD", "USD_JPY"]
-    granularities = ["M5", "M15"]  # M1 is optional, often too much data
-    days_to_collect = 90
+    granularities = ["M1", "M5", "M15"]  # Include M1 for comprehensive analysis
+    days_to_collect = 365  # 1 year of data
     
     # Calculate dates
     end_date = datetime.utcnow()
