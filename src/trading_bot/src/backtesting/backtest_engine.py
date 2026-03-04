@@ -703,7 +703,7 @@ class BacktestEngine:
                     pass
                 
                 # Update open positions
-                self._update_open_positions(current_date, current_candles)
+                self._update_open_positions(current_date, historical_data)
             
             # Update equity curve
             self._update_equity_curve(current_date)
@@ -885,20 +885,35 @@ class BacktestEngine:
             self.logger.error(f"❌ Error executing backtest trade: {e}")
             return None
     
-    def _update_open_positions(self, current_date: datetime, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]):
+    def _update_open_positions(self, current_date: datetime, historical_data: Dict[str, Dict[TimeFrame, List[CandleData]]]):
         """Update open positions and check for exits (with trailing stops and max hold time)."""
         
-        m5_candles = candles_by_timeframe.get(TimeFrame.M5, [])
-        if not m5_candles:
-            return
-        
-        current_price = float(self._get_current_price(m5_candles))
+        # Update each open position with its own pair's price data
+        for pair, position in self.open_positions.items():
+            if position['status'] != 'OPEN':
+                continue
+                
+            # Get candles for this specific pair
+            pair_data = historical_data.get(pair, {})
+            m5_candles = pair_data.get(TimeFrame.M5, [])
+            if not m5_candles:
+                continue
+                
+            current_price = float(self._get_current_price(m5_candles))
         
         positions_to_close = []
         
         for pair, position in self.open_positions.items():
             if position['status'] != 'OPEN':
                 continue
+                
+            # Get candles for this specific pair
+            pair_data = historical_data.get(pair, {})
+            m5_candles = pair_data.get(TimeFrame.M5, [])
+            if not m5_candles:
+                continue
+                
+            current_price = float(self._get_current_price(m5_candles))
             
             entry_price = position['entry_price']
             stop_loss = position['stop_loss']
