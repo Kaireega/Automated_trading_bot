@@ -381,23 +381,34 @@ class RiskManager:
             entry_price = Decimal(str(recommendation.entry_price))
             stop_loss = Decimal(str(recommendation.stop_loss))
 
-            # For backtesting, skip instrument metadata check
-            # Use default pip location for major pairs
-            pip_location = -4  # Default for major forex pairs
+            try:
+                instrument = ic.get_instrument(pair)
+                pip_location = pow(10, instrument.pipLocation) if instrument else 0.0001
+            except Exception:
+                # Default pip locations if instrument metadata unavailable
+                pip_location = 0.01 if 'JPY' in pair else 0.0001
 
-            # For backtesting, use simplified position size calculation
-            # Calculate pip value and position size
-            pip_value = abs(entry_price - stop_loss)
-            if pip_value > 0:
-                # Simplified position size calculation for backtesting
-                # Risk amount / pip value = position size
-                units = risk_amount / pip_value
-            else:
-                units = 0
+            # Get conversion rate from OANDA (how much 1 unit of quote currency = in home currency)
+            try:
+                conversion_rate = self.oanda_api.get_home_conversion_rate(pair, signal='buy')
+                if not conversion_rate or conversion_rate <= 0:
+                    conversion_rate = 1.0
+            except Exception:
+                conversion_rate = 1.0
 
-            # Respect maximum size
-            max_size = float(self.max_position_size)
-            units = min(units, max_size)
+            # Use the correct FX position sizing formula
+            from ..core.fx_position_sizing import compute_units_from_risk
+            units = compute_units_from_risk(
+                pip_location=pip_location,
+                conversion_rate=conversion_rate,
+                entry_price=entry_price,
+                stop_loss=stop_loss,
+                risk_amount=risk_amount
+            )
+
+                        # max_position_size is a percentage — convert to actual unit cap
+            max_units = float(account_balance) * (float(self.max_position_size) / 100) / float(pip_location)
+            units = min(float(units), max_units)
 
             return {
                 'size': Decimal(str(units)),
@@ -594,33 +605,21 @@ class RiskManager:
         return 1.0
     
     def _get_current_trading_session(self) -> str:
-        """
-        Determine current trading session based on UTC time.
-        
-        Returns:
-            str: 'asian_early', 'asian_late', 'london_open', 'ny_open', or 'overlap'
-        """
         from datetime import datetime, timezone
         
         current_utc = datetime.now(timezone.utc)
         hour_utc = current_utc.hour
-        
-        # Trading session times (UTC):
-        # Asian: 23:00 - 08:00 UTC
-        # London: 07:00 - 16:00 UTC (08:00-17:00 BST)
-        # NY: 13:00 - 22:00 UTC (08:00-17:00 EST)
-        # Overlap (London + NY): 13:00 - 16:00 UTC
-        
-        if 13 <= hour_utc < 16:
-            return 'overlap'  # Best liquidity
-        elif 8 <= hour_utc < 13:
-            return 'london_open'  # High liquidity
-        elif 13 <= hour_utc < 22:
-            return 'ny_open'  # High liquidity
-        elif 0 <= hour_utc < 3:
-            return 'asian_early'  # Moderate liquidity
-        else:  # 3 <= hour_utc < 8 or 22 <= hour_utc < 24
-            return 'asian_late'  # Low liquidity
+
+        if 7 <= hour_utc < 13:
+            return 'london_open'
+        elif 13 <= hour_utc < 16:
+            return 'overlap'
+        elif 16 <= hour_utc < 22:
+            return 'ny_open'
+        elif 0 <= hour_utc < 7:
+            return 'asian_early'
+        else:
+            return 'asian_late'
     
     def _check_market_session(self) -> Dict[str, Any]:
         """Check if current trading session is acceptable."""

@@ -507,255 +507,253 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                                 }
                                 debug_variable("market_context_stored", True, context)
                             
-                            # Check if we have enough timeframes with data
-                            candles_by_timeframe = {
-                                tf: candles for tf, candles in candles_data.items() 
-                                if len(candles) >= 20
-                            }
-                            
-                            if len(candles_by_timeframe) < 2:
-                                continue
-                            
-                            # Check shutdown signal before long operations
-                            if not self.is_running:
-                                break
-                                
-                            # Fundamental Analysis
-                            try:
-                                fundamental_analysis = await self.fundamental_analyzer.analyze_fundamentals(pair, market_context)
-                                pair_analysis['fundamental_analysis'] = {
-                                    'sentiment': fundamental_analysis.get('sentiment', 'NEUTRAL'),
-                                    'sentiment_score': fundamental_analysis.get('sentiment_score', 0.0),
-                                    'news_count': fundamental_analysis.get('news_count', 0),
-                                    'economic_events': fundamental_analysis.get('economic_events', [])
+                                # Check if we have enough timeframes with data
+                                candles_by_timeframe = {
+                                    tf: candles for tf, candles in candles_data.items() 
+                                    if len(candles) >= 20
                                 }
-                                loop_stats['fundamental_analyses'] += 1
-                            except Exception as e:
-                                pair_analysis['errors'].append(f"Fundamental analysis failed: {str(e)}")
-                            
-                            # Check shutdown signal before technical analysis
-                            if not self.is_running:
-                                break
                                 
-                            # Technical Analysis
-                            try:
-                                recommendation, technical_indicators = await self.technical_layer.analyze_multiple_timeframes(
-                                    pair, candles_by_timeframe, market_context
-                                )
+                                if len(candles_by_timeframe) < 2:
+                                    continue
                                 
-                                # Store technical indicators
-                                if technical_indicators:
-                                    pair_analysis['technical_indicators'] = {
-                                        'rsi': technical_indicators.rsi,
-                                        'macd': technical_indicators.macd,
-                                        'macd_signal': technical_indicators.macd_signal,
-                                        'macd_histogram': technical_indicators.macd_histogram,
-                                        'atr': technical_indicators.atr,
-                                        'ema_fast': technical_indicators.ema_fast,
-                                        'ema_slow': technical_indicators.ema_slow,
-                                        'bollinger_upper': technical_indicators.bollinger_upper,
-                                        'bollinger_middle': technical_indicators.bollinger_middle,
-                                        'bollinger_lower': technical_indicators.bollinger_lower,
-                                        'keltner_upper': technical_indicators.keltner_upper,
-                                        'keltner_middle': technical_indicators.keltner_middle,
-                                        'keltner_lower': technical_indicators.keltner_lower
-                                    }
-                                    loop_stats['technical_indicators'] += 1
-                                
-                                if recommendation:
-                                    pair_analysis['technical_recommendation'] = {
-                                        'signal': recommendation.signal.value,
-                                        'confidence': recommendation.confidence,
-                                        'entry_price': float(recommendation.entry_price) if recommendation.entry_price else None,
-                                        'stop_loss': float(recommendation.stop_loss) if recommendation.stop_loss else None,
-                                        'take_profit': float(recommendation.take_profit) if recommendation.take_profit else None,
-                                        'risk_reward_ratio': recommendation.risk_reward_ratio,
-                                        'reasoning': recommendation.reasoning
-                                    }
-                                loop_stats['technical_analyses'] += 1
-                            except Exception as e:
-                                pair_analysis['errors'].append(f"Technical analysis failed: {str(e)}")
-                                recommendation = None
-                                technical_indicators = None
-                            
-                            # Check shutdown signal before regime detection
-                            if not self.is_running:
-                                break
-                                
-                            # Market Regime Detection
-                            try:
-                                if technical_indicators:
-                                    # Get primary candles for regime detection
-                                    primary_candles = candles_by_timeframe.get(TimeFrame.M5, [])
-                                    if not primary_candles:
-                                        primary_candles = list(candles_by_timeframe.values())[0] if candles_by_timeframe else []
+                                # Check shutdown signal before long operations
+                                if not self.is_running:
+                                    break
                                     
-                                    regime_analysis = await self.market_regime_detector.detect_regime(
-                                        pair, primary_candles, 
-                                        market_context, technical_indicators
+                                # Fundamental Analysis
+                                try:
+                                    fundamental_analysis = await self.fundamental_analyzer.analyze_fundamentals(pair, market_context)
+                                    pair_analysis['fundamental_analysis'] = {
+                                        'sentiment': fundamental_analysis.get('sentiment', 'NEUTRAL'),
+                                        'sentiment_score': fundamental_analysis.get('sentiment_score', 0.0),
+                                        'news_count': fundamental_analysis.get('news_count', 0),
+                                        'economic_events': fundamental_analysis.get('economic_events', [])
+                                    }
+                                    loop_stats['fundamental_analyses'] += 1
+                                except Exception as e:
+                                    pair_analysis['errors'].append(f"Fundamental analysis failed: {str(e)}")
+                                
+                                # Check shutdown signal before technical analysis
+                                if not self.is_running:
+                                    break
+                                    
+                                # Technical Analysis
+                                try:
+                                    recommendation, technical_indicators = await self.technical_layer.analyze_multiple_timeframes(
+                                        pair, candles_by_timeframe, market_context
                                     )
-                                    loop_stats['regime_detections'] += 1
                                     
-                                    # Convert volatility level to descriptive state
-                                    volatility_level = regime_analysis.get('volatility_level', 0.0)
-                                    if volatility_level >= 0.8:
-                                        volatility_state = "VERY_HIGH"
-                                    elif volatility_level >= 0.6:
-                                        volatility_state = "HIGH"
-                                    elif volatility_level >= 0.4:
-                                        volatility_state = "MEDIUM"
-                                    elif volatility_level >= 0.2:
-                                        volatility_state = "LOW"
-                                    else:
-                                        volatility_state = "VERY_LOW"
+                                    # Store technical indicators
+                                    if technical_indicators:
+                                        pair_analysis['technical_indicators'] = {
+                                            'rsi': technical_indicators.rsi,
+                                            'macd': technical_indicators.macd,
+                                            'macd_signal': technical_indicators.macd_signal,
+                                            'macd_histogram': technical_indicators.macd_histogram,
+                                            'atr': technical_indicators.atr,
+                                            'ema_fast': technical_indicators.ema_fast,
+                                            'ema_slow': technical_indicators.ema_slow,
+                                            'bollinger_upper': technical_indicators.bollinger_upper,
+                                            'bollinger_middle': technical_indicators.bollinger_middle,
+                                            'bollinger_lower': technical_indicators.bollinger_lower,
+                                            'keltner_upper': technical_indicators.keltner_upper,
+                                            'keltner_middle': technical_indicators.keltner_middle,
+                                            'keltner_lower': technical_indicators.keltner_lower
+                                        }
+                                        loop_stats['technical_indicators'] += 1
                                     
-                                    pair_analysis['regime_analysis'] = {
-                                        'regime': regime_analysis.get('regime', 'UNKNOWN'),
-                                        'confidence': regime_analysis.get('confidence', 0.0),
-                                        'volatility_state': volatility_state,
-                                        'trend_strength': regime_analysis.get('trend_strength', 0.0)
-                                    }
-                                else:
-                                    regime_analysis = {'regime': 'UNKNOWN', 'confidence': 0.0}
-                                    pair_analysis['regime_analysis'] = {
-                                        'regime': 'UNKNOWN',
-                                        'confidence': 0.0,
-                                        'volatility_state': 'UNKNOWN',
-                                        'trend_strength': 0.0
-                                    }
-                            except Exception as e:
-                                pair_analysis['errors'].append(f"Regime detection failed: {str(e)}")
+                                    if recommendation:
+                                        pair_analysis['technical_recommendation'] = {
+                                            'signal': recommendation.signal.value,
+                                            'confidence': recommendation.confidence,
+                                            'entry_price': float(recommendation.entry_price) if recommendation.entry_price else None,
+                                            'stop_loss': float(recommendation.stop_loss) if recommendation.stop_loss else None,
+                                            'take_profit': float(recommendation.take_profit) if recommendation.take_profit else None,
+                                            'risk_reward_ratio': recommendation.risk_reward_ratio,
+                                            'reasoning': recommendation.reasoning
+                                        }
+                                    loop_stats['technical_analyses'] += 1
+                                except Exception as e:
+                                    pair_analysis['errors'].append(f"Technical analysis failed: {str(e)}")
+                                    recommendation = None
+                                    technical_indicators = None
                             
-                            # Check shutdown signal before decision making
-                            if not self.is_running:
-                                break
-                                
-                            # Technical Decision Making
-                            try:
-                                # Get current price for decision making
-                                current_price = self._get_current_price(candles_by_timeframe.get(TimeFrame.M5, []))
-                                
-                                # Convert single TechnicalIndicators to dictionary format expected by decision layer
-                                technical_indicators_dict = {TimeFrame.M5: technical_indicators} if technical_indicators else {}
-                                
-                                decision = await self.decision_layer.make_technical_decision(
-                                    pair, technical_indicators_dict, market_context, current_price, candles_by_timeframe
-                                )
-                                
-                                # Risk Management - Always assess risk for recommendations
-                                if recommendation:
-                                    try:
-                                        # Create a temporary decision for risk assessment
-                                        temp_decision = TradeDecision(
-                                            recommendation=recommendation,
-                                            approved=False,
-                                            position_size=None,
-                                            risk_amount=None,
-                                            modified_stop_loss=recommendation.stop_loss,
-                                            modified_take_profit=recommendation.take_profit,
-                                            risk_management_notes="",
-                                            timestamp=datetime.utcnow()
-                                        )
+                                # Check shutdown signal before regime detection
+                                if not self.is_running:
+                                    break
+                                    
+                                # Market Regime Detection
+                                try:
+                                    if technical_indicators:
+                                        # Get primary candles for regime detection
+                                        primary_candles = candles_by_timeframe.get(TimeFrame.M5, [])
+                                        if not primary_candles:
+                                            primary_candles = list(candles_by_timeframe.values())[0] if candles_by_timeframe else []
                                         
-                                        risk_assessment = await self.advanced_risk_manager.assess_trade_risk(
-                                            temp_decision, market_context, technical_indicators, fundamental_analysis
+                                        regime_analysis = await self.market_regime_detector.detect_regime(
+                                            pair, primary_candles, 
+                                            market_context, technical_indicators
                                         )
-                                    except Exception as e:
+                                        loop_stats['regime_detections'] += 1
+                                        
+                                        # Convert volatility level to descriptive state
+                                        volatility_level = regime_analysis.get('volatility_level', 0.0)
+                                        if volatility_level >= 0.8:
+                                            volatility_state = "VERY_HIGH"
+                                        elif volatility_level >= 0.6:
+                                            volatility_state = "HIGH"
+                                        elif volatility_level >= 0.4:
+                                            volatility_state = "MEDIUM"
+                                        elif volatility_level >= 0.2:
+                                            volatility_state = "LOW"
+                                        else:
+                                            volatility_state = "VERY_LOW"
+                                        
+                                        pair_analysis['regime_analysis'] = {
+                                            'regime': regime_analysis.get('regime', 'UNKNOWN'),
+                                            'confidence': regime_analysis.get('confidence', 0.0),
+                                            'volatility_state': volatility_state,
+                                            'trend_strength': regime_analysis.get('trend_strength', 0.0)
+                                        }
+                                    else:
+                                        regime_analysis = {'regime': 'UNKNOWN', 'confidence': 0.0}
+                                        pair_analysis['regime_analysis'] = {
+                                            'regime': 'UNKNOWN',
+                                            'confidence': 0.0,
+                                            'volatility_state': 'UNKNOWN',
+                                            'trend_strength': 0.0
+                                        }
+                                except Exception as e:
+                                    pair_analysis['errors'].append(f"Regime detection failed: {str(e)}")
+                                
+                                # Check shutdown signal before decision making
+                                if not self.is_running:
+                                    break
+                                    
+                                # Technical Decision Making
+                                try:
+                                    # Get current price for decision making
+                                    current_price = self._get_current_price(candles_by_timeframe.get(TimeFrame.M5, []))
+                                    
+                                    # Convert single TechnicalIndicators to dictionary format expected by decision layer
+                                    technical_indicators_dict = {TimeFrame.M5: technical_indicators} if technical_indicators else {}
+                                    
+                                    decision = await self.decision_layer.make_technical_decision(
+                                        pair, technical_indicators_dict, market_context, current_price, candles_by_timeframe
+                                    )
+                                    
+                                    # Risk Management - Always assess risk for recommendations
+                                    if recommendation:
+                                        try:
+                                            # Create a temporary decision for risk assessment
+                                            temp_decision = TradeDecision(
+                                                recommendation=recommendation,
+                                                approved=False,
+                                                position_size=None,
+                                                risk_amount=None,
+                                                modified_stop_loss=recommendation.stop_loss,
+                                                modified_take_profit=recommendation.take_profit,
+                                                risk_management_notes="",
+                                                timestamp=datetime.utcnow()
+                                            )
+                                            
+                                            risk_assessment = await self.advanced_risk_manager.assess_trade_risk(
+                                                temp_decision, market_context, technical_indicators, fundamental_analysis
+                                            )
+                                        except Exception as e:
+                                            risk_assessment = {
+                                                'approved': False,
+                                                'reason': f'Risk assessment failed: {str(e)}',
+                                                'risk_score': 0.0,
+                                                'max_position_size': 0.0,
+                                                'portfolio_heat': 0.0
+                                            }
+                                    else:
                                         risk_assessment = {
                                             'approved': False,
-                                            'reason': f'Risk assessment failed: {str(e)}',
+                                            'reason': 'No recommendation',
                                             'risk_score': 0.0,
                                             'max_position_size': 0.0,
                                             'portfolio_heat': 0.0
                                         }
-                                else:
-                                    risk_assessment = {
-                                        'approved': False,
-                                        'reason': 'No recommendation',
-                                        'risk_score': 0.0,
-                                        'max_position_size': 0.0,
-                                        'portfolio_heat': 0.0
-                                    }
-                                
-                                pair_analysis['risk_assessment'] = {
-                                    'approved': risk_assessment.get('approved', False),
-                                    'reason': risk_assessment.get('reason', 'Unknown'),
-                                    'risk_score': risk_assessment.get('risk_score', 0.0),
-                                    'max_position_size': risk_assessment.get('max_position_size', 0.0),
-                                    'portfolio_heat': risk_assessment.get('portfolio_heat', 0.0)
-                                }
-                                
-                                if decision:
-                                    # Position sizing handled in RiskManager; avoid duplicate sizing here
-                                    try:
-                                        pass
-                                    except Exception as e:
-                                        pair_analysis['errors'].append(f"Position sizing failed: {str(e)}")
-                                    pair_analysis['decision'] = {
-                                        'signal': decision.recommendation.signal.value,
-                                        'entry_price': float(decision.recommendation.entry_price) if decision.recommendation.entry_price else None,
-                                        'stop_loss': float(decision.modified_stop_loss) if decision.modified_stop_loss else None,
-                                        'take_profit': float(decision.modified_take_profit) if decision.modified_take_profit else None,
-                                        'position_size': float(decision.position_size) if decision.position_size else None,
-                                        'reasoning': decision.recommendation.reasoning
+                                    
+                                    pair_analysis['risk_assessment'] = {
+                                        'approved': risk_assessment.get('approved', False),
+                                        'reason': risk_assessment.get('reason', 'Unknown'),
+                                        'risk_score': risk_assessment.get('risk_score', 0.0),
+                                        'max_position_size': risk_assessment.get('max_position_size', 0.0),
+                                        'portfolio_heat': risk_assessment.get('portfolio_heat', 0.0)
                                     }
                                     
-                                    if risk_assessment['approved']:
-                                        # Optional manual approval gate
+                                    if decision:
+                                        # Position sizing handled in RiskManager; avoid duplicate sizing here
                                         try:
-                                            if self.config.notifications.manual_trade_approval:
-                                                # Send pre-trade notification and stop here; execution will happen via callback handler on Accept
-                                                await self._send_pre_trade_notification(decision, fundamental_analysis, regime_analysis)
-                                                pair_analysis['trade_executed'] = False
-                                                pair_analysis['trade_id'] = None
-                                                # Skip auto execution when manual approval is enabled
-                                                continue
+                                            pass
                                         except Exception as e:
-                                            self.logger.error(f"Pre-trade notification failed: {e}")
-
-                                        # Auto execution path
-                                        trade_id = await self.position_manager.execute_trade(decision, market_context)
+                                            pair_analysis['errors'].append(f"Position sizing failed: {str(e)}")
+                                        pair_analysis['decision'] = {
+                                            'signal': decision.recommendation.signal.value,
+                                            'entry_price': float(decision.recommendation.entry_price) if decision.recommendation.entry_price else None,
+                                            'stop_loss': float(decision.modified_stop_loss) if decision.modified_stop_loss else None,
+                                            'take_profit': float(decision.modified_take_profit) if decision.modified_take_profit else None,
+                                            'position_size': float(decision.position_size) if decision.position_size else None,
+                                            'reasoning': decision.recommendation.reasoning
+                                        }
                                         
-                                        if trade_id:
-                                            loop_stats['trades_executed'] += 1
-                                            pair_analysis['trade_executed'] = True
-                                            pair_analysis['trade_id'] = trade_id
+                                        if risk_assessment['approved']:
+                                            # Optional manual approval gate
+                                            try:
+                                                if self.config.notifications.manual_trade_approval:
+                                                    # Send pre-trade notification and stop here; execution will happen via callback handler on Accept
+                                                    await self._send_pre_trade_notification(decision, fundamental_analysis, regime_analysis)
+                                                    pair_analysis['trade_executed'] = False
+                                                    pair_analysis['trade_id'] = None
+                                                    # Skip auto execution when manual approval is enabled
+                                                    continue
+                                            except Exception as e:
+                                                self.logger.error(f"Pre-trade notification failed: {e}")
+
+                                            # Auto execution path
+                                            trade_id = await self.position_manager.execute_trade(decision, market_context)
+                                            
+                                            if trade_id:
+                                                loop_stats['trades_executed'] += 1
+                                                pair_analysis['trade_executed'] = True
+                                                pair_analysis['trade_id'] = trade_id
+                                        else:
+                                            loop_stats['trades_rejected'] += 1
                                     else:
-                                        loop_stats['trades_rejected'] += 1
-                                else:
-                                    pair_analysis['decision'] = None
-                                    if recommendation:
-                                        loop_stats['trades_rejected'] += 1
+                                        pair_analysis['decision'] = None
+                                        if recommendation:
+                                            loop_stats['trades_rejected'] += 1
+                                except Exception as e:
+                                    pair_analysis['errors'].append(f"Decision making failed: {str(e)}")
+                                    
                             except Exception as e:
-                                pair_analysis['errors'].append(f"Decision making failed: {str(e)}")
-                            
+                                debug_tracker.log_error(context, e, f"General analysis failed for {pair}")
+                                pair_analysis['errors'].append(f"General analysis failed: {str(e)}")
+                                
                             # Store pair analysis in loop stats
                             loop_stats['pair_analyses'][pair] = pair_analysis
-                        except Exception as e:
-                            debug_tracker.log_error(context, e, f"General analysis failed for {pair}")
-                            pair_analysis['errors'].append(f"General analysis failed: {str(e)}")
-                            loop_stats['pair_analyses'][pair] = pair_analysis
                 
-                # Check shutdown signal before sending report
-                if not self.is_running:
-                    print("🛑 [DEBUG] Shutdown signal detected, skipping loop report...")
-                    break
+                    # Check shutdown signal before sending report
+                    if not self.is_running:
+                        print("🛑 [DEBUG] Shutdown signal detected, skipping loop report...")
+                        break
+                        
+                    # Generate and send enhanced loop report
+                    await self._send_enhanced_loop_report(loop_stats)
                     
-                # Generate and send enhanced loop report
-                await self._send_enhanced_loop_report(loop_stats)
-                
-                # Wait for next loop
-                await asyncio.sleep(self.config.data_update_frequency)
-                
-            except Exception as e:
-                debug_tracker.log_error(context, e, "Error in trading loop iteration")
-                print(f"❌ [DEBUG] Error in enhanced trading loop: {e}")
-                print(f"❌ [DEBUG] Traceback: {traceback.format_exc()}")
-                self.logger.error(f"Error in enhanced trading loop: {e}")
-                self.logger.error(f"Traceback: {traceback.format_exc()}")
-                await asyncio.sleep(5)  # Wait before retrying
-    
-    # Removed unused _create_enhanced_decision to avoid dead code
+                    # Wait for next loop
+                    await asyncio.sleep(self.config.data_update_frequency)
+                    
+                except Exception as e:
+                    debug_tracker.log_error(context, e, "Error in trading loop iteration")
+                    print(f"❌ [DEBUG] Error in enhanced trading loop: {e}")
+                    print(f"❌ [DEBUG] Traceback: {traceback.format_exc()}")
+                    self.logger.error(f"Error in enhanced trading loop: {e}")
+                    self.logger.error(f"Traceback: {traceback.format_exc()}")
+                    await asyncio.sleep(5)  # Wait before retrying
     
     async def _send_enhanced_trade_notification(self, decision, trade_id, 
                                               fundamental_analysis, regime_analysis):
@@ -795,8 +793,6 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             
         except Exception as e:
             self.logger.error(f"Error sending enhanced trade notification: {e}")
-    
-    # Removed _compute_position_size; sizing is centralized in RiskManager
     
     async def _send_pre_trade_notification(self, decision, fundamental_analysis, regime_analysis):
         """Send pre-trade notification prior to execution when manual approval is enabled."""
@@ -1068,4 +1064,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    asyncio.run(main())
