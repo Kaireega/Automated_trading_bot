@@ -68,15 +68,18 @@ class BollingerBounceStrategy(BaseStrategy):
         bb_lower = indicators.bollinger_lower
         bb_middle = indicators.bollinger_middle
         
-        # Calculate distance from bands (as percentage)
-        distance_from_lower = abs(current_price - bb_lower) / current_price
-        distance_from_upper = abs(current_price - bb_upper) / current_price
         
+        # Use candle wicks not close price — price touches band on wick and bounces before close
+        candle_low = float(candles[-1].mid_l)
+        candle_high = float(candles[-1].mid_h)
+        distance_from_lower = abs(candle_low - bb_lower) / current_price
+        distance_from_upper = abs(candle_high - bb_upper) / current_price
+                
         # ATR for stops
         atr = indicators.atr if indicators.atr else (current_price * 0.001)
         
         # BUY Signal: Price at lower band + RSI oversold
-        if distance_from_lower <= self.touch_threshold:
+        if distance_from_lower <= self.touch_threshold and candle_low <= bb_lower * 1.001:
             # RSI confirmation (oversold)
             rsi_oversold = indicators.rsi is not None and indicators.rsi < 35
             
@@ -109,7 +112,7 @@ class BollingerBounceStrategy(BaseStrategy):
                 )
         
         # SELL Signal: Price at upper band + RSI overbought
-        elif distance_from_upper <= self.touch_threshold:
+        elif distance_from_upper <= self.touch_threshold and candle_high >= bb_upper * 0.999:
             # RSI confirmation (overbought)
             rsi_overbought = indicators.rsi is not None and indicators.rsi > 65
             

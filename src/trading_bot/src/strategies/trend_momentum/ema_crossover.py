@@ -76,10 +76,16 @@ class EMACrossoverStrategy(BaseStrategy):
         current_price = float(candles[-1].mid_c)
         atr = indicators.atr if indicators.atr else (current_price * 0.001)  # Fallback to 0.1%
         
-        # Detect crossover
-        bullish_cross = ema_fast_prev <= ema_slow_prev and ema_fast_current > ema_slow_current
-        bearish_cross = ema_fast_prev >= ema_slow_prev and ema_fast_current < ema_slow_current
+        # State-based detection — fires whenever EMAs are aligned, not just on crossover candle
+        bullish_cross = ema_fast_current > ema_slow_current
+        bearish_cross = ema_fast_current < ema_slow_current
+
+        # Require minimum separation to avoid flat/tangled EMA signals
+        ema_separation = abs(ema_fast_current - ema_slow_current) / ema_slow_current
+        if ema_separation < 0.0002:  # Less than 2 pips separation — EMAs too close, skip
+            return None
         
+    
         # Momentum confirmation
         rsi_bullish = indicators.rsi is not None and indicators.rsi > 50
         rsi_bearish = indicators.rsi is not None and indicators.rsi < 50
@@ -91,7 +97,7 @@ class EMACrossoverStrategy(BaseStrategy):
         
         # BUY Signal
         if bullish_cross and rsi_bullish and macd_bullish:
-            confidence = 0.75
+            confidence = 0.70 + min(0.10, ema_separation * 50)
             strength = min(1.0, abs(ema_fast_current - ema_slow_current) / ema_slow_current * 100)
             
             return StrategySignal(
@@ -112,7 +118,7 @@ class EMACrossoverStrategy(BaseStrategy):
         
         # SELL Signal
         elif bearish_cross and rsi_bearish and macd_bearish:
-            confidence = 0.75
+            confidence = 0.70 + min(0.10, ema_separation * 50)
             strength = min(1.0, abs(ema_fast_current - ema_slow_current) / ema_slow_current * 100)
             
             return StrategySignal(
