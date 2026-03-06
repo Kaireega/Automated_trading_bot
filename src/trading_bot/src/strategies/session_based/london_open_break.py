@@ -61,7 +61,7 @@ class LondonOpenBreakStrategy(BaseStrategy):
         current = current_time.time()
         return time(8, 0) <= current <= time(16, 0)
     
-    def _calculate_opening_range(self, candles: List[CandleData], current_time: datetime) -> Optional[Dict[str, float]]:
+    def _calculate_opening_range(self, candles: List[CandleData], current_time: datetime, pair: str = '') -> Optional[Dict[str, float]]:
         """Calculate the opening range from first hour."""
         if not current_time:
             return None
@@ -79,7 +79,8 @@ class LondonOpenBreakStrategy(BaseStrategy):
         # Calculate range high/low
         range_high = max(float(c.mid_h) for c in range_candles)
         range_low = min(float(c.mid_l) for c in range_candles)
-        range_pips = (range_high - range_low) * 10000
+        pip_divisor = 100 if 'JPY' in pair else 10000
+        range_pips = (range_high - range_low) * pip_divisor
         
         # Check minimum range requirement
         if range_pips < self.min_range_pips:

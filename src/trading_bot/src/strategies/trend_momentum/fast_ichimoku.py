@@ -78,11 +78,15 @@ class FastIchimokuStrategy(BaseStrategy):
         # Chikou Span (Lagging Span): Close shifted backward
         df['chikou_span'] = df['close'].shift(-self.kijun_period)
         
+        # Use correct cloud index — senkou spans are shifted forward by kijun_period
+        # so current cloud is at -(kijun_period + 1), not -1
+        cloud_idx = -(self.kijun_period + 1)
+
         return {
             'tenkan': df['tenkan_sen'].iloc[-1] if not pd.isna(df['tenkan_sen'].iloc[-1]) else 0,
             'kijun': df['kijun_sen'].iloc[-1] if not pd.isna(df['kijun_sen'].iloc[-1]) else 0,
-            'senkou_a': df['senkou_span_a'].iloc[-1] if not pd.isna(df['senkou_span_a'].iloc[-1]) else 0,
-            'senkou_b': df['senkou_span_b'].iloc[-1] if not pd.isna(df['senkou_span_b'].iloc[-1]) else 0,
+            'senkou_a': df['senkou_span_a'].iloc[cloud_idx] if len(df) > abs(cloud_idx) and not pd.isna(df['senkou_span_a'].iloc[cloud_idx]) else 0,
+            'senkou_b': df['senkou_span_b'].iloc[cloud_idx] if len(df) > abs(cloud_idx) and not pd.isna(df['senkou_span_b'].iloc[cloud_idx]) else 0,
             'chikou': df['chikou_span'].iloc[-1] if not pd.isna(df['chikou_span'].iloc[-1]) else 0,
             'close': df['close'].iloc[-1]
         }

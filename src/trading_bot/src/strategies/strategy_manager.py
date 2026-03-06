@@ -254,7 +254,7 @@ class StrategyManager:
         sell_score = sell_weight / total_weight
         
         # Determine consensus
-        consensus_threshold = 0.5
+        consensus_threshold = 0.30
         
         if buy_score > consensus_threshold and buy_score > sell_score:
             return self._create_consensus_recommendation(

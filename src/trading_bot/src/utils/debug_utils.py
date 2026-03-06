@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Comprehensive Debugging Utilities for Trading Bot
 
@@ -32,6 +33,7 @@ from dataclasses import dataclass, field
 from collections import defaultdict, deque
 import json
 import threading
+DEBUG = False
 from pathlib import Path
 
 
@@ -262,6 +264,8 @@ def debug_line(func: Callable) -> Callable:
 
 def debug_variable(var_name: str, var_value: Any, context: Optional[DebugContext] = None):
     """Debug a specific variable."""
+    if not DEBUG:
+        return
     if context is None:
         # Create context from current frame
         frame = inspect.currentframe().f_back
@@ -327,6 +331,9 @@ def debug_performance(func: Callable) -> Callable:
 
 def debug_data_flow(data_name: str, data_value: Any, operation: str = "processing"):
     """Debug data flow through the system."""
+    if not DEBUG:
+        return
+   
     frame = inspect.currentframe().f_back
     file_name = frame.f_code.co_filename
     line_number = frame.f_lineno
@@ -344,6 +351,8 @@ def debug_data_flow(data_name: str, data_value: Any, operation: str = "processin
 
 def debug_api_call(api_name: str, endpoint: str, params: Dict = None, response: Any = None):
     """Debug API calls."""
+    if not DEBUG:
+        return
     frame = inspect.currentframe().f_back
     file_name = frame.f_code.co_filename
     line_number = frame.f_lineno
@@ -484,6 +493,8 @@ def export_debug_report(file_path: str = None):
 # Convenience functions for common debugging patterns
 def debug_entry_point(module_name: str):
     """Debug entry point for modules."""
+    if not DEBUG:
+        return
     frame = inspect.currentframe().f_back
     file_name = frame.f_code.co_filename
     line_number = frame.f_lineno
@@ -518,6 +529,8 @@ def debug_conditional(condition: bool, true_msg: str, false_msg: str, context: O
 
 
 def debug_loop_iteration(loop_name: str, iteration: int, total_iterations: int = None, context: Optional[DebugContext] = None):
+    if not DEBUG:
+        return
     """Debug loop iterations."""
     if context is None:
         frame = inspect.currentframe().f_back
