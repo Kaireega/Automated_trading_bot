@@ -56,6 +56,7 @@ try:
     from ..decision.performance_tracker import PerformanceTracker
     from .broker import BrokerSim
     from .feeds import HistoricalDataFeed
+    from .feeds_oanda import OandaHistoricalFeed
 except ImportError:
     # Fallback for when running as standalone module
     from core.models import (
@@ -74,6 +75,7 @@ except ImportError:
     from decision.performance_tracker import PerformanceTracker
     from broker import BrokerSim
     from feeds import HistoricalDataFeed
+    from feeds_oanda import OandaHistoricalFeed
 
 
 @dataclass
@@ -213,12 +215,26 @@ class BacktestEngine:
         
         # Initialize simulation components
         if use_historical_feed:
-            self.feed = HistoricalDataFeed(config.simulation.csv_dir)
+            data_source = getattr(config.simulation, 'data_source', 'oanda')
+            if data_source == 'oanda':
+                self.oanda_feed = OandaHistoricalFeed(
+                    cache_dir=str(Path(config.simulation.csv_dir) / 'historical_cache'),
+                    use_cache=True
+                )
+                self.feed = None
+                self.logger.info("📡 Using OandaHistoricalFeed (live fetch + disk cache)")
+            else:
+                self.oanda_feed = None
+                self.feed = HistoricalDataFeed(config.simulation.csv_dir)
+                self.logger.info(f"📂 Using HistoricalDataFeed from {config.simulation.csv_dir}")
             self.broker = BrokerSim(
                 spread_pips=config.simulation.spread_pips,
                 slippage_pips=config.simulation.slippage_pips
             )
             self._order_to_decision: Dict[str, TradeDecision] = {}
+        else:
+            self.oanda_feed = None
+            self.feed = None
         
         # Backtest state
         self.current_balance: float = 0.0
@@ -487,60 +503,88 @@ class BacktestEngine:
                 self.config.trading.risk_percentage = original_risk
     
     async def _load_historical_data(
-        self, 
-        start_date: datetime, 
-        end_date: datetime, 
+        self,
+        start_date: datetime,
+        end_date: datetime,
         pairs: List[str]
     ) -> Dict[str, Dict[TimeFrame, List[CandleData]]]:
-        """Load historical data for backtesting."""
+        """Load historical data for backtesting.
         
+        Priority order:
+          1. OandaHistoricalFeed (live fetch + disk cache) when data_source == 'oanda'
+          2. Local pickle files  data/{PAIR}_{TF}.pkl
+          3. Local CSV files     data/historical/{PAIR}_{TF}.csv
+        """
+
         self.logger.info(f"📊 Loading historical data for {len(pairs)} pairs...")
-        
+        timeframes = [TimeFrame.M1, TimeFrame.M5, TimeFrame.M15]
+
+        # ── Path 1: OANDA live fetch ──────────────────────────────────────────
+        if self.oanda_feed is not None:
+            self.logger.info("📡 Fetching data from OANDA API (with cache)...")
+            historical_data: Dict[str, Dict[TimeFrame, List[CandleData]]] = {}
+            for pair in pairs:
+                historical_data[pair] = {}
+                for tf in timeframes:
+                    try:
+                        df = self.oanda_feed._fetch_range(pair, tf, start_date, end_date)
+                        # Save/merge into cache so future runs are instant
+                        if not df.empty:
+                            self.oanda_feed._save_cache(pair, tf, df)
+                        candles = self.oanda_feed._to_candles(df, pair, tf)
+                        historical_data[pair][tf] = candles
+                        self.logger.info(
+                            f"✅ {pair} {tf.value}: {len(candles)} candles from OANDA"
+                        )
+                    except Exception as e:
+                        self.logger.warning(f"⚠️ OANDA fetch failed for {pair} {tf.value}: {e}")
+                        historical_data[pair][tf] = []
+            return historical_data
+
+        # ── Path 2 & 3: local files ───────────────────────────────────────────
+        self.logger.info("📂 Loading from local pickle/CSV files...")
         historical_data = {}
-        
         for pair in pairs:
             historical_data[pair] = {}
-            for timeframe in [TimeFrame.M1, TimeFrame.M5, TimeFrame.M15]:
+            for timeframe in timeframes:
                 try:
-                    # Load data from CSV or database
                     candles = await self._load_candles_from_source(pair, timeframe, start_date, end_date)
                     historical_data[pair][timeframe] = candles
                     self.logger.debug(f"📈 Loaded {len(candles)} candles for {pair} {timeframe.value}")
                 except Exception as e:
                     self.logger.warning(f"⚠️ Failed to load data for {pair} {timeframe.value}: {e}")
                     historical_data[pair][timeframe] = []
-        
         return historical_data
-    
+
     async def _load_candles_from_source(
-        self, 
-        pair: str, 
-        timeframe: TimeFrame, 
+        self,
+        pair: str,
+        timeframe: TimeFrame,
         start_date: datetime,
         end_date: datetime
     ) -> List[CandleData]:
-        """Load candles from data source (CSV, pickle, database, or API)."""
-        
-        # Try to load from pickle first (your existing data format)
+        """Fallback loader: local pickle → local CSV → empty list."""
+
+        # Try pickle (collect_data.py output format)
         pkl_path = f"data/{pair}_{timeframe.value}.pkl"
-        
         try:
             if Path(pkl_path).exists():
                 return await self._load_from_pkl(pkl_path, start_date, end_date)
         except Exception as e:
             self.logger.warning(f"⚠️ Failed to load from pickle {pkl_path}: {e}")
-        
-        # Try CSV as fallback
+
+        # Try CSV
         csv_path = f"data/historical/{pair}_{timeframe.value}.csv"
-        
         try:
             if Path(csv_path).exists():
                 return await self._load_from_csv(csv_path, start_date, end_date)
         except Exception as e:
             self.logger.warning(f"⚠️ Failed to load from CSV {csv_path}: {e}")
-        
-        # No mock data - require real historical data
-        self.logger.error(f"No historical data available for {pair} {timeframe}")
+
+        self.logger.error(
+            f"❌ No local data for {pair} {timeframe.value}. "
+            f"Set data_source: oanda in config to auto-fetch from OANDA."
+        )
         return []
     
     async def _load_from_pkl(self, pkl_path: str, start_date: datetime, end_date: datetime) -> List[CandleData]:
