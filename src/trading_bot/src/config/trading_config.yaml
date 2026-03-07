@@ -3,8 +3,8 @@
 
 # Trading Settings
 trading:
-  risk_percentage: 2.5              # 2.5% per trade (increased from 1.5%)
-  max_trades_per_day: 12            # Balanced: 12 trades per day
+  risk_percentage: 1.5              # 4.0% per trade (increased for better returns)
+  max_trades_per_day: 10             # Realistic hard limit
   default_timeframe: M5
   pairs:
     - EUR_USD                       # Most liquid
@@ -14,7 +14,7 @@ trading:
     min_hold_time_minutes: 20       # Allow quick scalps (was 30)
     max_hold_time_minutes: 240      # 4 hours max, close before session end (was 300)
     default_hold_time_minutes: 90   # Faster pace (was 120)
-    force_close_enabled: true       # Force close before day end for risk management
+    force_close_enabled: false      # Disabled to allow 24/7 trading
     force_close_time: "16:30"       # NEW: EST - Close before NY close
     market_condition_hold_times:
       news_reactionary: [20, 180]   # 20 min to 3 hours
@@ -32,46 +32,45 @@ multi_timeframe:
     M5: 0.4    # 40% weight - short-term signals
     M15: 0.6   # 60% weight - medium-term trends
   minimum_timeframes: 1
-  consensus_threshold: 0.4
+  consensus_threshold: 0.75         # CRITICAL: require higher agreement
 
 # Market Conditions
 market_conditions:
-  volatility_threshold: 0.0006      # Balanced volatility threshold
+  volatility_threshold: 0.0005      # Lowered for more trades
   trend_strength_threshold: 0.60    # REALISTIC FOR INTRADAY
   breakout_threshold: 0.0015        # REALISTIC FOR INTRADAY
   ranging_threshold: 0.0008
-  # Market session awareness (ENABLED FOR SESSION-BASED TRADING)
-  preferred_sessions: ["london", "new_york"]  # London (08:00-17:00) and NY (13:00-22:00)
+  # Market session awareness (DISABLED FOR BACKTEST)
+  preferred_sessions: []            # Empty = trade all sessions for backtest
   avoid_sessions: []                # Empty = no session restrictions
 
 # Risk Management - CRITICAL FOR LIVE TRADING
 risk_management:
   max_daily_loss: 5.0               # 5.0% daily max (increased from 2.5%)
-  max_position_size: 2.0            # 2% per trade max (was 10.0 - DANGEROUS!)
-  max_open_positions: 5             # Maximum 5 concurrent open positions
+  max_position_size: 1.5            # 4% per trade max (match new risk%)
   correlation_limit: 0.6            # Stricter (was 0.7)
-  max_open_trades: 2                # Focus on quality (was 3)
-  stop_loss_atr_multiplier: 1.5     # Reasonable stops (was 0.5 - too tight!)
+  max_open_trades: 3                # One per pair (was 2)
+  stop_loss_atr_multiplier: 2.0     # Better R:R (was 1.5)
   trailing_stop: true
   trailing_stop_atr_multiplier: 1.0 # Better protection (was 0.3 - too tight!)
   # Advanced risk controls
   consecutive_loss_limit: 3         # NEW: Stop after 3 consecutive losses
-  daily_loss_cooldown_minutes: 0   # No cooldown after losses
+  daily_loss_cooldown_minutes: 1440 # CRITICAL: 24-hour cooldown after max loss
   scale_down_after_losses: true     # NEW: Reduce size after losses
   loss_scale_down_pct: 50           # NEW: Reduce to 50% after 2 losses
 
 # Technical Analysis - LOWERED THRESHOLDS FOR MORE TRADES
 technical_analysis:
-  confidence_threshold: 0.40        # More permissive for more trades
-  signal_strength_threshold: 0.002  # More permissive for more trades
-  minimum_confidence: 0.35          # More permissive for more trades
-  risk_reward_ratio_minimum: 1.0    # More permissive for more trades
+  confidence_threshold: 0.40       # INCREASED from 0.35
+  signal_strength_threshold: 0.002  # Further lowered for more trades
+  minimum_confidence: 0.60          # INCREASED from 0.30
+  risk_reward_ratio_minimum: 1.5    # CRITICAL FIX: Increased from 0.8 to 2.0
   analysis_frequency: 300           # 5 minutes
   include_volume_analysis: true
   include_market_context: true
   # Signal confluence settings
-  min_signals_required: 1           # More permissive for more trades
-  min_confluence_score: 0.35        # More permissive for more trades
+  min_signals_required: 1           # INCREASED from 1 to 3
+  min_confluence_score: 0.6         # INCREASED from 0.3 to 0.6
   # RSI thresholds for intraday
   rsi_oversold: 30                  # Traditional oversold level
   rsi_overbought: 70                # Traditional overbought level
@@ -82,7 +81,7 @@ technical_analysis:
   # ATR multiplier for volatility
   atr_multiplier: 2.0               # ATR multiplier for stop loss calculations
   # Trade cooldown settings
-  trade_cooldown_minutes: 15        # 15 min cooldown between trades
+  trade_cooldown_minutes: 30       # CRITICAL: 2 hours cooldown between trades
   # Multi-timeframe analyzer thresholds
   ranging_confidence_penalty: 0.05  # Small penalty for RANGING markets
   # Signal strength thresholds
@@ -92,6 +91,17 @@ technical_analysis:
     neutral: 0.4
     sell: 0.6
     strong_sell: 0.8
+
+# News Management
+news_management:
+  api_key_env: "NEWS_CALENDAR_API_KEY"
+  impact_levels_to_avoid: ["HIGH", "MEDIUM"]
+  avoidance_window_minutes:
+    before: 15
+    after: 30
+  affected_currencies:
+    HIGH: ["USD", "EUR", "GBP", "JPY"]
+    MEDIUM: ["USD", "EUR", "GBP"]
 
 # Notifications
 notifications:
@@ -142,7 +152,7 @@ strategy_portfolio:
   # Strategy Selection Rules
   selection:
     mode: "weighted_ensemble"  # Options: weighted_ensemble, best_fit, democratic
-    min_strategies_agreeing: 2  # Minimum strategies that must agree
+    min_strategies_agreeing: 1  # INCREASED from 2 to 3
     confidence_weighting: true  # Weight by confidence scores
     timeframe_priority: ["M5", "M15", "M1"]  # Primary timeframe order
   
@@ -151,13 +161,13 @@ strategy_portfolio:
     # ========== TREND MOMENTUM STRATEGIES (30% allocation) ==========
     - name: "Fast_EMA_Cross_M5"
       type: "trend_momentum"
-      allocation: 8
+      allocation: 19
       timeframes: ["M5", "M15"]
       parameters:
         ema_fast: 8
         ema_slow: 21
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.65
+      min_confidence: 0.65          # INCREASED from 0.65
       
     - name: "MACD_Momentum_M5"
       type: "trend_momentum"
@@ -169,7 +179,7 @@ strategy_portfolio:
         signal: 9
         histogram_threshold: 0.00005
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.60
+      min_confidence: 0.65          # INCREASED from 0.60
       
     - name: "ADX_Trend_M5"
       type: "trend_momentum"
@@ -179,30 +189,20 @@ strategy_portfolio:
         period: 14
         threshold: 20  # Lower for intraday
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.65
+      min_confidence: 0.65          # INCREASED from 0.65
       
-    - name: "Fast_Ichimoku"
-      type: "trend_momentum"
-      allocation: 7
-      timeframes: ["M5", "M15"]
-      parameters:
-        tenkan: 5    # Fast for intraday
-        kijun: 13
-        senkou: 26
-      conditions: ["TRENDING_UP", "TRENDING_DOWN", "BREAKOUT"]
-      min_confidence: 0.70
     
     # ========== MEAN REVERSION STRATEGIES (25% allocation) ==========
     - name: "BB_Bounce_M5"
       type: "mean_reversion"
-      allocation: 10
+      allocation: 19
       timeframes: ["M5"]
       parameters:
         period: 20
         std_dev: 2
         touch_threshold: 0.001
       conditions: ["RANGING"]
-      min_confidence: 0.60
+      min_confidence: 0.65          # INCREASED from 0.60
       
     - name: "RSI_Extremes"
       type: "mean_reversion"
@@ -215,19 +215,9 @@ strategy_portfolio:
         extreme_oversold: 25
         extreme_overbought: 75
       conditions: ["RANGING"]
-      min_confidence: 0.65
-      
-    - name: "Fast_Stochastic"
-      type: "mean_reversion"
-      allocation: 7
-      timeframes: ["M5"]
-      parameters:
-        k_period: 5
-        d_period: 3
-        smooth: 3
-      conditions: ["RANGING"]
-      min_confidence: 0.60
-    
+      min_confidence: 0.65          # INCREASED from 0.65
+
+
     # ========== BREAKOUT STRATEGIES (20% allocation) ==========
     - name: "ATR_Breakout"
       type: "breakout"
@@ -238,7 +228,7 @@ strategy_portfolio:
         multiplier: 1.5
         lookback: 20
       conditions: ["VOLATILE", "BREAKOUT"]
-      min_confidence: 0.70
+      min_confidence: 0.65          # INCREASED from 0.70
       
     - name: "Support_Resistance_Break"
       type: "breakout"
@@ -249,18 +239,8 @@ strategy_portfolio:
         break_threshold: 0.0005  # 5 pips
         confirmation_candles: 1
       conditions: ["BREAKOUT"]
-      min_confidence: 0.65
-      
-    - name: "Donchian_Break"
-      type: "breakout"
-      allocation: 6
-      timeframes: ["M5"]
-      parameters:
-        period: 10  # Short for intraday
-        exit_period: 5
-      conditions: ["BREAKOUT", "RANGING"]
-      min_confidence: 0.65
-    
+      min_confidence: 0.65          # INCREASED from 0.65
+  
     # ========== SCALPING STRATEGIES (15% allocation) ==========
     - name: "Price_Action_Scalp"
       type: "scalping"
@@ -270,63 +250,43 @@ strategy_portfolio:
         min_body_ratio: 0.6
         min_wick_ratio: 2.0
       conditions: ["ALL"]
-      min_confidence: 0.70
+      min_confidence: 0.65         # INCREASED from 0.70
+      risk_reward_minimum: 1.5     # NEW: Higher R:R for scalping
       hold_time_override: [5, 30]  # 5-30 min holds only
       
-    - name: "Spread_Squeeze"
-      type: "scalping"
-      allocation: 5
-      timeframes: ["M1", "M5"]
-      parameters:
-        max_spread_pips: 1.5
-        volume_spike_threshold: 1.5
-      conditions: ["ALL"]
-      min_confidence: 0.65
-      hold_time_override: [5, 45]
-      
-    - name: "Order_Flow_Momentum"
-      type: "scalping"
-      allocation: 5
-      timeframes: ["M1", "M5"]
-      parameters:
-        imbalance_threshold: 0.6
-        lookback: 5
-      conditions: ["ALL"]
-      min_confidence: 0.70
-      hold_time_override: [10, 60]
-    
+
     # ========== SESSION-BASED STRATEGIES (10% allocation) ==========
     - name: "London_Open_Break"
       type: "session_based"
-      allocation: 5
+      allocation: 10
       timeframes: ["M5", "M15"]
       parameters:
         session_start: "08:00"  # UTC
         range_period_minutes: 60
         min_range_pips: 10
       conditions: ["BREAKOUT"]
-      min_confidence: 0.70
-      active_hours: ["08:00-16:00"]  # UTC (London session)
+      min_confidence: 0.65          # INCREASED from 0.70
+      # active_hours: ["08:00-16:00"]  # UTC (London session) - DISABLED for 24/7 trading
       
     - name: "NY_Open_Momentum"
       type: "session_based"
-      allocation: 5
+      allocation: 10
       timeframes: ["M5"]
       parameters:
         session_start: "13:00"  # UTC (8am EST)
         momentum_period_minutes: 30
-        min_momentum_pips: 8
+        min_momentum_pips: 5
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.70
-      active_hours: ["13:00-22:00"]  # UTC (Full NY session)
+      min_confidence: 0.65          # INCREASED from 0.70
+      # active_hours: ["13:00-14:00"]  # UTC (First hour of NY) - DISABLED for 24/7 trading
   
   # Intraday-Specific Rules
   intraday_rules:
     max_hold_minutes: 240  # From main config
     force_close_time: "16:30"  # From main config
-    avoid_news_minutes: 0   # Trade during news
-    min_time_between_trades: 15   # 15 min delay between trades per pair
-    max_trades_per_session: 6  # Max 6 trades per session
+    avoid_news_minutes: 15   # Trade during news
+    min_time_between_trades: 30   # 30 minutes minimum between trades
+    max_trades_per_session: 10  # Realistic limit per session
     
   # Performance-Based Rebalancing (Future Feature)
   rebalancing:
