@@ -11,26 +11,24 @@ from .trend_momentum import (
     EMACrossoverStrategy,
     MACDMomentumStrategy,
     ADXTrendStrategy,
-    FastIchimokuStrategy
 )
 
 from .mean_reversion import (
     BollingerBounceStrategy,
     RSIExtremesStrategy,
-    StochasticReversalStrategy
+    
 )
 
 from .breakout import (
     ATRBreakoutStrategy,
     SupportResistanceBreakStrategy,
-    DonchianBreakStrategy
+   
 )
 
 from .scalping import (
     PriceActionScalpStrategy,
-    SpreadSqueezeStrategy,
-    OrderFlowMomentumStrategy
-)
+    )
+   
 
 from .session_based import (
     LondonOpenBreakStrategy,

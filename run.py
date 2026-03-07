@@ -278,8 +278,8 @@ async def run_validation(args):
     config = Config()
     # Access strategy portfolio from config object
     strategy_portfolio = getattr(config, 'strategy_portfolio', {})
-    enabled = strategy_portfolio.get('enabled', False) if isinstance(strategy_portfolio, dict) else False
-    config_strategies = strategy_portfolio.get('strategies', []) if isinstance(strategy_portfolio, dict) else []
+    enabled = strategy_portfolio.enabled if hasattr(strategy_portfolio, "enabled") else False
+    config_strategies = strategy_portfolio.strategies if hasattr(strategy_portfolio, "strategies") else []
     
     print(f"\n✅ Configuration loaded")
     print(f"   - Multi-Strategy: {'ENABLED' if enabled else 'DISABLED'}")
