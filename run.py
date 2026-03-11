@@ -28,6 +28,13 @@ import argparse
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+# Load .env file at startup (must happen before any config is read)
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv not installed; rely on environment variables being set manually
+
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
@@ -315,7 +322,7 @@ async def run_live(args):
     from trading_bot.main import TradingBot
     
     bot = TradingBot()
-    await bot.run()
+    await bot.start()
 
 
 # ============================================================================

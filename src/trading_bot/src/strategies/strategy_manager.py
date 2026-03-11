@@ -128,37 +128,60 @@ class StrategyManager:
         candles: List[CandleData],
         indicators: TechnicalIndicators,
         market_condition: MarketCondition,
-        current_time: Optional[datetime] = None
+        current_time: Optional[datetime] = None,
+        regime: Optional[str] = None
     ) -> Optional[TradeRecommendation]:
         """
         Generate consensus signal from all applicable strategies.
-        
+
         Args:
             pair: Currency pair
             candles: List of candle data
             indicators: Technical indicators
             market_condition: Current market condition
             current_time: Current time (for session-based strategies)
-            
+            regime: Market regime string from MarketRegimeDetector
+
         Returns:
             TradeRecommendation with consensus signal or None
         """
         if not self.enabled:
             return None
-        
+
         if not self.strategies:
             self.logger.warning("⚠️ No strategies loaded")
             return None
-        
-        # Collect signals from all applicable strategies
+
+        # --- REGIME-BASED ELIGIBILITY GATE ---
+        REGIME_ALLOWED_TYPES = {
+            'TRENDING_UP':    ['trend_momentum', 'session_based', 'breakout'],
+            'TRENDING_DOWN':  ['trend_momentum', 'session_based', 'breakout'],
+            'RANGING':        ['mean_reversion'],
+            'VOLATILE':       ['breakout', 'session_based'],
+            'BREAKOUT':       ['breakout', 'session_based', 'trend_momentum'],
+            'CONSOLIDATION':  ['mean_reversion'],
+            'REVERSAL':       ['mean_reversion', 'trend_momentum'],
+            'UNKNOWN':        ['trend_momentum', 'session_based', 'breakout', 'mean_reversion'],
+        }
+
+        current_regime = (regime or 'UNKNOWN').upper()
+        allowed_types = REGIME_ALLOWED_TYPES.get(current_regime, REGIME_ALLOWED_TYPES['UNKNOWN'])
+
+        eligible_strategies = [
+            s for s in self.strategies
+            if s.allocation > 0 and s.strategy_type in allowed_types
+        ]
+
+        self.logger.debug(
+            f"Regime: {current_regime} | Eligible: {[s.name for s in eligible_strategies]}"
+        )
+        # --- END REGIME GATE ---
+
+        # Collect signals from eligible strategies
         strategy_signals: List[Dict[str, Any]] = []
-        
-        for strategy in self.strategies:
+
+        for strategy in eligible_strategies:
             try:
-                # Check if strategy is applicable
-                if not strategy.is_applicable(market_condition):
-                    continue
-                
                 # Check if strategy is active now (session-based)
                 if not strategy.is_active_now(current_time):
                     continue
@@ -253,8 +276,8 @@ class StrategyManager:
         buy_score = buy_weight / total_weight
         sell_score = sell_weight / total_weight
         
-        # Determine consensus
-        consensus_threshold = 0.30
+        # Determine consensus — read from config (YAML has 0.75)
+        consensus_threshold = getattr(self.config.multi_timeframe, 'consensus_threshold', 0.30)
         
         if buy_score > consensus_threshold and buy_score > sell_score:
             return self._create_consensus_recommendation(

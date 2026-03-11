@@ -76,7 +76,7 @@ class NYOpenMomentumStrategy(BaseStrategy):
         # Find candles since session start
         session_candles = []
         for candle in candles:
-            candle_time = candle.time.time() if hasattr(candle.time, 'time') else candle.time
+            candle_time = candle.timestamp.time() if hasattr(candle.timestamp, 'time') else candle.timestamp
             if candle_time >= self.session_start:
                 session_candles.append(candle)
         

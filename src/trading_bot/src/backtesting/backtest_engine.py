@@ -215,26 +215,23 @@ class BacktestEngine:
         
         # Initialize simulation components
         if use_historical_feed:
-            data_source = getattr(config.simulation, 'data_source', 'oanda')
-            if data_source == 'oanda':
-                self.oanda_feed = OandaHistoricalFeed(
-                    cache_dir=str(Path(config.simulation.csv_dir) / 'historical_cache'),
-                    use_cache=True
-                )
-                self.feed = None
-                self.logger.info("📡 Using OandaHistoricalFeed (live fetch + disk cache)")
-            else:
-                self.oanda_feed = None
-                self.feed = HistoricalDataFeed(config.simulation.csv_dir)
-                self.logger.info(f"📂 Using HistoricalDataFeed from {config.simulation.csv_dir}")
+            self.feed = HistoricalDataFeed(config.simulation.csv_dir)
             self.broker = BrokerSim(
                 spread_pips=config.simulation.spread_pips,
                 slippage_pips=config.simulation.slippage_pips
             )
             self._order_to_decision: Dict[str, TradeDecision] = {}
+        
+        # Initialize OANDA historical feed if data_source is oanda
+        data_source = getattr(config.simulation, 'data_source', 'csv')
+        if data_source == 'oanda':
+            self.oanda_feed = OandaHistoricalFeed(
+                cache_dir="data/historical_cache",
+                use_cache=True
+            )
+            self.logger.info("📡 OANDA historical feed initialized for backtesting")
         else:
             self.oanda_feed = None
-            self.feed = None
         
         # Backtest state
         self.current_balance: float = 0.0
@@ -342,8 +339,9 @@ class BacktestEngine:
                         # Run fundamental analysis
                         fundamental_analysis = await self.fundamentals.analyze_fundamentals(pair, market_context)
                         
-                        # Run regime analysis
-                        regime_analysis = await self.regime.detect_regime(pair, candles_by_tf)
+                        # Run regime analysis — pass first available candle list, market_context, and tech
+                        first_candles = list(candles_by_tf.values())[0] if candles_by_tf else []
+                        regime_analysis = await self.regime.detect_regime(pair, first_candles, market_context, tech)
                         
                         # Make enhanced decision
                         decision = await self.decision_layer.make_enhanced_decision(
@@ -404,22 +402,67 @@ class BacktestEngine:
             return BacktestResult()
     
     async def _create_market_context_from_candles(self, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]) -> MarketContext:
-        """Create market context from candles data."""
-        # Get primary timeframe candles
+        """Create market context from candles data with real market condition detection."""
         primary_candles = list(candles_by_timeframe.values())[0]
         if not primary_candles:
             return MarketContext(condition=MarketCondition.UNKNOWN)
-        
+
         latest_candle = primary_candles[-1]
-        
-        # Simple market context creation
+
+        # Real market condition detection using last 20 candles
+        candles = primary_candles[-20:] if len(primary_candles) >= 20 else primary_candles
+        prices = [float(c.close) for c in candles]
+
+        # ATR-based volatility
+        atr_values = []
+        for i in range(1, len(candles)):
+            high = float(candles[i].high)
+            low = float(candles[i].low)
+            prev_close = float(candles[i - 1].close)
+            true_range = max(high - low, abs(high - prev_close), abs(low - prev_close))
+            atr_values.append(true_range)
+        atr = sum(atr_values) / len(atr_values) if atr_values else 0.0
+        avg_price = sum(prices) / len(prices) if prices else 1.0
+        volatility_pct = (atr / avg_price) * 100 if avg_price > 0 else 0.0
+
+        # Trend detection via linear regression slope
+        n = len(prices)
+        if n >= 2:
+            x_mean = (n - 1) / 2.0
+            y_mean = avg_price
+            num = sum((i - x_mean) * (prices[i] - y_mean) for i in range(n))
+            den = sum((i - x_mean) ** 2 for i in range(n))
+            slope = num / den if den != 0 else 0.0
+            price_range = max(prices) - min(prices)
+            trend_strength = min(abs(slope * n / price_range), 1.0) if price_range > 0 else 0.0
+        else:
+            slope = 0.0
+            trend_strength = 0.0
+
+        # Breakout detection: price vs 20-period high/low
+        period_high = max(float(c.high) for c in candles)
+        period_low = min(float(c.low) for c in candles)
+        current_price = float(latest_candle.close)
+        near_high = current_price >= period_high * 0.999
+        near_low = current_price <= period_low * 1.001
+
+        # Determine condition
+        if volatility_pct > 0.3:
+            condition = MarketCondition.NEWS_REACTIONARY
+        elif (near_high or near_low) and volatility_pct > 0.1:
+            condition = MarketCondition.BREAKOUT
+        elif trend_strength > 0.6:
+            condition = MarketCondition.TRENDING_UP if slope > 0 else MarketCondition.TRENDING_DOWN
+        else:
+            condition = MarketCondition.RANGING
+
         return MarketContext(
-            condition=MarketCondition.RANGING,  # Default condition
-            volatility=0.001,  # Default volatility
-            trend_strength=0.5,  # Default trend strength
+            condition=condition,
+            volatility=volatility_pct,
+            trend_strength=trend_strength,
             news_sentiment=0.0,
             economic_events=[],
-            key_levels={},
+            key_levels={'period_high': period_high, 'period_low': period_low},
             timestamp=latest_candle.timestamp
         )
         
@@ -503,88 +546,112 @@ class BacktestEngine:
                 self.config.trading.risk_percentage = original_risk
     
     async def _load_historical_data(
-        self,
-        start_date: datetime,
-        end_date: datetime,
+        self, 
+        start_date: datetime, 
+        end_date: datetime, 
         pairs: List[str]
     ) -> Dict[str, Dict[TimeFrame, List[CandleData]]]:
-        """Load historical data for backtesting.
+        """Load historical data for backtesting."""
         
-        Priority order:
-          1. OandaHistoricalFeed (live fetch + disk cache) when data_source == 'oanda'
-          2. Local pickle files  data/{PAIR}_{TF}.pkl
-          3. Local CSV files     data/historical/{PAIR}_{TF}.csv
-        """
-
         self.logger.info(f"📊 Loading historical data for {len(pairs)} pairs...")
-        timeframes = [TimeFrame.M1, TimeFrame.M5, TimeFrame.M15]
-
-        # ── Path 1: OANDA live fetch ──────────────────────────────────────────
-        if self.oanda_feed is not None:
-            self.logger.info("📡 Fetching data from OANDA API (with cache)...")
-            historical_data: Dict[str, Dict[TimeFrame, List[CandleData]]] = {}
-            for pair in pairs:
-                historical_data[pair] = {}
-                for tf in timeframes:
-                    try:
-                        df = self.oanda_feed._fetch_range(pair, tf, start_date, end_date)
-                        # Save/merge into cache so future runs are instant
-                        if not df.empty:
-                            self.oanda_feed._save_cache(pair, tf, df)
-                        candles = self.oanda_feed._to_candles(df, pair, tf)
-                        historical_data[pair][tf] = candles
-                        self.logger.info(
-                            f"✅ {pair} {tf.value}: {len(candles)} candles from OANDA"
-                        )
-                    except Exception as e:
-                        self.logger.warning(f"⚠️ OANDA fetch failed for {pair} {tf.value}: {e}")
-                        historical_data[pair][tf] = []
-            return historical_data
-
-        # ── Path 2 & 3: local files ───────────────────────────────────────────
-        self.logger.info("📂 Loading from local pickle/CSV files...")
+        
         historical_data = {}
+        
         for pair in pairs:
             historical_data[pair] = {}
-            for timeframe in timeframes:
+            for timeframe in [TimeFrame.M1, TimeFrame.M5, TimeFrame.M15]:
                 try:
+                    # Load data from CSV or database
                     candles = await self._load_candles_from_source(pair, timeframe, start_date, end_date)
                     historical_data[pair][timeframe] = candles
                     self.logger.debug(f"📈 Loaded {len(candles)} candles for {pair} {timeframe.value}")
                 except Exception as e:
                     self.logger.warning(f"⚠️ Failed to load data for {pair} {timeframe.value}: {e}")
                     historical_data[pair][timeframe] = []
+        
         return historical_data
-
+    
     async def _load_candles_from_source(
-        self,
-        pair: str,
-        timeframe: TimeFrame,
+        self, 
+        pair: str, 
+        timeframe: TimeFrame, 
         start_date: datetime,
         end_date: datetime
     ) -> List[CandleData]:
-        """Fallback loader: local pickle → local CSV → empty list."""
+        """Load candles from data source (OANDA API, CSV, or pickle)."""
+        
+        # Use OANDA API if configured
+        if self.oanda_feed is not None:
+            try:
+                self.logger.info(f"📡 Fetching {pair} {timeframe.value} from OANDA API (with cache)...")
+                df = self.oanda_feed._load_cache(pair, timeframe)
+                
+                # Check if cache covers the full requested date range
+                need_fetch = df.empty
+                if not df.empty:
+                    first_cached = pd.to_datetime(df['time'].iloc[0], utc=True).to_pydatetime()
+                    last_cached = pd.to_datetime(df['time'].iloc[-1], utc=True).to_pydatetime()
 
-        # Try pickle (collect_data.py output format)
+                    # Backfill: cache starts after our start_date — fetch missing history
+                    if first_cached > start_date + timedelta(hours=1):
+                        self.logger.info(f"📡 Backfilling {pair} {timeframe.value} from {start_date.date()} to {first_cached.date()}...")
+                        backfill = self.oanda_feed._fetch_range(pair, timeframe, start_date, first_cached)
+                        if not backfill.empty:
+                            df = pd.concat([backfill, df], ignore_index=True)
+                            df = df.drop_duplicates(subset=["time"]).sort_values("time").reset_index(drop=True)
+                            self.oanda_feed._save_cache(pair, timeframe, df)
+
+                    # Top-up: cache ends before end_date — fetch missing recent data
+                    if last_cached < end_date - timedelta(hours=1):
+                        self.logger.info(f"📡 Topping up {pair} {timeframe.value} from {last_cached.date()} to {end_date.date()}...")
+                        topup = self.oanda_feed._fetch_range(pair, timeframe, last_cached, end_date)
+                        if not topup.empty:
+                            df = pd.concat([df, topup], ignore_index=True)
+                            df = df.drop_duplicates(subset=["time"]).sort_values("time").reset_index(drop=True)
+                            self.oanda_feed._save_cache(pair, timeframe, df)
+
+                if need_fetch:
+                    df = self.oanda_feed._fetch_range(pair, timeframe, start_date, end_date)
+                    if not df.empty:
+                        self.oanda_feed._save_cache(pair, timeframe, df)
+                
+                if df.empty:
+                    self.logger.warning(f"⚠️ No OANDA data returned for {pair} {timeframe.value}")
+                    return []
+                
+                # Filter to requested date range
+                df['time'] = pd.to_datetime(df['time'], utc=True)
+                start_ts = pd.Timestamp(start_date) if start_date.tzinfo else pd.Timestamp(start_date).tz_localize('UTC')
+                end_ts = pd.Timestamp(end_date) if end_date.tzinfo else pd.Timestamp(end_date).tz_localize('UTC')
+                mask = (df['time'] >= start_ts) & (df['time'] <= end_ts)
+                df = df[mask]
+                
+                candles = self.oanda_feed._to_candles(df, pair, timeframe)
+                self.logger.info(f"✅ Loaded {len(candles)} candles for {pair} {timeframe.value} from OANDA")
+                return candles
+            except Exception as e:
+                self.logger.warning(f"⚠️ OANDA fetch failed for {pair} {timeframe.value}: {e}")
+                # Fall through to file-based sources
+        
+        # Try to load from pickle (existing data format)
         pkl_path = f"data/{pair}_{timeframe.value}.pkl"
+        
         try:
             if Path(pkl_path).exists():
                 return await self._load_from_pkl(pkl_path, start_date, end_date)
         except Exception as e:
             self.logger.warning(f"⚠️ Failed to load from pickle {pkl_path}: {e}")
-
-        # Try CSV
+        
+        # Try CSV as fallback
         csv_path = f"data/historical/{pair}_{timeframe.value}.csv"
+        
         try:
             if Path(csv_path).exists():
                 return await self._load_from_csv(csv_path, start_date, end_date)
         except Exception as e:
             self.logger.warning(f"⚠️ Failed to load from CSV {csv_path}: {e}")
-
-        self.logger.error(
-            f"❌ No local data for {pair} {timeframe.value}. "
-            f"Set data_source: oanda in config to auto-fetch from OANDA."
-        )
+        
+        self.logger.error(f"❌ No historical data available for {pair} {timeframe.value}")
         return []
     
     async def _load_from_pkl(self, pkl_path: str, start_date: datetime, end_date: datetime) -> List[CandleData]:
@@ -701,7 +768,7 @@ class BacktestEngine:
                 # Run technical analysis
                 self.logger.info(f"🔍 {pair} {current_date.strftime('%Y-%m-%d %H:%M')}: Running technical analysis...")
                 recommendation, primary_indicators = await self.technical_layer.analyze_multiple_timeframes(
-                    pair, current_candles, market_context
+                    pair, current_candles, market_context, current_time=current_date
                 )
                 
                 if primary_indicators:
@@ -747,7 +814,7 @@ class BacktestEngine:
                     pass
                 
                 # Update open positions
-                self._update_open_positions(current_date, historical_data)
+                self._update_open_positions(current_date, current_candles)
             
             # Update equity curve
             self._update_equity_curve(current_date)
@@ -827,12 +894,34 @@ class BacktestEngine:
         else:
             trend_strength = 0.0
         
-        # Determine market condition
-        if volatility > 0.002:  # High volatility
+        # Calculate ADX / +DI / -DI from last 14 candles for regime detection
+        adx_val, plus_di, minus_di = 0.0, 0.0, 0.0
+        if len(m5_candles) >= 15:
+            highs  = [float(c.high)  for c in m5_candles[-15:]]
+            lows   = [float(c.low)   for c in m5_candles[-15:]]
+            closes = [float(c.close) for c in m5_candles[-15:]]
+            tr_vals, pdm_vals, mdm_vals = [], [], []
+            for i in range(1, len(closes)):
+                tr_vals.append(max(highs[i]-lows[i], abs(highs[i]-closes[i-1]), abs(lows[i]-closes[i-1])))
+                pdm_vals.append(highs[i]-highs[i-1] if highs[i]-highs[i-1] > lows[i-1]-lows[i] and highs[i]-highs[i-1] > 0 else 0)
+                mdm_vals.append(lows[i-1]-lows[i] if lows[i-1]-lows[i] > highs[i]-highs[i-1] and lows[i-1]-lows[i] > 0 else 0)
+            atr14 = sum(tr_vals) / len(tr_vals) if tr_vals else 0
+            if atr14 > 0:
+                plus_di  = 100 * (sum(pdm_vals) / len(pdm_vals)) / atr14
+                minus_di = 100 * (sum(mdm_vals) / len(mdm_vals)) / atr14
+                di_sum = plus_di + minus_di
+                adx_val = 100 * abs(plus_di - minus_di) / di_sum if di_sum > 0 else 0
+
+        # Determine market condition — ADX-based trend detection takes priority
+        if volatility > 0.002:
             condition = MarketCondition.NEWS_REACTIONARY
-        elif trend_strength > 0.7:  # Strong trend
+        elif adx_val > 20 and plus_di > minus_di * 1.3:   # Clear uptrend
+            condition = MarketCondition.TRENDING_UP
+        elif adx_val > 20 and minus_di > plus_di * 1.3:   # Clear downtrend
+            condition = MarketCondition.TRENDING_DOWN
+        elif trend_strength > 0.7:
             condition = MarketCondition.BREAKOUT
-        elif volatility < 0.0005:  # Low volatility
+        elif volatility < 0.0005:
             condition = MarketCondition.RANGING
         else:
             condition = MarketCondition.UNKNOWN
@@ -894,11 +983,12 @@ class BacktestEngine:
                 return None
             
             units = float(risk_amount / Decimal(str(stop_distance_pips * pip_value_usd)))
-            
-            # Apply position size limits (as percentage of balance, not units)
-            max_position_value = float(self.current_balance * Decimal(str(self.config.risk_management.max_position_size / 100)))
-            max_units_by_value = max_position_value / entry_price
-            units = min(units, max_units_by_value)
+
+            # Apply position size cap — hard unit limit as safety net
+            # max_position_size in config is a percentage, but we use it to derive a units cap:
+            # e.g. max_position_size=1.5 → cap at 150,000 units (1.5 standard lots)
+            max_units = self.config.risk_management.max_position_size * 100000
+            units = min(units, max_units)
             
             # Create trade record
             trade = {
@@ -929,35 +1019,25 @@ class BacktestEngine:
             self.logger.error(f"❌ Error executing backtest trade: {e}")
             return None
     
-    def _update_open_positions(self, current_date: datetime, historical_data: Dict[str, Dict[TimeFrame, List[CandleData]]]):
+    def _update_open_positions(self, current_date: datetime, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]):
         """Update open positions and check for exits (with trailing stops and max hold time)."""
         
-        # Update each open position with its own pair's price data
-        for pair, position in self.open_positions.items():
-            if position['status'] != 'OPEN':
-                continue
-                
-            # Get candles for this specific pair
-            pair_data = historical_data.get(pair, {})
-            m5_candles = pair_data.get(TimeFrame.M5, [])
-            if not m5_candles:
-                continue
-                
-            current_price = float(self._get_current_price(m5_candles))
-        
+        m5_candles = candles_by_timeframe.get(TimeFrame.M5, [])
+        if not m5_candles:
+            return
+
+        current_price = float(self._get_current_price(m5_candles))
+
+        # Use candle high/low for accurate stop/TP evaluation (not just typical price)
+        latest_candle = m5_candles[-1] if m5_candles else None
+        candle_high = float(latest_candle.high) if latest_candle else current_price
+        candle_low = float(latest_candle.low) if latest_candle else current_price
+
         positions_to_close = []
         
         for pair, position in self.open_positions.items():
             if position['status'] != 'OPEN':
                 continue
-                
-            # Get candles for this specific pair
-            pair_data = historical_data.get(pair, {})
-            m5_candles = pair_data.get(TimeFrame.M5, [])
-            if not m5_candles:
-                continue
-                
-            current_price = float(self._get_current_price(m5_candles))
             
             entry_price = position['entry_price']
             stop_loss = position['stop_loss']
@@ -1022,30 +1102,34 @@ class BacktestEngine:
                     positions_to_close.append(position)
                     continue
             
-            # Check for stop loss
-            if signal == 'BUY' and current_price <= stop_loss:
+            # Check for stop loss — use candle high/low, not typical price
+            # BUY: stopped out if candle low dropped to or below stop
+            # SELL: stopped out if candle high rose to or above stop
+            if signal == 'BUY' and candle_low <= stop_loss:
                 position['exit_price'] = stop_loss
                 position['exit_reason'] = 'STOP_LOSS'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)
-                
-            elif signal == 'SELL' and current_price >= stop_loss:
+
+            elif signal == 'SELL' and candle_high >= stop_loss:
                 position['exit_price'] = stop_loss
                 position['exit_reason'] = 'STOP_LOSS'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)
-            
-            # Check for take profit
-            elif take_profit and signal == 'BUY' and current_price >= take_profit:
+
+            # Check for take profit — use candle high/low
+            # BUY: TP hit if candle high reached take_profit
+            # SELL: TP hit if candle low dropped to take_profit
+            elif take_profit and signal == 'BUY' and candle_high >= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)
-                
-            elif take_profit and signal == 'SELL' and current_price <= take_profit:
+
+            elif take_profit and signal == 'SELL' and candle_low <= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
                 position['exit_time'] = current_date

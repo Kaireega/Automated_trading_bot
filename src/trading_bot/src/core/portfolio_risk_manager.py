@@ -1,3 +1,4 @@
+# TODO: Not connected to main flow — this module is unused dead code.
 """
 Portfolio Risk Manager - Institutional-grade portfolio-level risk management.
 

@@ -61,6 +61,8 @@ class MarketCondition(Enum):
     REVERSAL = "reversal"
     BREAKOUT = "breakout"
     RANGING = "ranging"
+    TRENDING_UP = "trending_up"
+    TRENDING_DOWN = "trending_down"
     UNKNOWN = "unknown"
 
 
@@ -137,7 +139,23 @@ class CandleData:
     volume: Optional[Decimal] = None
     pair: str = ""
     timeframe: TimeFrame = TimeFrame.M5
-    
+
+    @property
+    def mid_o(self) -> Decimal:
+        return self.open
+
+    @property
+    def mid_h(self) -> Decimal:
+        return self.high
+
+    @property
+    def mid_l(self) -> Decimal:
+        return self.low
+
+    @property
+    def mid_c(self) -> Decimal:
+        return self.close
+
     def __post_init__(self):
         """Convert numeric values to Decimal for precise calculations."""
         debug_entry_point("CandleData.__post_init__")
@@ -317,7 +335,8 @@ class TradeRecommendation:
     timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     technical_analysis: Optional[TechnicalIndicators] = None
     market_context: Optional[MarketContext] = None
-    
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
     def __post_init__(self):
         """Convert numeric values to Decimal for precise calculations."""
         debug_entry_point("TradeRecommendation.__post_init__")

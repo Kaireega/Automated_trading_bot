@@ -1,3 +1,4 @@
+# TODO: Not connected to main flow — this module is unused dead code (duplicate of advanced_risk_manager.py).
 """
 Risk Manager - Applies risk management rules to trade recommendations.
 """

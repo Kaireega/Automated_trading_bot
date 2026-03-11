@@ -12,6 +12,7 @@ from .trend_momentum import (
     MACDMomentumStrategy,
     ADXTrendStrategy,
 )
+from .trend_momentum.fast_ichimoku import FastIchimokuStrategy
 
 from .mean_reversion import (
     BollingerBounceStrategy,
@@ -22,12 +23,14 @@ from .mean_reversion import (
 from .breakout import (
     ATRBreakoutStrategy,
     SupportResistanceBreakStrategy,
-   
 )
+from .breakout.donchian_break import DonchianBreakStrategy
 
 from .scalping import (
     PriceActionScalpStrategy,
-    )
+)
+from .scalping.spread_squeeze import SpreadSqueezeStrategy
+from .scalping.order_flow_momentum import OrderFlowMomentumStrategy
    
 
 from .session_based import (
