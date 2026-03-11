@@ -231,23 +231,35 @@ def debug_line(func: Callable) -> Callable:
         # Create debug context
         context = debug_tracker.create_context(function_name, line_number, file_name)
         
-        # Log function entry
+        # Log function entry — use safe repr to avoid crashing on uninitialized objects
+        try:
+            args_repr = repr(args)
+        except Exception:
+            args_repr = f"<{len(args)} args>"
+        try:
+            kwargs_repr = repr(kwargs)
+        except Exception:
+            kwargs_repr = f"<{list(kwargs.keys())}>"
         debug_tracker.log_execution(
-            context, 
-            f"Entering function with args={args}, kwargs={kwargs}"
+            context,
+            f"Entering function with args={args_repr}, kwargs={kwargs_repr}"
         )
         debug_tracker.log_memory_usage(context)
-        
+
         start_time = time.time()
-        
+
         try:
             # Execute function
             result = func(*args, **kwargs)
-            
+
             # Log function exit
             duration = time.time() - start_time
             debug_tracker.log_performance(context, f"{function_name}_execution", duration)
-            debug_tracker.log_execution(context, f"Function completed successfully, result={result}")
+            try:
+                result_repr = repr(result)
+            except Exception:
+                result_repr = "<unrepresentable>"
+            debug_tracker.log_execution(context, f"Function completed successfully, result={result_repr}")
             
             return result
             

@@ -1,3 +1,4 @@
+# TODO: Not connected to main flow — this module is unused dead code.
 """
 Order Flow & Market Microstructure Analyzer - Professional trade timing optimization.
 

@@ -130,8 +130,8 @@ class TechnicalAnalysisLayer:
         self._analysis_cache: Dict[str, TradeRecommendation] = {}
         
         # Technical thresholds - ALL READ FROM CONFIG (with fallbacks)
-        self.rsi_oversold = getattr(config.technical_analysis, 'rsi_oversold', 55)
-        self.rsi_overbought = getattr(config.technical_analysis, 'rsi_overbought', 65)
+        self.rsi_oversold = getattr(config.technical_analysis, 'rsi_oversold', 30)
+        self.rsi_overbought = getattr(config.technical_analysis, 'rsi_overbought', 70)
         self.macd_signal_threshold = getattr(config.technical_analysis, 'macd_signal_threshold', 0.0001)
         self.bollinger_threshold = getattr(config.technical_analysis, 'bollinger_threshold', 0.05)
         self.atr_multiplier = getattr(config.technical_analysis, 'atr_multiplier', 2.0)
@@ -142,10 +142,11 @@ class TechnicalAnalysisLayer:
         self.trade_cooldown_minutes = getattr(config.technical_analysis, 'trade_cooldown_minutes', 30)
         
     async def analyze_multiple_timeframes(
-        self, 
-        pair: str, 
-        candles_by_timeframe: Dict[TimeFrame, List[CandleData]], 
-        market_context: MarketContext
+        self,
+        pair: str,
+        candles_by_timeframe: Dict[TimeFrame, List[CandleData]],
+        market_context: MarketContext,
+        current_time: Optional[datetime] = None
     ) -> Tuple[Optional[TradeRecommendation], Optional[TechnicalIndicators]]:
         """
         Analyze multiple timeframes and generate consensus trading recommendation.
@@ -171,7 +172,8 @@ class TechnicalAnalysisLayer:
         
         try:
             # CHECK TRADE COOLDOWN - Prevent excessive trading
-            current_time = datetime.now(timezone.utc)
+            if current_time is None:
+                current_time = datetime.now(timezone.utc)
             if pair in self._last_trade_time:
                 time_since_last_trade = current_time - self._last_trade_time[pair]
                 cooldown_remaining = timedelta(minutes=self.trade_cooldown_minutes) - time_since_last_trade
@@ -211,12 +213,19 @@ class TechnicalAnalysisLayer:
                 try:
                     primary_candles = candles_by_timeframe.get(primary_timeframe, [])
                     if primary_candles:
+                        # Derive regime string from market_condition for regime gate
+                        regime_str = (
+                            market_context.condition.value.upper()
+                            if market_context and market_context.condition
+                            else 'UNKNOWN'
+                        )
                         consensus_recommendation = await self.strategy_manager.generate_consensus_signal(
                             pair=pair,
                             candles=primary_candles,
                             indicators=primary_indicators,
                             market_condition=market_context.condition if market_context else MarketCondition.UNKNOWN,
-                            current_time=current_time
+                            current_time=current_time,
+                            regime=regime_str
                         )
                         
                         if consensus_recommendation:
@@ -273,7 +282,7 @@ class TechnicalAnalysisLayer:
             
             # Create trade recommendation
             recommendation = self._create_technical_recommendation(
-                pair, signal_analysis, confidence, current_price, primary_indicators
+                pair, signal_analysis, confidence, current_price, primary_indicators, market_context
             )
             
             # Log the recommendation
@@ -428,9 +437,9 @@ class TechnicalAnalysisLayer:
         # Calculate confluence score (0.0 to 1.0)
         signals['confluence_score'] = signal_count / max_signals
         
-        # LOWERED confluence requirements for more trades
-        min_signals_required = 1  # Lowered from 2 to 1
-        min_confluence_score = 0.2  # Lowered from 0.4 to 0.2
+        # Read confluence requirements from config
+        min_signals_required = getattr(self.config.technical_analysis, 'min_signals_required', 1)
+        min_confluence_score = getattr(self.config.technical_analysis, 'min_confluence_score', 0.3)
         
         # Additional quality checks
         has_strong_signal = False
@@ -541,12 +550,13 @@ class TechnicalAnalysisLayer:
         return (latest_candle.high + latest_candle.low) / Decimal('2')  # Use typical price
     
     def _create_technical_recommendation(
-        self, 
-        pair: str, 
-        signal_analysis: Dict[str, Any], 
-        confidence: float, 
+        self,
+        pair: str,
+        signal_analysis: Dict[str, Any],
+        confidence: float,
         current_price: Decimal,
-        indicators: TechnicalIndicators
+        indicators: TechnicalIndicators,
+        market_context=None
     ) -> TradeRecommendation:
         """Create trade recommendation from technical analysis."""
         
@@ -579,7 +589,7 @@ class TechnicalAnalysisLayer:
             take_profit=take_profit,
             risk_reward_ratio=risk_reward_ratio,
             reasoning=reasoning,
-            market_condition=MarketCondition.BREAKOUT,  # Default to breakout
+            market_condition=market_context.condition if market_context else MarketCondition.UNKNOWN,
             estimated_hold_time=timedelta(minutes=120)  # 2 hours default
         )
     

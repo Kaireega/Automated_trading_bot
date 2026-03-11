@@ -69,7 +69,7 @@ class LondonOpenBreakStrategy(BaseStrategy):
         # Filter candles from first hour of London session
         range_candles = []
         for candle in candles:
-            candle_time = candle.time.time() if hasattr(candle.time, 'time') else candle.time
+            candle_time = candle.timestamp.time() if hasattr(candle.timestamp, 'time') else candle.timestamp
             if self.session_start <= candle_time < self.range_end:
                 range_candles.append(candle)
         

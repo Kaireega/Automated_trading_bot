@@ -83,8 +83,12 @@ class PositionManager:
     
     async def execute_trade(self, decision: TradeDecision, market_context: MarketContext) -> Optional[str]:
         """Execute a trade based on the decision."""
+        if not await self._can_execute_trade(decision):
+            self.logger.warning("Trade blocked by safety checks")
+            return None
+
         pair = decision.recommendation.pair
-        
+
         # Get or create lock for this pair
         if pair not in self._execution_locks:
             self._execution_locks[pair] = asyncio.Lock()
@@ -209,18 +213,6 @@ class PositionManager:
             if (is_long and new_signal == 'sell') or (not is_long and new_signal == 'buy'):
                 self.logger.info(f"New signal opposite to existing position - will close")
                 return True
-            
-            # If position is significantly profitable, consider closing
-            unrealized_pl = existing_position.get('unrealized_pl', 0)
-            if unrealized_pl > 0:
-                # Get account balance for comparison
-                account_summary = self.oanda_api.get_account_summary()
-                if account_summary:
-                    balance = float(account_summary.get('balance', 10000))
-                    profit_pct = unrealized_pl / balance
-                    if profit_pct > 0.05:  # 5% profit
-                        self.logger.info(f"Position has significant profit ({profit_pct:.2%}) - will close")
-                        return True
             
             return False
         except Exception as e:
@@ -362,7 +354,9 @@ class PositionManager:
                 'stop_loss': decision.modified_stop_loss,
                 'take_profit': decision.modified_take_profit,
                 'entry_time': datetime.now(timezone.utc),
-                'risk_amount': decision.risk_amount
+                'risk_amount': decision.risk_amount,
+                'scaling_levels': [],
+                'partial_exits': []
             }
             
             # Update daily stats
@@ -388,9 +382,15 @@ class PositionManager:
     
     async def _can_execute_trade(self, decision: TradeDecision) -> bool:
         """Check if we can execute this trade based on risk management rules."""
-        # Check daily loss limit
-        if self.daily_pnl <= -self.max_daily_loss:
-            self.logger.warning(f"Daily loss limit reached: ${self.daily_pnl:.2f}")
+        # Check daily loss limit — convert max_daily_loss (%) to dollars using account balance
+        try:
+            account_summary = self.oanda_api.get_account_summary()
+            account_balance = float(account_summary.get('balance', 10000)) if account_summary else 10000
+        except Exception:
+            account_balance = 10000
+        max_daily_loss_dollars = account_balance * (self.max_daily_loss / 100)
+        if self.daily_pnl <= -max_daily_loss_dollars:
+            self.logger.warning(f"Daily loss limit reached: ${self.daily_pnl:.2f} / -${max_daily_loss_dollars:.2f}")
             return False
         
         # Check max open trades
@@ -575,9 +575,16 @@ class PositionManager:
             pair_trades = [t for t in open_trades if t.instrument == pair]
             
             if pair_trades:
-                # Close the oldest trade (original position)
                 trade_id = pair_trades[0].id
-                success = self.oanda_api.close_trade(trade_id)
+                # Use partial close (units parameter) instead of closing 100%
+                units_to_close = int(abs(exit_size))
+                if units_to_close < 1:
+                    units_to_close = 1
+                try:
+                    success = self.oanda_api.close_trade(trade_id, units=units_to_close)
+                except TypeError:
+                    # Fallback if close_trade doesn't support units parameter
+                    success = self.oanda_api.close_trade(trade_id)
                 
                 if success:
                     partial_exit = {
@@ -615,17 +622,35 @@ class PositionManager:
             # Move to breakeven after 0.5R
             if profit >= risk * 0.5 and float(stop_loss) != float(entry_price):
                 new_stop_loss = entry_price
-                # Update stop loss in OANDA (this would require additional API call)
-                self.logger.info(f"🔄 Moving stop loss to breakeven: {pair}")
+                trade_id = position.get('trade_id')
+                if trade_id:
+                    try:
+                        self.oanda_api.modify_trade(
+                            trade_id=trade_id,
+                            stop_loss=float(new_stop_loss)
+                        )
+                        position['stop_loss'] = new_stop_loss
+                        self.logger.info(f"🔄 Stop loss moved to breakeven for {pair}: {new_stop_loss}")
+                    except Exception as e:
+                        self.logger.error(f"Failed to update stop loss for {pair}: {e}")
     
     async def _update_daily_pnl(self) -> None:
-        """Update daily P&L tracking."""
-        total_pnl = 0.0
-        
-        for position in self.active_positions.values():
-            total_pnl += position.get('unrealized_pl', 0)
-        
-        self.daily_pnl = total_pnl
+        """Update daily P&L tracking including both unrealized and realized P&L."""
+        # Unrealized P&L from open positions
+        unrealized_pnl = sum(p.get('unrealized_pl', 0) for p in self.active_positions.values())
+
+        # Realized P&L from closed trades today
+        from datetime import date
+        today = date.today()
+        realized_pnl = sum(
+            t.get('pnl', 0)
+            for t in self.position_history
+            if t.get('status') == 'closed'
+            and t.get('exit_time') is not None
+            and (t['exit_time'].date() if hasattr(t['exit_time'], 'date') else today) == today
+        )
+
+        self.daily_pnl = unrealized_pnl + realized_pnl
     
     async def get_position_summary(self) -> Dict[str, Any]:
         """Get summary of all positions."""

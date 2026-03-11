@@ -1,3 +1,4 @@
+# TODO: Not connected to main flow — this module is unused dead code.
 """
 Smart Execution Engine - Institutional-grade order execution with TCA.
 

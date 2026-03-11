@@ -91,6 +91,7 @@ class RiskManagementConfig:
     daily_loss_cooldown_minutes: int = 60
     scale_down_after_losses: bool = True
     loss_scale_down_pct: int = 50
+    max_risk_threshold: float = 0.7
 
 
 @dataclass
@@ -493,7 +494,8 @@ class Config:
             consecutive_loss_limit=risk_config.get('consecutive_loss_limit', 3),
             daily_loss_cooldown_minutes=risk_config.get('daily_loss_cooldown_minutes', 60),
             scale_down_after_losses=risk_config.get('scale_down_after_losses', True),
-            loss_scale_down_pct=risk_config.get('loss_scale_down_pct', 50)
+            loss_scale_down_pct=risk_config.get('loss_scale_down_pct', 50),
+            max_risk_threshold=risk_config.get('max_risk_threshold', 0.7)
         )
         
         # Technical analysis configuration

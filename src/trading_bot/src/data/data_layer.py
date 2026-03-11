@@ -416,11 +416,11 @@ class DataLayer:
         elif volatility > 0.2:  # > 0.2% - Moderate volatility, potential reversal
             return MarketCondition.REVERSAL
         elif volatility > 0.1 and trend_strength > 0.6:  # Trending with moderate volatility
-            return MarketCondition.TRENDING
+            return MarketCondition.TRENDING_UP
         elif volatility > 0.05:  # > 0.05% - Low volatility, ranging
             return MarketCondition.RANGING
-        else:  # < 0.05% - Very low volatility, consolidation
-            return MarketCondition.CONSOLIDATION
+        else:  # < 0.05% - Very low volatility, ranging/consolidation
+            return MarketCondition.RANGING
     
     def _calculate_trend_strength(self, candles: List[CandleData]) -> float:
         """Calculate trend strength."""

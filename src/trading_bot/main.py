@@ -229,7 +229,7 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                                 if len(candles) >= 20
                             }
 
-                            if len(candles_by_timeframe) < 2:
+                            if len(candles_by_timeframe) < self.config.multi_timeframe.minimum_timeframes:
                                 continue
 
                             if not self.is_running:
@@ -425,6 +425,7 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                                                 continue
                                         except Exception as e:
                                             self.logger.error(f"Pre-trade notification failed: {e}")
+                                            continue  # CRITICAL: prevent trade executing without approval
 
                                         trade_id = await self.position_manager.execute_trade(
                                             decision, market_context
