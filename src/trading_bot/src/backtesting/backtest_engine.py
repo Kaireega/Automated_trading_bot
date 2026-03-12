@@ -559,7 +559,7 @@ class BacktestEngine:
         
         for pair in pairs:
             historical_data[pair] = {}
-            for timeframe in [TimeFrame.M1, TimeFrame.M5, TimeFrame.M15]:
+            for timeframe in [TimeFrame.H1, TimeFrame.H4]:  # S-12: swing timeframes
                 try:
                     # Load data from CSV or database
                     candles = await self._load_candles_from_source(pair, timeframe, start_date, end_date)
@@ -742,7 +742,7 @@ class BacktestEngine:
         
         # Progress tracking
         total_duration = end_date - start_date
-        total_intervals = int(total_duration.total_seconds() / 300)  # 5-minute intervals
+        total_intervals = int(total_duration.total_seconds() / 3600)  # S-12: 1-hour intervals (H1 candle close)
         processed_intervals = 0
         
         while current_date <= end_date:
@@ -783,10 +783,12 @@ class BacktestEngine:
                                    f"Confidence: {recommendation.confidence:.3f}")
                     
                     # Run decision making
-                    current_price = self._get_current_price(current_candles[TimeFrame.M5])
-                    
-                    # Convert single indicators to dictionary format expected by decision layer
-                    technical_indicators_dict = {TimeFrame.M5: primary_indicators}
+                    # S-12: Use H4 as primary timeframe for swing (fallback to H1)
+                    h4_candles = current_candles.get(TimeFrame.H4) or current_candles.get(TimeFrame.H1, [])
+                    current_price = self._get_current_price(h4_candles)
+
+                    # S-12: Use H4 as primary timeframe for technical decision
+                    technical_indicators_dict = {TimeFrame.H4: primary_indicators}
                     
                     decision = await self.decision_layer.make_technical_decision(
                         pair, technical_indicators_dict, market_context, current_price, current_candles
@@ -826,8 +828,8 @@ class BacktestEngine:
                 self.logger.info(f"📈 Progress: {progress:.1f}% - Processed {processed_intervals}/{total_intervals} intervals, "
                                f"Current trades: {len(self.trade_history)}")
             
-            # Move to next interval (5 minutes)
-            current_date += timedelta(minutes=5)
+            # S-12: Move to next interval (1 hour — aligns with H1 candle close)
+            current_date += timedelta(hours=1)
         
         # Calculate final results (convert Decimal to float for metrics)
         result.final_balance = float(self.current_balance)
@@ -1022,7 +1024,10 @@ class BacktestEngine:
     def _update_open_positions(self, current_date: datetime, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]):
         """Update open positions and check for exits (with trailing stops and max hold time)."""
         
-        m5_candles = candles_by_timeframe.get(TimeFrame.M5, [])
+        # S-12: Use H4 as primary candle source for swing; fallback to H1
+        m5_candles = (candles_by_timeframe.get(TimeFrame.H4)
+                      or candles_by_timeframe.get(TimeFrame.H1)
+                      or [])
         if not m5_candles:
             return
 
