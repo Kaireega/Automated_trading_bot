@@ -460,11 +460,11 @@ class PositionManager:
                 # Update daily P&L
                 await self._update_daily_pnl()
                 
-                await asyncio.sleep(30)  # Check every 30 seconds
-                
+                await asyncio.sleep(1800)  # S-10: Check every 30 minutes (swing pace)
+
             except Exception as e:
                 self.logger.error(f"Error in position monitoring loop: {e}")
-                await asyncio.sleep(60)
+                await asyncio.sleep(300)
     
     async def _update_all_positions(self) -> None:
         """Update all active positions with current P&L."""

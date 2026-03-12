@@ -1,91 +1,95 @@
 # Market Adaptive Trading Bot Configuration
-# PROFESSIONAL LIVE INTRADAY SETTINGS
+# SWING TRADING — SMALL ACCOUNT OPTIMISED (H1/H4/D1)
+# Converted from intraday M5/M15 to swing H1/H4/D1 — 2026-03-11
 
 # Trading Settings
 trading:
-  risk_percentage: 1.5              # 1.5% per trade
-  max_trades_per_day: 10             # Realistic hard limit
-  default_timeframe: M5
+  risk_percentage: 1.0              # S-2: 1% per trade — capital preservation for small account
+  max_trades_per_day: 2             # S-2: Swing pace — 2–5 per WEEK, not per day
+  default_timeframe: H4             # S-1: Primary analysis on H4
   pairs:
-    - EUR_USD                       # Most liquid
-    - GBP_USD                       # Volatile, good for intraday
-    - USD_JPY                       # Stable
+    - EUR_USD                       # Most liquid, lowest spread
+    - GBP_USD                       # Good swing pair
+    - USD_JPY                       # Stable, good for H4/D1
+  # min_take_profit_pips: 80        # S-2: H4/D1 targets large enough to absorb spread
+  # min_stop_loss_pips: 30          # S-2: Swing stops 50–200 pips
   hold_time_settings:
-    min_hold_time_minutes: 20       # Allow quick scalps (was 30)
-    max_hold_time_minutes: 480      # 8 hours max — allow session trades to develop
-    default_hold_time_minutes: 90   # Faster pace (was 120)
-    force_close_enabled: false      # Disabled to allow 24/7 trading
-    force_close_time: "21:00"       # End of NY session — was 16:30, killed London Open trades
+    min_hold_time_minutes: 240      # S-3: 4 hours minimum — no early exits on H4 noise
+    max_hold_time_minutes: 14400    # S-3: 10 days max (10 * 24 * 60 = 14400)
+    default_hold_time_minutes: 2880 # S-3: 2 days default for H4 swing
+    force_close_enabled: false      # S-3: Swing traders hold over weekends
+    force_close_time: "21:00"       # NY close — only used if force_close_enabled=true
     market_condition_hold_times:
-      news_reactionary: [20, 180]   # 20 min to 3 hours
-      reversal: [60, 480]           # 1 hour to 8 hours
-      breakout: [90, 480]           # 1.5 hours to 8 hours
-      ranging: [20, 180]            # 20 min to 3 hours
+      news_reactionary: [240, 2880]  # 4 hours to 2 days
+      reversal: [480, 7200]          # 8 hours to 5 days
+      breakout: [720, 14400]         # 12 hours to 10 days
+      ranging: [240, 2880]           # 4 hours to 2 days
 
 # Multi-Timeframe Analysis Settings
 multi_timeframe:
   enabled: true
-  timeframes:
-    - M5
-    - M15
+  timeframes:                       # S-1: H1 (entry timing), H4 (primary), D1 (trend context)
+    - H1
+    - H4
   weights:
-    M5: 0.4    # 40% weight - short-term signals
-    M15: 0.6   # 60% weight - medium-term trends
-  minimum_timeframes: 1
-  consensus_threshold: 0.75         # CRITICAL: require higher agreement
+    H1: 0.35   # 35% — entry timing / confirmation
+    H4: 0.65   # 65% — primary analysis timeframe
+  minimum_timeframes: 2             # S-8: Require H4 + H1 agreement
+  consensus_threshold: 0.60         # S-8: 60% — lower than 0.75; swing signals are rarer
 
 # Market Conditions
 market_conditions:
-  volatility_threshold: 0.0005      # Lowered for more trades
-  trend_strength_threshold: 0.60    # REALISTIC FOR INTRADAY
-  breakout_threshold: 0.0015        # REALISTIC FOR INTRADAY
-  ranging_threshold: 0.0008
-  # Market session awareness (DISABLED FOR BACKTEST)
-  preferred_sessions: []            # Empty = trade all sessions for backtest
-  avoid_sessions: []                # Empty = no session restrictions
+  volatility_threshold: 0.0030      # S-1: H4 ATR is ~30–80 pips; adjust threshold
+  trend_strength_threshold: 0.55    # Slightly lower — swing trends are slower
+  breakout_threshold: 0.0100        # H4/D1 breakouts are 100+ pip moves
+  ranging_threshold: 0.0050
+  preferred_sessions: []            # Trade all sessions (swing holds over multiple sessions)
+  avoid_sessions: []
 
-# Risk Management - CRITICAL FOR LIVE TRADING
+# Risk Management
 risk_management:
-  max_daily_loss: 5.0               # 5.0% daily max (increased from 2.5%)
-  max_position_size: 1.5            # 4% per trade max (match new risk%)
-  correlation_limit: 0.6            # Stricter (was 0.7)
-  max_open_trades: 3                # Max 3 concurrent open trades
-  stop_loss_atr_multiplier: 2.0     # Better R:R (was 1.5)
+  max_daily_loss: 2.0               # S-4: 2% daily limit — tighter for small account
+  max_position_size: 1.5            # S-4: Treated as lots cap (1.5 std lots = 150,000 units)
+  correlation_limit: 0.6
+  max_open_trades: 2                # S-4: Max 2 concurrent — limit exposure on small account
+  stop_loss_atr_multiplier: 2.0     # S-7: 2x ATR — swing stops wider (50–150 pips on H4)
   trailing_stop: true
-  trailing_stop_atr_multiplier: 1.0 # Better protection (was 0.3 - too tight!)
+  trailing_stop_atr_multiplier: 1.5 # S-9: Trail 1.5x ATR — avoid H4 noise closing too early
   # Advanced risk controls
-  consecutive_loss_limit: 3         # NEW: Stop after 3 consecutive losses
-  daily_loss_cooldown_minutes: 1440 # CRITICAL: 24-hour cooldown after max loss
-  scale_down_after_losses: true     # NEW: Reduce size after losses
-  loss_scale_down_pct: 50           # NEW: Reduce to 50% after 2 losses
-  max_risk_threshold: 0.7           # Maximum combined risk score threshold
+  consecutive_loss_limit: 3
+  daily_loss_cooldown_minutes: 1440
+  scale_down_after_losses: true
+  loss_scale_down_pct: 50
+  max_risk_threshold: 0.5           # S-4: Tighter for small account (was 0.7)
+  max_total_risk_percentage: 3.0    # S-4: Never risk >3% of account at once (2 trades * 1%)
+  # Trailing stop pip values for swing
+  trailing_stop_activation_pips: 50  # S-10: Start trailing after 50-pip profit
+  trailing_stop_distance_pips: 30    # S-10: Trail 30 pips behind price
 
-# Technical Analysis - LOWERED THRESHOLDS FOR MORE TRADES
+# Technical Analysis
 technical_analysis:
-  confidence_threshold: 0.40       # INCREASED from 0.35
-  signal_strength_threshold: 0.002  # Further lowered for more trades
-  minimum_confidence: 0.60          # INCREASED from 0.30
-  risk_reward_ratio_minimum: 1.5    # CRITICAL FIX: Increased from 0.8 to 2.0
-  analysis_frequency: 300           # 5 minutes
+  confidence_threshold: 0.40
+  signal_strength_threshold: 0.002
+  minimum_confidence: 0.55          # S-8: Slightly lower — swing signals less frequent
+  risk_reward_ratio_minimum: 2.0    # S-7: 2:1 R:R minimum for swing (100-pip TP / 50-pip SL)
+  analysis_frequency: 3600          # S-5: Analyse every hour (H1 candle close)
   include_volume_analysis: true
   include_market_context: true
   # Signal confluence settings
-  min_signals_required: 1           # Minimum signals required for entry
-  min_confluence_score: 0.6         # INCREASED from 0.3 to 0.6
-  # RSI thresholds for intraday
-  rsi_oversold: 30                  # Traditional oversold level
-  rsi_overbought: 70                # Traditional overbought level
-  # MACD signal threshold
-  macd_signal_threshold: 0.0001     # MACD signal strength threshold
-  # Bollinger Bands threshold
-  bollinger_threshold: 0.05         # LOWERED FOR MORE TRADES
-  # ATR multiplier for volatility
-  atr_multiplier: 2.0               # ATR multiplier for stop loss calculations
-  # Trade cooldown settings
-  trade_cooldown_minutes: 30       # CRITICAL: 2 hours cooldown between trades
-  # Multi-timeframe analyzer thresholds
-  ranging_confidence_penalty: 0.05  # Small penalty for RANGING markets
-  # Signal strength thresholds
+  min_signals_required: 2           # S-8: Require 2 strategies to agree for swing
+  min_confluence_score: 0.40        # Tuned down: H4 signals are rarer — 0.40 generates enough trades
+  # RSI thresholds — standard for H4/D1
+  rsi_oversold: 30                  # S-7: Standard oversold
+  rsi_overbought: 70                # S-7: Standard overbought
+  # MACD
+  macd_signal_threshold: 0.0001
+  # Bollinger Bands
+  bollinger_threshold: 0.05
+  # ATR multiplier for swing stops
+  atr_multiplier: 2.0               # S-7: 2x ATR for H4 stop distances
+  # Trade cooldown — swing pace
+  trade_cooldown_minutes: 240       # S-5: 4 hours between trades (not 30 min)
+  ranging_confidence_penalty: 0.05
   signal_thresholds:
     strong_buy: 0.8
     buy: 0.6
@@ -104,28 +108,36 @@ news_management:
     HIGH: ["USD", "EUR", "GBP", "JPY"]
     MEDIUM: ["USD", "EUR", "GBP"]
 
-# Notifications
+# Notifications — S-11: Swing pace (quiet, not every 5 min)
 notifications:
   telegram:
     enabled: true
     send_charts: true
-    send_analysis: true
+    send_analysis: false            # S-11: No analysis spam — only trade events
   email:
     enabled: true
     daily_summary: true
     trade_alerts: true
   loop_reports:
-    enabled: true # Loop reports enabled
+    enabled: true
+    interval_hours: 4               # S-11: Report every 4 hours (not every loop iteration)
     send_on_error: true
     include_performance: true
-  notification_cooldown: 300  # 5 minutes
+  daily_summary:
+    enabled: true
+    time_utc: "21:00"               # S-11: After NY close
+    include_open_positions: true
+    include_daily_pnl: true
+  notification_cooldown: 14400      # S-11: 4 hours between routine notifications
+  signal_generated: false           # S-11: Don't notify every signal — only trades
+  analysis_complete: false          # S-11: Not needed for swing pace
   manual_trade_approval: true
   pre_trade_cooldown_seconds: 0
 
-# Data Collection
+# Data Collection — S-1: Fetch H4/D1 data
 data_collection:
-  historical_days: 30
-  update_frequency: 300  # 5 minutes
+  historical_days: 180              # S-12: 6 months for meaningful swing backtest
+  update_frequency: 3600            # S-5: Update every hour
   store_raw_data: true
   compression: true
   backup_frequency: 24
@@ -133,7 +145,7 @@ data_collection:
 # Simulation
 simulation:
   enabled: true
-  data_source: oanda   # csv | oanda | db
+  data_source: oanda
   csv_dir: data
 
 # Performance Tracking
@@ -141,31 +153,145 @@ performance:
   track_metrics: true
   save_trades: true
   generate_reports: true
-  report_frequency: daily 
+  report_frequency: daily
 
 # ============================================================================
-# MULTI-STRATEGY PORTFOLIO - INTRADAY OPTIMIZED (15 Strategies)
+# MULTI-STRATEGY PORTFOLIO — SWING TRADING (H4/D1)
+# S-6: Session/scalping strategies DISABLED; swing strategies ACTIVE
+# S-7: Indicator parameters tuned for H4/D1
 # ============================================================================
 strategy_portfolio:
-  enabled: true  # Set to false to use legacy single-strategy approach
-  mode: "intraday"  # Trading mode
-  
+  enabled: true
+  mode: "swing"                     # S-6: Changed from "intraday" to "swing"
+
   # Strategy Selection Rules
   selection:
-    mode: "weighted_ensemble"  # Options: weighted_ensemble, best_fit, democratic
-    min_strategies_agreeing: 2  # SWEEP_VALUE
-    confidence_weighting: true  # Weight by confidence scores
-    timeframe_priority: ["M5", "M15", "M1"]  # Primary timeframe order
-  
-  # Strategies Configuration (Total allocation should sum to 100%)
+    mode: "weighted_ensemble"
+    min_strategies_agreeing: 2      # S-8: 2 strategies must agree
+    confidence_weighting: true
+    timeframe_priority: ["H4", "H1", "D1"]  # S-1: H4 primary
+
+  # Strategies Configuration — Swing Active
   strategies:
-    # ========== SESSION-BASED STRATEGIES (44% allocation) — PRIMARY EDGE ==========
+    # ========== TREND MOMENTUM STRATEGIES (active for swing) ==========
+    - name: "EMA_Crossover_H4"
+      type: "trend_momentum"
+      allocation: 12
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        ema_fast: 12                # S-7: H4 swing crossover
+        ema_slow: 26
+        signal_ema: 9
+      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
+      min_confidence: 0.60
+
+    - name: "ADX_Trend_H4"
+      type: "trend_momentum"
+      allocation: 12
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        period: 14
+        threshold: 25               # S-7: Higher on H4 = stronger trend required
+      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
+      min_confidence: 0.60
+
+    - name: "MACD_Momentum_H4"
+      type: "trend_momentum"
+      allocation: 12
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        fast: 12                    # S-7: Standard MACD for H4
+        slow: 26
+        signal: 9
+        histogram_threshold: 0.00005
+      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
+      min_confidence: 0.60
+
+    - name: "Fast_Ichimoku_D1"
+      type: "trend_momentum"
+      allocation: 15               # S-7: Ichimoku designed for D1 — highest weight
+      timeframes: ["D1"]
+      enabled: true
+      parameters:
+        tenkan: 9                   # S-7: Standard Ichimoku periods (designed for D1)
+        kijun: 26
+        senkou_b: 52
+      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
+      min_confidence: 0.60
+
+    # ========== MEAN REVERSION STRATEGIES (H4) ==========
+    - name: "BB_Bounce_H4"
+      type: "mean_reversion"
+      allocation: 10
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        period: 20                  # S-7: Standard 20/2 works on H4
+        std_dev: 2.0
+        touch_threshold: 0.002
+      conditions: ["RANGING"]
+      min_confidence: 0.60
+
+    - name: "RSI_Extremes_H4"
+      type: "mean_reversion"
+      allocation: 8
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        period: 14
+        oversold: 30                # S-7: Standard levels for H4
+        overbought: 70
+        extreme_oversold: 25
+        extreme_overbought: 75
+      conditions: ["RANGING"]
+      min_confidence: 0.60
+
+    # ========== BREAKOUT STRATEGIES (H4/D1) ==========
+    - name: "ATR_Breakout_H4"
+      type: "breakout"
+      allocation: 12
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        atr_period: 14
+        multiplier: 2.0             # S-7: Wider multiplier for H4 bigger moves
+        lookback: 20
+      conditions: ["VOLATILE", "BREAKOUT"]
+      min_confidence: 0.60
+
+    - name: "Support_Resistance_H4"
+      type: "breakout"
+      allocation: 10
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        lookback_periods: 50
+        break_threshold: 0.0020     # 20-pip break threshold on H4
+        confirmation_candles: 1
+      conditions: ["BREAKOUT"]
+      min_confidence: 0.60
+
+    - name: "Donchian_Break_H4"
+      type: "breakout"
+      allocation: 9
+      timeframes: ["H4"]
+      enabled: true
+      parameters:
+        donchian_period: 20         # S-7: 20 H4 candles = 80 hours = 3.3 trading days
+      conditions: ["BREAKOUT", "TRENDING_UP", "TRENDING_DOWN"]
+      min_confidence: 0.60
+
+    # ========== SESSION-BASED (DISABLED for swing — intraday only) ==========
     - name: "London_Open_Break"
       type: "session_based"
-      allocation: 22
-      timeframes: ["M5", "M15"]
+      allocation: 0                 # S-6: DISABLED — meaningless on H4/D1
+      timeframes: ["H4"]
+      enabled: false
       parameters:
-        session_start: "08:00"  # UTC
+        session_start: "08:00"
         range_period_minutes: 60
         min_range_pips: 10
       conditions: ["BREAKOUT"]
@@ -173,121 +299,61 @@ strategy_portfolio:
 
     - name: "NY_Open_Momentum"
       type: "session_based"
-      allocation: 22
-      timeframes: ["M5"]
+      allocation: 0                 # S-6: DISABLED — session-timing dependent
+      timeframes: ["H4"]
+      enabled: false
       parameters:
-        session_start: "13:00"  # UTC (8am EST)
+        session_start: "13:00"
         momentum_period_minutes: 30
         min_momentum_pips: 5
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
       min_confidence: 0.65
 
-    # ========== TREND MOMENTUM STRATEGIES (31% allocation) ==========
-    - name: "ADX_Trend_M5"
-      type: "trend_momentum"
-      allocation: 18
-      timeframes: ["M5", "M15"]
-      parameters:
-        period: 14
-        threshold: 25  # Raised from 20 — require stronger trend confirmation
-      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.65
-
-    - name: "MACD_Momentum_M5"
-      type: "trend_momentum"
-      allocation: 13
-      timeframes: ["M5"]
-      parameters:
-        fast: 12
-        slow: 26
-        signal: 9
-        histogram_threshold: 0.00005
-      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.65
-
-    - name: "Fast_EMA_Cross_M5"
-      type: "trend_momentum"
-      allocation: 0              # DISABLED — 22% win rate, loses money on M5 noise
-      timeframes: ["M5", "M15"]
-      parameters:
-        ema_fast: 8
-        ema_slow: 21
-      conditions: ["TRENDING_UP", "TRENDING_DOWN"]
-      min_confidence: 0.65
-
-    # ========== MEAN REVERSION STRATEGIES (18% allocation) ==========
-    - name: "BB_Bounce_M5"
-      type: "mean_reversion"
-      allocation: 10
-      timeframes: ["M5"]
-      parameters:
-        period: 20
-        std_dev: 2
-        touch_threshold: 0.001
-      conditions: ["RANGING"]
-      min_confidence: 0.65
-
-    - name: "RSI_Extremes"
-      type: "mean_reversion"
-      allocation: 8
-      timeframes: ["M5"]
-      parameters:
-        period: 14
-        oversold: 30              # Corrected from 35
-        overbought: 70            # Corrected from 65
-        extreme_oversold: 25
-        extreme_overbought: 75
-      conditions: ["RANGING"]
-      min_confidence: 0.65
-
-    # ========== BREAKOUT STRATEGIES (7% allocation) ==========
-    - name: "ATR_Breakout"
-      type: "breakout"
-      allocation: 7
-      timeframes: ["M5", "M15"]
-      parameters:
-        atr_period: 14
-        multiplier: 1.5
-        lookback: 20
-      conditions: ["VOLATILE", "BREAKOUT"]
-      min_confidence: 0.65
-
-    - name: "Support_Resistance_Break"
-      type: "breakout"
-      allocation: 0              # DISABLED — weak signal on M5 for now
-      timeframes: ["M5", "M15"]
-      parameters:
-        lookback_periods: 50
-        break_threshold: 0.0005  # 5 pips
-        confirmation_candles: 1
-      conditions: ["BREAKOUT"]
-      min_confidence: 0.65
-
-    # ========== SCALPING STRATEGIES — ALL DISABLED (negative EV at 1.2 pip spread) ==========
+    # ========== SCALPING (ALL DISABLED for swing) ==========
     - name: "Price_Action_Scalp"
       type: "scalping"
-      allocation: 0              # DISABLED — negative EV at spread cost
-      timeframes: ["M1", "M5"]
+      allocation: 0                 # S-6: DISABLED — needs M1/M5 data
+      timeframes: ["H4"]
+      enabled: false
       parameters:
         min_body_ratio: 0.6
         min_wick_ratio: 2.0
       conditions: ["ALL"]
       min_confidence: 0.65
-      risk_reward_minimum: 1.5
-      hold_time_override: [5, 30]
-  
-  # Intraday-Specific Rules
-  intraday_rules:
-    max_hold_minutes: 480  # 8 hours — allow session trades to develop
-    force_close_time: "21:00"  # End of NY session
-    avoid_news_minutes: 15   # Trade during news
-    min_time_between_trades: 30   # 30 minutes minimum between trades
-    max_trades_per_session: 10  # Realistic limit per session
-    
-  # Performance-Based Rebalancing (Future Feature)
-  rebalancing:
-    enabled: false  # TODO: Implement in future
-    frequency_days: 30
-    method: "performance_based"
-    min_allocation: 5
-    max_allocation: 25
+
+    - name: "Order_Flow_Momentum"
+      type: "scalping"
+      allocation: 0                 # S-6: DISABLED — order flow on micro TF
+      timeframes: ["H4"]
+      enabled: false
+      parameters: {}
+      conditions: ["ALL"]
+      min_confidence: 0.65
+
+    - name: "Spread_Squeeze"
+      type: "scalping"
+      allocation: 0                 # S-6: DISABLED — exploits micro-TF tight spreads
+      timeframes: ["H4"]
+      enabled: false
+      parameters: {}
+      conditions: ["ALL"]
+      min_confidence: 0.65
+
+  # Swing-Specific Rules
+  swing_rules:
+    max_hold_hours: 240             # S-3: 10 days max
+    min_hold_hours: 4               # S-3: 4 hour minimum
+    close_before_weekend: false     # Hold over weekends (swing style)
+    avoid_news_minutes: 15
+    min_time_between_trades_hours: 4  # S-5: 4 hours between entries
+
+# Backtesting — S-12
+backtesting:
+  period_days: 180                  # S-12: 6 months for meaningful swing results
+  pairs:
+    - EUR_USD
+    - GBP_USD
+    - USD_JPY
+  initial_balance: 500              # S-12: Match realistic small account starting capital
+  spread_pips: 1.5                  # S-12: Model spread cost (majors ~1–2 pips)
+  commission_per_lot: 0             # OANDA no commission on standard

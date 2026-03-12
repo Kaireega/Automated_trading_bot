@@ -488,8 +488,8 @@ class AdvancedRiskManager:
         
         risk_reward_ratio = reward / risk
         
-        # Minimum risk-reward ratio
-        min_rr_ratio = 1.5
+        # Minimum risk-reward ratio — read from config so swing (2.0) vs intraday (1.5) work
+        min_rr_ratio = getattr(self.config.technical_analysis, 'risk_reward_ratio_minimum', 1.5)
         if risk_reward_ratio < min_rr_ratio:
             return {
                 'approved': False,

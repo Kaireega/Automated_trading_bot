@@ -121,8 +121,11 @@ class TechnicalDecisionLayer:
         self.logger.info(f"🎯 Starting technical decision making for {pair}...")
         
         try:
-            # Get primary timeframe indicators (M5)
-            primary_indicators = technical_indicators.get(TimeFrame.M5)
+            # Get primary timeframe indicators — H4 for swing, fallback to M5/H1/any available
+            primary_indicators = (technical_indicators.get(TimeFrame.H4)
+                                  or technical_indicators.get(TimeFrame.H1)
+                                  or technical_indicators.get(TimeFrame.M5)
+                                  or next(iter(technical_indicators.values()), None))
             if not primary_indicators:
                 self.logger.info(f"ℹ️ {pair}: No primary timeframe indicators available")
                 return None
