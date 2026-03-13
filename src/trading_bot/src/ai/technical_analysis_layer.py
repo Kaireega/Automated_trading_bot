@@ -199,14 +199,15 @@ class TechnicalAnalysisLayer:
                 self.logger.debug(f"❌ {pair}: No technical indicators calculated")
                 return None, None
             
-            # Get primary timeframe (M5) for main analysis
-            primary_timeframe = TimeFrame.M5
-            primary_indicators = technical_indicators.get(primary_timeframe)
-            
-            if not primary_indicators:
-                # Fallback to first available timeframe
+            # Get primary timeframe — prefer H4 (swing primary), then H1, then M5
+            primary_timeframe = None
+            for preferred_tf in [TimeFrame.H4, TimeFrame.H1, TimeFrame.M5]:
+                if preferred_tf in technical_indicators:
+                    primary_timeframe = preferred_tf
+                    break
+            if primary_timeframe is None:
                 primary_timeframe = list(technical_indicators.keys())[0]
-                primary_indicators = technical_indicators[primary_timeframe]
+            primary_indicators = technical_indicators[primary_timeframe]
             
             # TRY MULTI-STRATEGY CONSENSUS FIRST (if enabled)
             if self.strategy_manager and self.strategy_manager.enabled:
@@ -228,6 +229,30 @@ class TechnicalAnalysisLayer:
                             regime=regime_str
                         )
                         
+                        if consensus_recommendation:
+                            # B-6: H4 EMA100 trend direction filter
+                            # Only accept signals that agree with the 100-period H4 trend.
+                            # Requires 100+ candles; skips filter during warmup period.
+                            EMA100_PERIOD = 100
+                            if len(primary_candles) >= EMA100_PERIOD:
+                                closes = [float(c.mid_c) for c in primary_candles]
+                                k = 2.0 / (EMA100_PERIOD + 1)
+                                ema100 = closes[0]
+                                for price in closes[1:]:
+                                    ema100 = price * k + ema100 * (1 - k)
+                                current_price = closes[-1]
+                                signal_dir = consensus_recommendation.signal.value  # 'buy' or 'sell'
+                                if signal_dir == 'buy' and current_price < ema100:
+                                    self.logger.info(
+                                        f"🚫 {pair}: BUY filtered — price {current_price:.5f} below H4 EMA100 {ema100:.5f}"
+                                    )
+                                    consensus_recommendation = None
+                                elif signal_dir == 'sell' and current_price > ema100:
+                                    self.logger.info(
+                                        f"🚫 {pair}: SELL filtered — price {current_price:.5f} above H4 EMA100 {ema100:.5f}"
+                                    )
+                                    consensus_recommendation = None
+
                         if consensus_recommendation:
                             self.logger.info(f"✅ {pair}: Multi-strategy consensus {consensus_recommendation.signal.value} "
                                            f"(confidence: {consensus_recommendation.confidence:.2f}, "

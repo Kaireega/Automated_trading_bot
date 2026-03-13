@@ -63,8 +63,8 @@ risk_management:
   max_risk_threshold: 0.5           # S-4: Tighter for small account (was 0.7)
   max_total_risk_percentage: 3.0    # S-4: Never risk >3% of account at once (2 trades * 1%)
   # Trailing stop pip values for swing
-  trailing_stop_activation_pips: 50  # S-10: Start trailing after 50-pip profit
-  trailing_stop_distance_pips: 30    # S-10: Trail 30 pips behind price
+  trailing_stop_activation_pips: 80   # P-5: Don't trail until 80 pips profit (H4 swing needs room)
+  trailing_stop_distance_pips: 50     # P-5: Trail 50 pips behind best price (wider than H4 candle range)
 
 # Technical Analysis
 technical_analysis:
@@ -76,8 +76,8 @@ technical_analysis:
   include_volume_analysis: true
   include_market_context: true
   # Signal confluence settings
-  min_signals_required: 2           # S-8: Require 2 strategies to agree for swing
-  min_confluence_score: 0.40        # Tuned down: H4 signals are rarer — 0.40 generates enough trades
+  min_signals_required: 3           # P-6: Raised from 2 — filter whipsaw noise (9 strategies, need 3 to agree)
+  min_confluence_score: 0.50        # P-6: Raised from 0.40 — require stronger agreement before entry
   # RSI thresholds — standard for H4/D1
   rsi_oversold: 30                  # S-7: Standard oversold
   rsi_overbought: 70                # S-7: Standard overbought
@@ -167,14 +167,14 @@ strategy_portfolio:
   # Strategy Selection Rules
   selection:
     mode: "weighted_ensemble"
-    min_strategies_agreeing: 2      # S-8: 2 strategies must agree
+    min_strategies_agreeing: 3      # P-6: Raised from 2 — filter whipsaw noise
     confidence_weighting: true
     timeframe_priority: ["H4", "H1", "D1"]  # S-1: H4 primary
 
   # Strategies Configuration — Swing Active
   strategies:
     # ========== TREND MOMENTUM STRATEGIES (active for swing) ==========
-    - name: "EMA_Crossover_H4"
+    - name: "Fast_EMA_Cross_M5"
       type: "trend_momentum"
       allocation: 12
       timeframes: ["H4"]
@@ -186,7 +186,7 @@ strategy_portfolio:
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
       min_confidence: 0.60
 
-    - name: "ADX_Trend_H4"
+    - name: "ADX_Trend_M5"
       type: "trend_momentum"
       allocation: 12
       timeframes: ["H4"]
@@ -197,7 +197,7 @@ strategy_portfolio:
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
       min_confidence: 0.60
 
-    - name: "MACD_Momentum_H4"
+    - name: "MACD_Momentum_M5"
       type: "trend_momentum"
       allocation: 12
       timeframes: ["H4"]
@@ -210,7 +210,7 @@ strategy_portfolio:
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
       min_confidence: 0.60
 
-    - name: "Fast_Ichimoku_D1"
+    - name: "Fast_Ichimoku"
       type: "trend_momentum"
       allocation: 15               # S-7: Ichimoku designed for D1 — highest weight
       timeframes: ["D1"]
@@ -223,7 +223,7 @@ strategy_portfolio:
       min_confidence: 0.60
 
     # ========== MEAN REVERSION STRATEGIES (H4) ==========
-    - name: "BB_Bounce_H4"
+    - name: "BB_Bounce_M5"
       type: "mean_reversion"
       allocation: 10
       timeframes: ["H4"]
@@ -235,7 +235,7 @@ strategy_portfolio:
       conditions: ["RANGING"]
       min_confidence: 0.60
 
-    - name: "RSI_Extremes_H4"
+    - name: "RSI_Extremes"
       type: "mean_reversion"
       allocation: 8
       timeframes: ["H4"]
@@ -250,7 +250,7 @@ strategy_portfolio:
       min_confidence: 0.60
 
     # ========== BREAKOUT STRATEGIES (H4/D1) ==========
-    - name: "ATR_Breakout_H4"
+    - name: "ATR_Breakout"
       type: "breakout"
       allocation: 12
       timeframes: ["H4"]
@@ -262,7 +262,7 @@ strategy_portfolio:
       conditions: ["VOLATILE", "BREAKOUT"]
       min_confidence: 0.60
 
-    - name: "Support_Resistance_H4"
+    - name: "Support_Resistance_Break"
       type: "breakout"
       allocation: 10
       timeframes: ["H4"]
@@ -274,7 +274,7 @@ strategy_portfolio:
       conditions: ["BREAKOUT"]
       min_confidence: 0.60
 
-    - name: "Donchian_Break_H4"
+    - name: "Donchian_Break"
       type: "breakout"
       allocation: 9
       timeframes: ["H4"]
