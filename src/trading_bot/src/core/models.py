@@ -63,6 +63,8 @@ class MarketCondition(Enum):
     RANGING = "ranging"
     TRENDING_UP = "trending_up"
     TRENDING_DOWN = "trending_down"
+    VOLATILE = "volatile"
+    CONSOLIDATION = "consolidation"
     UNKNOWN = "unknown"
 
 

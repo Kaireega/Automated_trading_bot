@@ -737,9 +737,13 @@ class BacktestEngine:
         result.initial_balance = self.initial_balance
         
         current_date = start_date
-        
+
         self.logger.info(f"🔄 Running simulation from {start_date} to {end_date}")
-        
+
+        # Per-pair trade cooldown tracking (prevents duplicate trades from same H4 candle)
+        last_trade_time: Dict[str, datetime] = {}
+        trade_cooldown_minutes = getattr(self.config.technical_analysis, 'trade_cooldown_minutes', 240)
+
         # Progress tracking
         total_duration = end_date - start_date
         total_intervals = int(total_duration.total_seconds() / 3600)  # S-12: 1-hour intervals (H1 candle close)
@@ -795,9 +799,25 @@ class BacktestEngine:
                     )
                     
                     if decision and decision.approved:
+                        # Skip if already holding an open position for this pair
+                        if pair in self.open_positions:
+                            self.logger.debug(f"⏹ {pair}: Position already open — skipping new entry")
+                            self.rejection_stats['rejections_by_reason']['risk_management'] += 1
+                            continue
+
+                        # Enforce per-pair cooldown to prevent duplicate trades on same H4 candle
+                        last_time = last_trade_time.get(pair)
+                        if last_time is not None:
+                            elapsed_min = (current_date - last_time).total_seconds() / 60
+                            if elapsed_min < trade_cooldown_minutes:
+                                self.logger.debug(f"⏱ {pair}: Cooldown active ({elapsed_min:.0f}/{trade_cooldown_minutes} min) — skipping")
+                                self.rejection_stats['rejections_by_reason']['signal_strength'] += 1
+                                continue
+
                         # Execute trade
                         trade_result = self._execute_backtest_trade(decision, current_date, current_price)
                         if trade_result:
+                            last_trade_time[pair] = current_date
                             result.trades.append(trade_result)
                             self.trade_history.append(trade_result)
                             self.logger.info(f"✅ TRADE EXECUTED: {pair} {trade_result['signal']} "
@@ -815,8 +835,9 @@ class BacktestEngine:
                     # Track why no signal was generated (handled in technical analysis layer logging)
                     pass
                 
-                # Update open positions
-                self._update_open_positions(current_date, current_candles)
+                # Update open positions — pass current pair so only that pair's position
+                # is evaluated with these candles (prevents EUR_USD prices contaminating GBP_USD)
+                self._update_open_positions(current_date, current_candles, current_pair=pair)
             
             # Update equity curve
             self._update_equity_curve(current_date)
@@ -867,8 +888,10 @@ class BacktestEngine:
     def _create_market_context(self, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]) -> MarketContext:
         """Create market context from candle data."""
         
-        # Use M5 candles for market context
-        m5_candles = candles_by_timeframe.get(TimeFrame.M5, [])
+        # Use H4 candles for market context (swing mode); fall back to H1 or M5
+        m5_candles = (candles_by_timeframe.get(TimeFrame.H4)
+                      or candles_by_timeframe.get(TimeFrame.H1)
+                      or candles_by_timeframe.get(TimeFrame.M5, []))
         
         if not m5_candles:
             return MarketContext(
@@ -1021,8 +1044,12 @@ class BacktestEngine:
             self.logger.error(f"❌ Error executing backtest trade: {e}")
             return None
     
-    def _update_open_positions(self, current_date: datetime, candles_by_timeframe: Dict[TimeFrame, List[CandleData]]):
-        """Update open positions and check for exits (with trailing stops and max hold time)."""
+    def _update_open_positions(self, current_date: datetime, candles_by_timeframe: Dict[TimeFrame, List[CandleData]], current_pair: str = None):
+        """Update open positions and check for exits (with trailing stops and max hold time).
+
+        current_pair: If provided, only update the position for this pair. This prevents
+        EUR_USD candle prices from contaminating GBP_USD/USD_JPY stop evaluations.
+        """
         
         # S-12: Use H4 as primary candle source for swing; fallback to H1
         m5_candles = (candles_by_timeframe.get(TimeFrame.H4)
@@ -1039,8 +1066,11 @@ class BacktestEngine:
         candle_low = float(latest_candle.low) if latest_candle else current_price
 
         positions_to_close = []
-        
+
         for pair, position in self.open_positions.items():
+            # Only evaluate this pair's position with its own candles
+            if current_pair and pair != current_pair:
+                continue
             if position['status'] != 'OPEN':
                 continue
             
@@ -1064,25 +1094,29 @@ class BacktestEngine:
             
             # Apply trailing stop if enabled
             if self.config.risk_management.trailing_stop:
-                trailing_atr_multiplier = self.config.risk_management.trailing_stop_atr_multiplier
-                
-                # Calculate trailing distance (use ATR or estimate from initial stop)
-                initial_stop_distance = abs(entry_price - position.get('initial_stop_loss', stop_loss))
-                trailing_distance = initial_stop_distance * trailing_atr_multiplier
-                
-                if signal == 'BUY':
-                    # Move stop loss up as price moves up
-                    new_stop = position['highest_price'] - trailing_distance
-                    if new_stop > stop_loss:
-                        stop_loss = new_stop
-                        position['stop_loss'] = new_stop
-                        
-                else:  # SELL
-                    # Move stop loss down as price moves down
-                    new_stop = position['lowest_price'] + trailing_distance
-                    if new_stop < stop_loss:
-                        stop_loss = new_stop
-                        position['stop_loss'] = new_stop
+                # P-5: Use pip-based activation + distance (swing-appropriate)
+                # JPY pairs: 1 pip = 0.01; other majors: 1 pip = 0.0001
+                pip_size = 0.01 if 'JPY' in pair else 0.0001
+                activation_pips = getattr(self.config.risk_management, 'trailing_stop_activation_pips', 80)
+                distance_pips = getattr(self.config.risk_management, 'trailing_stop_distance_pips', 50)
+                activation_price = activation_pips * pip_size
+                trailing_distance = distance_pips * pip_size
+
+                if signal == 'buy':
+                    profit = position['highest_price'] - entry_price
+                    if profit >= activation_price:  # Only trail after activation threshold
+                        new_stop = position['highest_price'] - trailing_distance
+                        if new_stop > stop_loss:
+                            stop_loss = new_stop
+                            position['stop_loss'] = new_stop
+
+                else:  # sell
+                    profit = entry_price - position['lowest_price']
+                    if profit >= activation_price:  # Only trail after activation threshold
+                        new_stop = position['lowest_price'] + trailing_distance
+                        if new_stop < stop_loss:
+                            stop_loss = new_stop
+                            position['stop_loss'] = new_stop
             
             # Check max hold time enforcement
             hold_time_minutes = (current_date - entry_time).total_seconds() / 60
@@ -1110,14 +1144,14 @@ class BacktestEngine:
             # Check for stop loss — use candle high/low, not typical price
             # BUY: stopped out if candle low dropped to or below stop
             # SELL: stopped out if candle high rose to or above stop
-            if signal == 'BUY' and candle_low <= stop_loss:
+            if signal == 'buy' and candle_low <= stop_loss:
                 position['exit_price'] = stop_loss
                 position['exit_reason'] = 'STOP_LOSS'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)
 
-            elif signal == 'SELL' and candle_high >= stop_loss:
+            elif signal == 'sell' and candle_high >= stop_loss:
                 position['exit_price'] = stop_loss
                 position['exit_reason'] = 'STOP_LOSS'
                 position['exit_time'] = current_date
@@ -1127,14 +1161,14 @@ class BacktestEngine:
             # Check for take profit — use candle high/low
             # BUY: TP hit if candle high reached take_profit
             # SELL: TP hit if candle low dropped to take_profit
-            elif take_profit and signal == 'BUY' and candle_high >= take_profit:
+            elif take_profit and signal == 'buy' and candle_high >= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)
 
-            elif take_profit and signal == 'SELL' and candle_low <= take_profit:
+            elif take_profit and signal == 'sell' and candle_low <= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
                 position['exit_time'] = current_date
@@ -1155,9 +1189,9 @@ class BacktestEngine:
         signal = position['signal']
         
         # Calculate P&L
-        if signal == 'BUY':
+        if signal == 'buy':
             pnl = (exit_price - entry_price) * units
-        else:  # SELL
+        else:  # sell
             pnl = (entry_price - exit_price) * units
         
         # Update account balance (convert pnl to Decimal)
@@ -1189,7 +1223,7 @@ class BacktestEngine:
                         f"Reason: {position['exit_reason']} | Duration: {duration_minutes:.1f}min")
         
         # Log detailed P&L breakdown
-        if signal == 'BUY':
+        if signal == 'buy':
             price_change = exit_price - entry_price
             self.logger.info(f"   BUY Trade: Price moved from ${entry_price:.5f} to ${exit_price:.5f} "
                            f"(+{price_change:.5f} = +{(price_change/entry_price)*100:.2f}%)")

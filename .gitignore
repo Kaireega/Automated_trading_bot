@@ -4,3 +4,4 @@ results/
 backtest_report_*.txt
 backtest_output*.txt
 logs/*.log
+data/
