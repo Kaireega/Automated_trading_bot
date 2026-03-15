@@ -87,7 +87,11 @@ class FastIchimokuStrategy(BaseStrategy):
             'kijun': df['kijun_sen'].iloc[-1] if not pd.isna(df['kijun_sen'].iloc[-1]) else 0,
             'senkou_a': df['senkou_span_a'].iloc[cloud_idx] if len(df) > abs(cloud_idx) and not pd.isna(df['senkou_span_a'].iloc[cloud_idx]) else 0,
             'senkou_b': df['senkou_span_b'].iloc[cloud_idx] if len(df) > abs(cloud_idx) and not pd.isna(df['senkou_span_b'].iloc[cloud_idx]) else 0,
-            'chikou': df['chikou_span'].iloc[-1] if not pd.isna(df['chikou_span'].iloc[-1]) else 0,
+            # Chikou: compare current close to the close kijun_period candles ago.
+            # df['chikou_span'] = close.shift(-kijun) → NaN at tail (future data).
+            # Correct interpretation: chikou is bullish if current close > close from kijun periods ago.
+            'chikou': df['close'].iloc[-1] if len(df) > self.kijun_period else 0,
+            'chikou_past_price': df['close'].iloc[-(self.kijun_period + 1)] if len(df) > self.kijun_period else 0,
             'close': df['close'].iloc[-1]
         }
     
@@ -111,27 +115,32 @@ class FastIchimokuStrategy(BaseStrategy):
         senkou_a = ichimoku['senkou_a']
         senkou_b = ichimoku['senkou_b']
         chikou = ichimoku['chikou']
+        chikou_past_price = ichimoku['chikou_past_price']
         current_price = ichimoku['close']
-        
+
         # Cloud top and bottom
         cloud_top = max(senkou_a, senkou_b)
         cloud_bottom = min(senkou_a, senkou_b)
-        
+
         # ATR for stops
         atr = indicators.atr if indicators.atr else (current_price * 0.001)
-        
+
+        # Chikou confirmation: current close vs close kijun_period bars ago
+        chikou_bullish = chikou > chikou_past_price  # price rising over kijun period
+        chikou_bearish = chikou < chikou_past_price  # price falling over kijun period
+
         # BUY Signal: Price above cloud + TK cross bullish
         if current_price > cloud_top and tenkan > kijun:
             confidence = 0.70
-            
+
             # Increase confidence if Chikou also confirms
-            if chikou > current_price:
+            if chikou_bullish:
                 confidence += 0.05
-            
+
             # Strong signal if well above cloud
             distance_from_cloud = (current_price - cloud_top) / current_price
             strength = min(1.0, distance_from_cloud * 100)
-            
+
             return StrategySignal(
                 signal=TradeSignal.BUY,
                 confidence=confidence,
@@ -147,13 +156,13 @@ class FastIchimokuStrategy(BaseStrategy):
                     'cloud_bottom': cloud_bottom
                 }
             )
-        
+
         # SELL Signal: Price below cloud + TK cross bearish
         elif current_price < cloud_bottom and tenkan < kijun:
             confidence = 0.70
-            
+
             # Increase confidence if Chikou also confirms
-            if chikou < current_price:
+            if chikou_bearish:
                 confidence += 0.05
             
             # Strong signal if well below cloud

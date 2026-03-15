@@ -106,8 +106,8 @@ class EMACrossoverStrategy(BaseStrategy):
                 strength=strength,
                 reasoning=f"EMA{self.ema_fast_period}/{self.ema_slow_period} bullish crossover + momentum",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price - (1.5 * atr))),
-                take_profit=Decimal(str(current_price + (2.5 * atr))),
+                stop_loss=Decimal(str(current_price - (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price + (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'ema_fast': ema_fast_current,
                     'ema_slow': ema_slow_current,
@@ -115,20 +115,20 @@ class EMACrossoverStrategy(BaseStrategy):
                     'macd': indicators.macd
                 }
             )
-        
+
         # SELL Signal
         elif bearish_cross and rsi_bearish and macd_bearish:
             confidence = 0.70 + min(0.10, ema_separation * 50)
             strength = min(1.0, abs(ema_fast_current - ema_slow_current) / ema_slow_current * 100)
-            
+
             return StrategySignal(
                 signal=TradeSignal.SELL,
                 confidence=confidence,
                 strength=strength,
                 reasoning=f"EMA{self.ema_fast_period}/{self.ema_slow_period} bearish crossover + momentum",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price + (1.5 * atr))),
-                take_profit=Decimal(str(current_price - (2.5 * atr))),
+                stop_loss=Decimal(str(current_price + (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price - (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'ema_fast': ema_fast_current,
                     'ema_slow': ema_slow_current,

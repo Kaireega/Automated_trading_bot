@@ -28,13 +28,15 @@ trading:
 # Multi-Timeframe Analysis Settings
 multi_timeframe:
   enabled: true
-  timeframes:                       # S-1: H1 (entry timing), H4 (primary), D1 (trend context)
+  timeframes:                       # S-1: M15 (entry trigger), H1 (timing), H4 (primary trend)
+    - M15
     - H1
     - H4
   weights:
-    H1: 0.35   # 35% — entry timing / confirmation
-    H4: 0.65   # 65% — primary analysis timeframe
-  minimum_timeframes: 2             # S-8: Require H4 + H1 agreement
+    M15: 0.20  # 20% — precise entry trigger (Session 6: added)
+    H1: 0.30   # 30% — entry timing / confirmation
+    H4: 0.50   # 50% — primary analysis timeframe (trend anchor)
+  minimum_timeframes: 2             # S-8: Require at least H4 + one other
   consensus_threshold: 0.60         # S-8: 60% — lower than 0.75; swing signals are rarer
 
 # Market Conditions
@@ -180,8 +182,8 @@ strategy_portfolio:
       timeframes: ["H4"]
       enabled: true
       parameters:
-        ema_fast: 12                # S-7: H4 swing crossover
-        ema_slow: 26
+        ema_fast: 21                # 21×4h = 84h ≈ 3.5 days — swing-appropriate (was 12)
+        ema_slow: 55                # 55×4h = 220h ≈ 9 days — filters H4 noise (was 26)
         signal_ema: 9
       conditions: ["TRENDING_UP", "TRENDING_DOWN"]
       min_confidence: 0.60
@@ -349,7 +351,7 @@ strategy_portfolio:
 
 # Backtesting — S-12
 backtesting:
-  period_days: 180                  # S-12: 6 months for meaningful swing results
+  period_days: 730                  # S-12 updated: 2 years for robust validation
   pairs:
     - EUR_USD
     - GBP_USD
