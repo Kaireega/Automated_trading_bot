@@ -101,8 +101,8 @@ class MACDMomentumStrategy(BaseStrategy):
                 strength=strength,
                 reasoning=f"MACD bullish crossover, histogram: {macd_hist:.5f}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price - (1.5 * atr))),
-                take_profit=Decimal(str(current_price + (2.5 * atr))),
+                stop_loss=Decimal(str(current_price - (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price + (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'macd': macd,
                     'macd_signal': macd_signal,
@@ -110,25 +110,25 @@ class MACDMomentumStrategy(BaseStrategy):
                     'rsi': indicators.rsi
                 }
             )
-        
+
         # SELL Signal
         elif macd_below_signal and histogram_negative and rsi_not_oversold:
             confidence = 0.70
-            
+
             # Increase confidence if strong momentum
             if indicators.rsi and 40 < indicators.rsi < 50:
                 confidence += 0.05
-            
+
             strength = min(1.0, abs(macd_hist) * 10000)
-            
+
             return StrategySignal(
                 signal=TradeSignal.SELL,
                 confidence=confidence,
                 strength=strength,
                 reasoning=f"MACD bearish crossover, histogram: {macd_hist:.5f}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price + (1.5 * atr))),
-                take_profit=Decimal(str(current_price - (2.5 * atr))),
+                stop_loss=Decimal(str(current_price + (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price - (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'macd': macd,
                     'macd_signal': macd_signal,

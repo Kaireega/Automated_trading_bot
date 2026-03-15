@@ -154,14 +154,15 @@ class StrategyManager:
 
         # --- REGIME-BASED ELIGIBILITY GATE ---
         REGIME_ALLOWED_TYPES = {
-            'TRENDING_UP':    ['trend_momentum', 'session_based', 'breakout'],
-            'TRENDING_DOWN':  ['trend_momentum', 'session_based', 'breakout'],
-            'RANGING':        ['mean_reversion'],
-            'VOLATILE':       ['breakout', 'session_based'],
-            'BREAKOUT':       ['breakout', 'session_based', 'trend_momentum'],
-            'CONSOLIDATION':  ['mean_reversion'],
-            'REVERSAL':       ['mean_reversion', 'trend_momentum'],
-            'UNKNOWN':        ['trend_momentum', 'session_based', 'breakout', 'mean_reversion'],
+            'TRENDING_UP':      ['trend_momentum', 'session_based', 'breakout'],
+            'TRENDING_DOWN':    ['trend_momentum', 'session_based', 'breakout'],
+            'RANGING':          ['mean_reversion'],
+            'VOLATILE':         ['breakout', 'session_based'],
+            'BREAKOUT':         ['breakout', 'session_based', 'trend_momentum'],
+            'CONSOLIDATION':    ['mean_reversion'],
+            'REVERSAL':         ['mean_reversion', 'trend_momentum'],
+            'NEWS_REACTIONARY': ['breakout'],  # I-6: breakout only during news — avoid trend/MR whipsaw
+            'UNKNOWN':          ['trend_momentum', 'session_based', 'breakout', 'mean_reversion'],
         }
 
         current_regime = (regime or 'UNKNOWN').upper()
@@ -176,6 +177,29 @@ class StrategyManager:
             f"Regime: {current_regime} | Eligible: {[s.name for s in eligible_strategies]}"
         )
         # --- END REGIME GATE ---
+
+        # --- P2: WEEKEND FILTER — no trading on Saturday/Sunday ---
+        if current_time is not None:
+            if current_time.weekday() in (5, 6):
+                self.logger.debug(
+                    f"{pair}: Weekend filter — markets closed (weekday={current_time.weekday()})"
+                )
+                return None
+
+        # --- P1: UTC HOUR BLOCK PER PAIR ---
+        BLOCKED_HOURS_UTC = {
+            'EUR_USD': {8, 12, 20},
+            'GBP_USD': {11, 12, 15},
+            'USD_JPY': {9, 16},
+        }
+        if current_time is not None:
+            blocked = BLOCKED_HOURS_UTC.get(pair, set())
+            if current_time.hour in blocked:
+                self.logger.debug(
+                    f"{pair}: UTC hour block — hour {current_time.hour} is blocked"
+                )
+                return None
+        # --- END TIME FILTERS ---
 
         # Collect signals from eligible strategies
         strategy_signals: List[Dict[str, Any]] = []
@@ -209,10 +233,14 @@ class StrategyManager:
             except Exception as e:
                 self.logger.error(f"❌ Error in strategy {strategy.name}: {e}")
         
-        # Check minimum strategies requirement
-        if len(strategy_signals) < self.min_strategies_agreeing:
+        # I-5 fix: require min_strategies_agreeing in the SAME direction, not just total signals.
+        # Count per direction — a mix of 2 BUY + 1 SELL should NOT satisfy "3 agreeing".
+        buy_count = sum(1 for s in strategy_signals if s['signal'].signal == TradeSignal.BUY)
+        sell_count = sum(1 for s in strategy_signals if s['signal'].signal == TradeSignal.SELL)
+        if max(buy_count, sell_count) < self.min_strategies_agreeing:
             self.logger.debug(
-                f"Not enough strategies agreeing: {len(strategy_signals)} < {self.min_strategies_agreeing}"
+                f"Not enough strategies agreeing on direction: "
+                f"BUY={buy_count}, SELL={sell_count}, need {self.min_strategies_agreeing}"
             )
             return None
         

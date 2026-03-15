@@ -199,9 +199,9 @@ class TechnicalAnalysisLayer:
                 self.logger.debug(f"❌ {pair}: No technical indicators calculated")
                 return None, None
             
-            # Get primary timeframe — prefer H4 (swing primary), then H1, then M5
+            # Get primary timeframe — prefer H4 (swing primary), then H1, M15, then M5
             primary_timeframe = None
-            for preferred_tf in [TimeFrame.H4, TimeFrame.H1, TimeFrame.M5]:
+            for preferred_tf in [TimeFrame.H4, TimeFrame.H1, TimeFrame.M15, TimeFrame.M5]:
                 if preferred_tf in technical_indicators:
                     primary_timeframe = preferred_tf
                     break
@@ -230,30 +230,115 @@ class TechnicalAnalysisLayer:
                         )
                         
                         if consensus_recommendation:
-                            # B-6: H4 EMA100 trend direction filter
-                            # Only accept signals that agree with the 100-period H4 trend.
-                            # Requires 100+ candles; skips filter during warmup period.
-                            EMA100_PERIOD = 100
-                            if len(primary_candles) >= EMA100_PERIOD:
+                            # P4: Per-pair EMA trend direction filter
+                            # Different EMA periods per pair based on regime shift speed.
+                            # Requires EMA_PERIOD * 3 candles warmup before filtering begins.
+                            # F-1: All pairs use EMA20 — faster regime detection.
+                            # EMA50 was too slow to flip during 2024 sharp reversals,
+                            # causing multi-week counter-trend entries and 31% DD.
+                            PER_PAIR_EMA = {
+                                'EUR_USD': 20,   # F-1: EMA20 — catches reversals faster (was EMA50)
+                                'GBP_USD': 20,   # F-1: EMA20 — catches reversals faster (was EMA50)
+                                'USD_JPY': 20,   # EMA20 — unchanged
+                            }
+                            EMA_PERIOD = PER_PAIR_EMA.get(pair, 20)
+                            EMA_WARMUP = EMA_PERIOD * 3
+                            if len(primary_candles) >= EMA_WARMUP:
                                 closes = [float(c.mid_c) for c in primary_candles]
-                                k = 2.0 / (EMA100_PERIOD + 1)
-                                ema100 = closes[0]
+                                k = 2.0 / (EMA_PERIOD + 1)
+                                ema = closes[0]
                                 for price in closes[1:]:
-                                    ema100 = price * k + ema100 * (1 - k)
+                                    ema = price * k + ema * (1 - k)
                                 current_price = closes[-1]
                                 signal_dir = consensus_recommendation.signal.value  # 'buy' or 'sell'
-                                if signal_dir == 'buy' and current_price < ema100:
+                                if signal_dir == 'buy' and current_price < ema:
                                     self.logger.info(
-                                        f"🚫 {pair}: BUY filtered — price {current_price:.5f} below H4 EMA100 {ema100:.5f}"
+                                        f"🚫 {pair}: BUY filtered — price {current_price:.5f} below H4 EMA{EMA_PERIOD} {ema:.5f}"
                                     )
                                     consensus_recommendation = None
-                                elif signal_dir == 'sell' and current_price > ema100:
+                                elif signal_dir == 'sell' and current_price > ema:
                                     self.logger.info(
-                                        f"🚫 {pair}: SELL filtered — price {current_price:.5f} above H4 EMA100 {ema100:.5f}"
+                                        f"🚫 {pair}: SELL filtered — price {current_price:.5f} above H4 EMA{EMA_PERIOD} {ema:.5f}"
                                     )
                                     consensus_recommendation = None
 
+                        # F-2: ADX > 25 hard gate — only enter when a genuine trend is confirmed.
+                        # Without this, EMA+MACD fire in choppy/ranging conditions (low ADX)
+                        # causing the 31% DD seen in 2024's whipsaw market.
+                        if consensus_recommendation and len(primary_candles) >= 35:
+                            period = 14
+                            highs  = [float(c.mid_h) for c in primary_candles[-(period * 2 + 5):]]
+                            lows   = [float(c.mid_l) for c in primary_candles[-(period * 2 + 5):]]
+                            closes = [float(c.mid_c) for c in primary_candles[-(period * 2 + 5):]]
+                            tr_list, pdm_list, ndm_list = [], [], []
+                            for i in range(1, len(highs)):
+                                tr  = max(highs[i] - lows[i],
+                                          abs(highs[i]  - closes[i - 1]),
+                                          abs(lows[i]   - closes[i - 1]))
+                                up   = highs[i] - highs[i - 1]
+                                down = lows[i - 1] - lows[i]
+                                pdm_list.append(up   if up > down and up > 0   else 0.0)
+                                ndm_list.append(down if down > up and down > 0 else 0.0)
+                                tr_list.append(tr)
+
+                            def _wilder(data, n):
+                                s = [sum(data[:n])]
+                                for v in data[n:]:
+                                    s.append(s[-1] - s[-1] / n + v)
+                                return s
+
+                            atr_s = _wilder(tr_list, period)
+                            pdm_s = _wilder(pdm_list, period)
+                            ndm_s = _wilder(ndm_list, period)
+                            dx_list = []
+                            for a, p, n in zip(atr_s, pdm_s, ndm_s):
+                                if a > 0:
+                                    pdi = 100.0 * p / a
+                                    ndi = 100.0 * n / a
+                                    if (pdi + ndi) > 0:
+                                        dx_list.append(100.0 * abs(pdi - ndi) / (pdi + ndi))
+                            if dx_list:
+                                adx = sum(dx_list[-period:]) / min(period, len(dx_list))
+                                if adx < 25:
+                                    self.logger.info(
+                                        f"🚫 {pair}: ADX gate — ADX {adx:.1f} < 25 (no trend confirmation)"
+                                    )
+                                    consensus_recommendation = None
+                                else:
+                                    # R-2: Store ADX value in metadata for risk scaling downstream
+                                    if consensus_recommendation:
+                                        if consensus_recommendation.metadata is None:
+                                            consensus_recommendation.metadata = {}
+                                        consensus_recommendation.metadata['adx_value'] = round(adx, 1)
+
+                        # P5: USD_JPY ATR contraction filter — skip signals during consolidation
+                        if pair == 'USD_JPY' and consensus_recommendation and len(primary_candles) >= 25:
+                            recent = primary_candles[-21:]
+                            atrs = [float(c.mid_h) - float(c.mid_l) for c in recent]
+                            current_atr = atrs[-1]
+                            avg_atr = sum(atrs[:-1]) / len(atrs[:-1])
+                            if avg_atr > 0 and current_atr < 0.60 * avg_atr:
+                                self.logger.info(
+                                    f"🚫 USD_JPY: ATR contraction filter — current ATR {current_atr:.5f} < 60% of avg {avg_atr:.5f}"
+                                )
+                                consensus_recommendation = None
+
                         if consensus_recommendation:
+                            # M-3: M15 confidence boost (additive only, never overrides H4 gates)
+                            m15_candles = candles_by_timeframe.get(TimeFrame.M15, [])
+                            m15_boost = self._calculate_m15_confidence_boost(
+                                m15_candles,
+                                consensus_recommendation.signal.value,
+                                pair
+                            )
+                            if m15_boost > 0:
+                                new_confidence = min(consensus_recommendation.confidence + m15_boost, 0.95)
+                                self.logger.info(
+                                    f"📊 {pair}: M15 boost +{m15_boost:.2f} → confidence "
+                                    f"{consensus_recommendation.confidence:.2f} → {new_confidence:.2f}"
+                                )
+                                consensus_recommendation.confidence = new_confidence
+
                             self.logger.info(f"✅ {pair}: Multi-strategy consensus {consensus_recommendation.signal.value} "
                                            f"(confidence: {consensus_recommendation.confidence:.2f}, "
                                            f"strategies: {consensus_recommendation.metadata.get('strategy_count', 0)})")
@@ -328,6 +413,96 @@ class TechnicalAnalysisLayer:
             self.logger.error(f"Error in technical analysis for {pair}: {e}")
             return None, None
     
+    def _calculate_m15_confidence_boost(
+        self,
+        m15_candles: list,
+        signal_direction: str,
+        pair: str
+    ) -> float:
+        """
+        M-3: Calculate additive M15 confidence boost (0.0 to 0.20).
+
+        This method ONLY adds to confidence — it never subtracts or overrides H4 gates.
+        If M15 EMA contradicts the signal direction, returns 0.0 immediately (no penalty).
+
+        Args:
+            m15_candles: List of M15 CandleData objects
+            signal_direction: 'buy' or 'sell'
+            pair: Currency pair for logging
+
+        Returns:
+            float: Boost amount in range [0.0, 0.20]
+        """
+        if len(m15_candles) < 20:
+            return 0.0
+
+        try:
+            closes = [float(c.mid_c) for c in m15_candles]
+            boost = 0.0
+
+            # --- EMA8 and EMA21 on M15 ---
+            k8  = 2.0 / (8 + 1)
+            k21 = 2.0 / (21 + 1)
+            ema8 = closes[0]
+            ema21 = closes[0]
+            for price in closes[1:]:
+                ema8  = price * k8  + ema8  * (1 - k8)
+                ema21 = price * k21 + ema21 * (1 - k21)
+
+            ema_bullish = ema8 > ema21
+            if signal_direction == 'buy':
+                if not ema_bullish:
+                    # M15 EMA contradicts signal — return 0.0, no boost
+                    self.logger.debug(f"📊 {pair}: M15 EMA contradicts BUY (EMA8 {ema8:.5f} < EMA21 {ema21:.5f}) — no boost")
+                    return 0.0
+                boost += 0.08
+            else:  # sell
+                if ema_bullish:
+                    # M15 EMA contradicts signal — return 0.0, no boost
+                    self.logger.debug(f"📊 {pair}: M15 EMA contradicts SELL (EMA8 {ema8:.5f} > EMA21 {ema21:.5f}) — no boost")
+                    return 0.0
+                boost += 0.08
+
+            # --- RSI14 on M15 closes ---
+            rsi_period = 14
+            if len(closes) >= rsi_period + 1:
+                deltas = [closes[i] - closes[i - 1] for i in range(1, len(closes))]
+                gains  = [d if d > 0 else 0.0 for d in deltas]
+                losses = [-d if d < 0 else 0.0 for d in deltas]
+                # Initial average using first rsi_period values
+                avg_gain = sum(gains[:rsi_period]) / rsi_period
+                avg_loss = sum(losses[:rsi_period]) / rsi_period
+                for i in range(rsi_period, len(deltas)):
+                    avg_gain = (avg_gain * (rsi_period - 1) + gains[i]) / rsi_period
+                    avg_loss = (avg_loss * (rsi_period - 1) + losses[i]) / rsi_period
+                if avg_loss == 0:
+                    rsi = 100.0
+                else:
+                    rs = avg_gain / avg_loss
+                    rsi = 100.0 - (100.0 / (1 + rs))
+
+                if signal_direction == 'buy' and rsi < 65:
+                    boost += 0.06
+                elif signal_direction == 'sell' and rsi > 35:
+                    boost += 0.06
+
+            # --- Last 3 candle momentum ---
+            if len(closes) >= 4:
+                momentum = closes[-1] - closes[-4]
+                if signal_direction == 'buy' and momentum > 0:
+                    boost += 0.06
+                elif signal_direction == 'sell' and momentum < 0:
+                    boost += 0.06
+
+            # Cap at 0.20
+            result = min(boost, 0.20)
+            self.logger.debug(f"📊 {pair}: M15 confidence boost = {result:.2f}")
+            return result
+
+        except Exception as e:
+            self.logger.warning(f"⚠️ {pair}: M15 confidence boost calculation failed: {e}")
+            return 0.0
+
     def _analyze_technical_signals(self, indicators: TechnicalIndicators, market_context: MarketContext) -> Dict[str, Any]:
         """Analyze technical indicators with improved signal confluence logic."""
         
