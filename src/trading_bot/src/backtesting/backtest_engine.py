@@ -242,7 +242,13 @@ class BacktestEngine:
         self.equity_curve: List[float] = []
         self.drawdown_curve: List[float] = []
         self.daily_pnl: Dict[str, float] = {}
-        
+        # P6: 2-candle confirmation buffer — signals must be confirmed on next H4 candle
+        self.pending_signals: Dict[str, Dict] = {}
+
+        # R-1: Consecutive loss tracking per pair
+        self.consecutive_losses: Dict[str, int] = {}       # pair -> count of consecutive losses
+        self.pair_cooldown_until: Dict[str, datetime] = {}  # pair -> datetime when cooldown expires
+
         # Performance tracking
         self.total_trades = 0
         self.winning_trades = 0
@@ -496,6 +502,10 @@ class BacktestEngine:
         self.losing_trades = 0
         self.total_pnl = 0.0
         
+        # R-1: Reset consecutive loss tracking for fresh backtest
+        self.consecutive_losses = {}
+        self.pair_cooldown_until = {}
+
         # Initialize rejection tracking
         self.rejection_stats = {
             'total_signals_evaluated': 0,
@@ -559,7 +569,7 @@ class BacktestEngine:
         
         for pair in pairs:
             historical_data[pair] = {}
-            for timeframe in [TimeFrame.H1, TimeFrame.H4]:  # S-12: swing timeframes
+            for timeframe in [TimeFrame.M15, TimeFrame.H1, TimeFrame.H4]:  # S-6: M15 entry trigger + H1 timing + H4 trend
                 try:
                     # Load data from CSV or database
                     candles = await self._load_candles_from_source(pair, timeframe, start_date, end_date)
@@ -768,7 +778,18 @@ class BacktestEngine:
                 
                 # Track signal evaluation
                 self.rejection_stats['total_signals_evaluated'] += 1
-                
+
+                # R-1: Check consecutive loss cooldown before analysis
+                if pair in self.pair_cooldown_until:
+                    if current_date < self.pair_cooldown_until[pair]:
+                        self.logger.debug(f"⏸ {pair}: Cooldown active until {self.pair_cooldown_until[pair].date()}")
+                        self._update_open_positions(current_date, current_candles, current_pair=pair)
+                        continue
+                    else:
+                        # Cooldown expired — reset
+                        del self.pair_cooldown_until[pair]
+                        self.consecutive_losses[pair] = 0
+
                 # Run technical analysis
                 self.logger.info(f"🔍 {pair} {current_date.strftime('%Y-%m-%d %H:%M')}: Running technical analysis...")
                 recommendation, primary_indicators = await self.technical_layer.analyze_multiple_timeframes(
@@ -880,8 +901,10 @@ class BacktestEngine:
                 if candle.timestamp <= target_date
             ]
             
-            # Keep last 100 candles for analysis
-            current_candles[timeframe] = candles_up_to_date[-100:] if len(candles_up_to_date) > 100 else candles_up_to_date
+            # Keep last N candles per timeframe for analysis
+            # M15: 400 candles = ~100 hours; H1/H4: 200 candles (unchanged)
+            window = 400 if timeframe == TimeFrame.M15 else 200
+            current_candles[timeframe] = candles_up_to_date[-window:] if len(candles_up_to_date) > window else candles_up_to_date
         
         return current_candles
     
@@ -975,8 +998,23 @@ class BacktestEngine:
         """Execute a trade in the backtest environment."""
         
         try:
+            # R-2: Scale down risk for borderline ADX (25–30)
+            recommendation = getattr(decision, 'recommendation', None)
+            adx_value = None
+            if recommendation and hasattr(recommendation, 'metadata') and recommendation.metadata:
+                adx_value = recommendation.metadata.get('adx_value')
+
+            base_risk_pct = self.config.trading.risk_percentage  # e.g. 1.0
+            if adx_value is not None and 25.0 <= adx_value < 30.0:
+                risk_pct = base_risk_pct * 0.5
+                self.logger.info(
+                    f"{getattr(recommendation, 'pair', '')}: Borderline ADX {adx_value:.1f} — risk scaled to {risk_pct}%"
+                )
+            else:
+                risk_pct = base_risk_pct
+
             # Calculate position size based on risk percentage
-            risk_amount = self.current_balance * Decimal(str(self.config.trading.risk_percentage / 100))
+            risk_amount = self.current_balance * Decimal(str(risk_pct / 100))
             
             # Calculate units based on stop loss distance
             entry_price = float(decision.recommendation.entry_price)
@@ -995,19 +1033,14 @@ class BacktestEngine:
             # Determine pip value based on pair (assuming USD account)
             pair = decision.recommendation.pair
             if 'JPY' in pair:
-                # JPY pairs: 1 pip = 0.01 for most pairs
-                pip_value_usd = 0.01
+                # I-4 fix: JPY pairs — pip_distance is in JPY (e.g. 0.50 for 50 pips).
+                # Risk in USD must be converted to JPY first: risk_JPY = risk_USD * entry_price.
+                # units = risk_JPY / pip_distance_JPY = risk_USD * entry_price / pip_distance
+                units = float(risk_amount) * entry_price / float(pip_distance)
             else:
-                # Major pairs: 1 pip = 0.0001 for EUR/USD, GBP/USD, etc.
-                pip_value_usd = 0.0001
-            
-            # Calculate position size: risk_amount / (stop_distance_in_pips * pip_value_usd)
-            stop_distance_pips = pip_distance / pip_value_usd
-            if stop_distance_pips == 0:
-                self.logger.warning(f"⚠️ Zero stop distance in pips")
-                return None
-            
-            units = float(risk_amount / Decimal(str(stop_distance_pips * pip_value_usd)))
+                # Major pairs: pip_distance is already in USD per unit.
+                # units = risk_USD / pip_distance_USD
+                units = float(risk_amount / Decimal(str(pip_distance)))
 
             # Apply position size cap — hard unit limit as safety net
             # max_position_size in config is a percentage, but we use it to derive a units cap:
@@ -1079,7 +1112,13 @@ class BacktestEngine:
             take_profit = position['take_profit']
             signal = position['signal']
             entry_time = position['entry_time']
-            
+
+            # B-7: Don't evaluate SL/TP on the same candle as entry.
+            # Entry occurs at candle close; the same candle's high/low represents
+            # price action BEFORE entry — evaluating SL against it is unrealistic.
+            if entry_time == current_date:
+                continue
+
             # Initialize tracking fields if they don't exist (for backward compatibility)
             if 'highest_price' not in position:
                 position['highest_price'] = entry_price
@@ -1189,10 +1228,16 @@ class BacktestEngine:
         signal = position['signal']
         
         # Calculate P&L
+        pair = position.get('pair', '')
         if signal == 'buy':
             pnl = (exit_price - entry_price) * units
         else:  # sell
             pnl = (entry_price - exit_price) * units
+
+        # I-4 fix: JPY pairs — P&L is in JPY, convert to USD using exit price as rate
+        # USD/JPY: (exit - entry) * units = JPY amount; divide by JPY/USD rate = exit_price
+        if 'JPY' in pair:
+            pnl = pnl / exit_price
         
         # Update account balance (convert pnl to Decimal)
         self.current_balance += Decimal(str(pnl))
@@ -1203,9 +1248,25 @@ class BacktestEngine:
         
         if pnl > 0:
             self.winning_trades += 1
+            # R-1: Reset consecutive losses on a win
+            pair_key = position.get('pair', '')
+            self.consecutive_losses[pair_key] = 0
+            self.pair_cooldown_until.pop(pair_key, None)
         else:
             self.losing_trades += 1
-        
+            # R-1: Track consecutive losses per pair
+            pair_key = position.get('pair', '')
+            self.consecutive_losses[pair_key] = self.consecutive_losses.get(pair_key, 0) + 1
+            max_consec = getattr(getattr(self.config, 'risk_management', None), 'consecutive_loss_limit', 3)
+            if self.consecutive_losses[pair_key] >= max_consec:
+                exit_time = position.get('exit_time', datetime.now(timezone.utc))
+                cooldown_until = exit_time + timedelta(hours=24)
+                self.pair_cooldown_until[pair_key] = cooldown_until
+                self.logger.info(
+                    f"⏸ {pair_key}: {self.consecutive_losses[pair_key]} consecutive losses — "
+                    f"pausing until {cooldown_until.date()}"
+                )
+
         # Update position with P&L (convert to float for metrics calculations)
         position['pnl'] = float(pnl)
         position['balance_after'] = self.current_balance

@@ -99,8 +99,8 @@ class ATRBreakoutStrategy(BaseStrategy):
                 strength=strength,
                 reasoning=f"ATR breakout above {breakout_high:.5f}, ATR={atr:.5f}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(recent_high - (0.5 * atr))),  # Stop at previous high
-                take_profit=Decimal(str(current_price + (3.0 * atr))),
+                stop_loss=Decimal(str(current_price - (2.0 * atr))),  # I-9: 2×ATR below entry (was 0.5×ATR below recent_high — too tight)
+                take_profit=Decimal(str(current_price + (4.0 * atr))),  # 2:1 R:R
                 metadata={
                     'breakout_level': breakout_high,
                     'recent_high': recent_high,
@@ -133,8 +133,8 @@ class ATRBreakoutStrategy(BaseStrategy):
                 strength=strength,
                 reasoning=f"ATR breakout below {breakout_low:.5f}, ATR={atr:.5f}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(recent_low + (0.5 * atr))),  # Stop at previous low
-                take_profit=Decimal(str(current_price - (3.0 * atr))),
+                stop_loss=Decimal(str(current_price + (2.0 * atr))),  # I-9: 2×ATR above entry (was 0.5×ATR above recent_low — too tight)
+                take_profit=Decimal(str(current_price - (4.0 * atr))),  # 2:1 R:R
                 metadata={
                     'breakout_level': breakout_low,
                     'recent_low': recent_low,

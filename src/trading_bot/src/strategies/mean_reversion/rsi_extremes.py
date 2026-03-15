@@ -90,38 +90,38 @@ class RSIExtremesStrategy(BaseStrategy):
                 strength=strength,
                 reasoning=f"RSI oversold: {rsi:.1f} < {self.oversold}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price - (1.5 * atr))),
-                take_profit=Decimal(str(current_price + (2.0 * atr))),
+                stop_loss=Decimal(str(current_price - (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price + (3.0 * atr))),  # I-3: 1.5:1 R:R for mean reversion (was 2.0×ATR)
                 metadata={
                     'rsi': rsi,
                     'oversold_threshold': self.oversold,
                     'support_level': indicators.support_level
                 }
             )
-        
+
         # SELL Signal: RSI overbought
         elif rsi > self.overbought:
             confidence = 0.65
-            
+
             # Higher confidence if extremely overbought
             if rsi > self.extreme_overbought:
                 confidence = 0.75
-            
+
             # Additional confirmation from Bollinger Bands if available
             if indicators.bollinger_upper and current_price >= indicators.bollinger_upper:
                 confidence += 0.05
-            
+
             # Strength based on how overbought
             strength = min(1.0, (rsi - self.overbought) / (100 - self.overbought))
-            
+
             return StrategySignal(
                 signal=TradeSignal.SELL,
                 confidence=confidence,
                 strength=strength,
                 reasoning=f"RSI overbought: {rsi:.1f} > {self.overbought}",
                 entry_price=Decimal(str(current_price)),
-                stop_loss=Decimal(str(current_price + (1.5 * atr))),
-                take_profit=Decimal(str(current_price - (2.0 * atr))),
+                stop_loss=Decimal(str(current_price + (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
+                take_profit=Decimal(str(current_price - (3.0 * atr))),  # I-3: 1.5:1 R:R for mean reversion
                 metadata={
                     'rsi': rsi,
                     'overbought_threshold': self.overbought,

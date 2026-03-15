@@ -136,19 +136,19 @@ class ADXTrendStrategy(BaseStrategy):
                 reasoning=f"ADX trending up: ADX={adx:.1f}, +DI={plus_di:.1f}, -DI={minus_di:.1f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price - (2.0 * atr))),
-                take_profit=Decimal(str(current_price + (3.0 * atr))),
+                take_profit=Decimal(str(current_price + (4.0 * atr))),  # I-3: 2:1 R:R (was 3×ATR = 1.5:1)
                 metadata={
                     'adx': adx,
                     'plus_di': plus_di,
                     'minus_di': minus_di
                 }
             )
-        
+
         # SELL Signal
         elif minus_di > plus_di and (ema_bearish or indicators.ema_fast is None):
             confidence = 0.70 if adx > 25 else 0.65
             strength = min(1.0, (minus_di - plus_di) / 50)
-            
+
             return StrategySignal(
                 signal=TradeSignal.SELL,
                 confidence=confidence,
@@ -156,7 +156,7 @@ class ADXTrendStrategy(BaseStrategy):
                 reasoning=f"ADX trending down: ADX={adx:.1f}, +DI={plus_di:.1f}, -DI={minus_di:.1f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price + (2.0 * atr))),
-                take_profit=Decimal(str(current_price - (3.0 * atr))),
+                take_profit=Decimal(str(current_price - (4.0 * atr))),  # I-3: 2:1 R:R (was 3×ATR = 1.5:1)
                 metadata={
                     'adx': adx,
                     'plus_di': plus_di,
