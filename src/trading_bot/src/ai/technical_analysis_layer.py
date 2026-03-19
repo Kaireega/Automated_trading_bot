@@ -199,9 +199,9 @@ class TechnicalAnalysisLayer:
                 self.logger.debug(f"❌ {pair}: No technical indicators calculated")
                 return None, None
             
-            # Get primary timeframe — prefer H4 (swing primary), then H1, M15, then M5
+            # Get primary timeframe — prefer H4 (entry window), then D1, M15 (A-1: H1 removed)
             primary_timeframe = None
-            for preferred_tf in [TimeFrame.H4, TimeFrame.H1, TimeFrame.M15, TimeFrame.M5]:
+            for preferred_tf in [TimeFrame.H4, TimeFrame.D1, TimeFrame.M15, TimeFrame.M5]:
                 if preferred_tf in technical_indicators:
                     primary_timeframe = preferred_tf
                     break
@@ -226,7 +226,8 @@ class TechnicalAnalysisLayer:
                             indicators=primary_indicators,
                             market_condition=market_context.condition if market_context else MarketCondition.UNKNOWN,
                             current_time=current_time,
-                            regime=regime_str
+                            regime=regime_str,
+                            candles_by_tf=candles_by_timeframe,  # A-5: pass full D1/H4/M15 dict to new strategy manager
                         )
                         
                         if consensus_recommendation:
@@ -455,13 +456,13 @@ class TechnicalAnalysisLayer:
                     # M15 EMA contradicts signal — return 0.0, no boost
                     self.logger.debug(f"📊 {pair}: M15 EMA contradicts BUY (EMA8 {ema8:.5f} < EMA21 {ema21:.5f}) — no boost")
                     return 0.0
-                boost += 0.08
+                boost += 0.04  # F-3: halved from 0.08
             else:  # sell
                 if ema_bullish:
                     # M15 EMA contradicts signal — return 0.0, no boost
                     self.logger.debug(f"📊 {pair}: M15 EMA contradicts SELL (EMA8 {ema8:.5f} > EMA21 {ema21:.5f}) — no boost")
                     return 0.0
-                boost += 0.08
+                boost += 0.04  # F-3: halved from 0.08
 
             # --- RSI14 on M15 closes ---
             rsi_period = 14
@@ -482,20 +483,20 @@ class TechnicalAnalysisLayer:
                     rsi = 100.0 - (100.0 / (1 + rs))
 
                 if signal_direction == 'buy' and rsi < 65:
-                    boost += 0.06
+                    boost += 0.03  # F-3: halved from 0.06
                 elif signal_direction == 'sell' and rsi > 35:
-                    boost += 0.06
+                    boost += 0.03  # F-3: halved from 0.06
 
             # --- Last 3 candle momentum ---
             if len(closes) >= 4:
                 momentum = closes[-1] - closes[-4]
                 if signal_direction == 'buy' and momentum > 0:
-                    boost += 0.06
+                    boost += 0.03  # F-3: halved from 0.06
                 elif signal_direction == 'sell' and momentum < 0:
-                    boost += 0.06
+                    boost += 0.03  # F-3: halved from 0.06
 
-            # Cap at 0.20
-            result = min(boost, 0.20)
+            # F-3: Cap at 0.10 (was 0.20 — was pushing too many borderline signals through)
+            result = min(boost, 0.10)
             self.logger.debug(f"📊 {pair}: M15 confidence boost = {result:.2f}")
             return result
 

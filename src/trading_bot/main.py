@@ -34,6 +34,7 @@ from trading_bot.src.notifications.notification_layer import NotificationLayer
 from trading_bot.src.core.position_manager import PositionManager
 from trading_bot.src.core.fundamental_analyzer import FundamentalAnalyzer
 from trading_bot.src.core.advanced_risk_manager import AdvancedRiskManager
+from trading_bot.src.core.portfolio_risk_manager import PortfolioRiskManager
 from trading_bot.src.core.market_regime_detector import MarketRegimeDetector
 from trading_bot.src.backtesting.backtest_engine import BacktestEngine
 from infrastructure.instrument_collection import instrumentCollection as ic
@@ -55,7 +56,7 @@ class TradingBot:
 
             print("🔧 [DEBUG] Loading configuration...")
             self.config = Config()
-            print(f"🔧 [DEBUG] Configuration loaded - Trading pairs: {self.config.trading_pairs}")
+            self.logger.debug(f"🔧 [DEBUG] Configuration loaded - Trading pairs: {self.config.trading_pairs}")
 
             print("🔧 [DEBUG] Initializing OANDA API...")
             self.oanda_api = OandaApi()
@@ -64,9 +65,9 @@ class TradingBot:
             try:
                 data_dir = Path(__file__).parent.parent.parent / "data"
                 ic.LoadInstruments(str(data_dir))
-                print(f"✅ [DEBUG] Instruments loaded from {data_dir}")
+                self.logger.debug(f"✅ [DEBUG] Instruments loaded from {data_dir}")
             except Exception as e:
-                print(f"❌ [DEBUG] Failed to load instruments: {e}")
+                self.logger.debug(f"❌ [DEBUG] Failed to load instruments: {e}")
 
             # Core components
             self.data_layer = DataLayer(self.config)
@@ -76,11 +77,13 @@ class TradingBot:
             self.position_manager = PositionManager(self.config, self.oanda_api)
             self.fundamental_analyzer = FundamentalAnalyzer(self.config)
             self.advanced_risk_manager = AdvancedRiskManager(self.config)
+            self.portfolio_risk_manager = PortfolioRiskManager(self.config)  # W-2
             self.market_regime_detector = MarketRegimeDetector(self.config)
             self.backtest_engine = BacktestEngine(self.config, use_historical_feed=False)
 
             self.is_running = False
             self.loop_count = 0
+            self._last_trade_time = None  # Fix 2: pre-trade cooldown tracking
             print("✅ [DEBUG] TradingBot initialized successfully")
 
     @debug_performance
@@ -110,7 +113,7 @@ class TradingBot:
                 await self._enhanced_trading_loop()
 
             except Exception as e:
-                print(f"❌ [DEBUG] Error starting bot: {e}")
+                self.logger.debug(f"❌ [DEBUG] Error starting bot: {e}")
                 self.logger.error(f"Error starting bot: {e}\n{traceback.format_exc()}")
                 raise
 
@@ -205,7 +208,8 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
                         try:
                             # ── Candle data ──────────────────────────────────
-                            candles_data = all_data[pair]
+                            # Fix 1: normalize string keys to TimeFrame enums once at the source
+                            candles_data = self._normalize_timeframe_keys(all_data[pair])
                             loop_stats['data_points'] += sum(len(c) for c in candles_data.values())
 
                             if len(candles_data) < 2:
@@ -263,6 +267,13 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                             if not self.is_running:
                                 break
 
+                            # ── S-1: News block gate ──────────────────────────
+                            try:
+                                if await self.fundamental_analyzer.should_block_trading(pair):
+                                    continue  # skip signal generation for this pair this cycle
+                            except Exception as e:
+                                self.logger.warning(f"News block check error for {pair}: {e}")
+
                             # ── Technical analysis ───────────────────────────
                             recommendation = None
                             technical_indicators = None
@@ -310,7 +321,7 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                             regime_analysis = {'regime': 'UNKNOWN', 'confidence': 0.0}
                             try:
                                 if technical_indicators:
-                                    primary_candles = candles_by_timeframe.get(TimeFrame.M5, [])
+                                    primary_candles = candles_by_timeframe.get(TimeFrame.H4, [])  # Fix 1: was M5, bot uses H4
                                     if not primary_candles:
                                         primary_candles = list(candles_by_timeframe.values())[0] if candles_by_timeframe else []
 
@@ -353,9 +364,9 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                             # ── Decision making ──────────────────────────────
                             try:
                                 current_price = self._get_current_price(
-                                    candles_by_timeframe.get(TimeFrame.M5, [])
+                                    candles_by_timeframe.get(TimeFrame.H4, [])  # Fix 1: was M5
                                 )
-                                technical_indicators_dict = {TimeFrame.M5: technical_indicators} if technical_indicators else {}
+                                technical_indicators_dict = {TimeFrame.H4: technical_indicators} if technical_indicators else {}  # Fix 1: was M5
 
                                 decision = await self.decision_layer.make_technical_decision(
                                     pair, technical_indicators_dict, market_context,
@@ -415,6 +426,19 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                                     }
 
                                     if risk_assessment['approved']:
+                                        # W-2: Portfolio correlation check before execution
+                                        try:
+                                            open_pos = list(self.position_manager.active_positions.values())
+                                            _, portfolio_ok, portfolio_reason = await self.portfolio_risk_manager.assess_portfolio_risk(
+                                                open_pos, new_trade=decision
+                                            )
+                                            if not portfolio_ok:
+                                                self.logger.info(f"🚫 W-2 Portfolio block — {pair}: {portfolio_reason}")
+                                                loop_stats['trades_rejected'] += 1
+                                                continue
+                                        except Exception as e:
+                                            self.logger.warning(f"Portfolio risk check failed for {pair}: {e} — proceeding")
+
                                         try:
                                             if self.config.notifications.manual_trade_approval:
                                                 await self._send_pre_trade_notification(
@@ -427,10 +451,20 @@ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                                             self.logger.error(f"Pre-trade notification failed: {e}")
                                             continue  # CRITICAL: prevent trade executing without approval
 
+                                        # Fix 2: pre-trade cooldown enforcement
+                                        cooldown = getattr(self.config.trading, 'pre_trade_cooldown_seconds', 30)
+                                        if self._last_trade_time is not None:
+                                            elapsed = (datetime.utcnow() - self._last_trade_time).total_seconds()
+                                            if elapsed < cooldown:
+                                                self.logger.debug(f"Cooldown: {cooldown - elapsed:.0f}s remaining for {pair}")
+                                                loop_stats['trades_rejected'] += 1
+                                                continue
+
                                         trade_id = await self.position_manager.execute_trade(
                                             decision, market_context
                                         )
                                         if trade_id:
+                                            self._last_trade_time = datetime.utcnow()  # Fix 2: record trade time
                                             loop_stats['trades_executed'] += 1
                                             pair_analysis['trade_executed'] = True
                                             pair_analysis['trade_id'] = trade_id
@@ -549,6 +583,18 @@ Regime: {regime_summary['current_regime']} | Win Rate: {risk_summary['win_rate']
     def _should_analyze_pair(self, pair: str) -> bool:
         return pair in self.config.trading_pairs
 
+    def _normalize_timeframe_keys(self, candles_dict: dict) -> dict:
+        """Fix 1: Convert string timeframe keys to TimeFrame enums so .value calls don't crash."""
+        normalized = {}
+        for key, candles in candles_dict.items():
+            if isinstance(key, str):
+                try:
+                    key = TimeFrame(key)
+                except ValueError:
+                    pass
+            normalized[key] = candles
+        return normalized
+
     def _get_current_price(self, candles: List[CandleData]) -> Decimal:
         if not candles:
             return Decimal('0')
@@ -601,12 +647,12 @@ async def main():
         except KeyboardInterrupt:
             print("\n🛑 Keyboard interrupt received.")
         except Exception as e:
-            print(f"❌ Error in main: {e}\n{traceback.format_exc()}")
+            self.logger.debug(f"❌ Error in main: {e}\n{traceback.format_exc()}")
         finally:
             if bot:
                 await bot.cleanup()
             debug_report_path = export_debug_report()
-            print(f"📊 Debug report: {debug_report_path}")
+            self.logger.debug(f"📊 Debug report: {debug_report_path}")
 
 
 if __name__ == "__main__":

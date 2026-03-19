@@ -136,7 +136,7 @@ class ADXTrendStrategy(BaseStrategy):
                 reasoning=f"ADX trending up: ADX={adx:.1f}, +DI={plus_di:.1f}, -DI={minus_di:.1f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price - (2.0 * atr))),
-                take_profit=Decimal(str(current_price + (4.0 * atr))),  # I-3: 2:1 R:R (was 3×ATR = 1.5:1)
+                take_profit=Decimal(str(current_price + (2.5 * atr))),  # F-1: 2.5xATR TP (was 4.0 — unreachable)
                 metadata={
                     'adx': adx,
                     'plus_di': plus_di,
@@ -156,7 +156,7 @@ class ADXTrendStrategy(BaseStrategy):
                 reasoning=f"ADX trending down: ADX={adx:.1f}, +DI={plus_di:.1f}, -DI={minus_di:.1f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price + (2.0 * atr))),
-                take_profit=Decimal(str(current_price - (4.0 * atr))),  # I-3: 2:1 R:R (was 3×ATR = 1.5:1)
+                take_profit=Decimal(str(current_price - (2.5 * atr))),  # F-1: 2.5xATR TP (was 4.0 — unreachable)
                 metadata={
                     'adx': adx,
                     'plus_di': plus_di,

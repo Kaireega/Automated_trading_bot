@@ -245,8 +245,20 @@ class DataLayer:
             print(f"📊 [DEBUG] {pair}: Created candle storage")
         
         # Get historical data for each timeframe
-        print(f"📊 [DEBUG] {pair}: Getting data for {len(self.config.timeframes)} timeframes: {[tf.value for tf in self.config.timeframes]}")
-        for timeframe in self.config.timeframes:
+        # Normalise timeframes — config stores strings, data_layer expects TimeFrame enums
+        from trading_bot.src.core.models import TimeFrame as TF
+        timeframes = []
+        for tf in self.config.timeframes:
+            if isinstance(tf, str):
+                try:
+                    timeframes.append(TF(tf))
+                except ValueError:
+                    self.logger.warning(f"Unknown timeframe string '{tf}' — skipping")
+            else:
+                timeframes.append(tf)
+
+        print(f"📊 [DEBUG] {pair}: Getting data for {len(timeframes)} timeframes: {[tf.value for tf in timeframes]}")
+        for timeframe in timeframes:
             print(f"📊 [DEBUG] {pair}: Getting {timeframe.value} data...")
             if self.use_real_data and self.oanda_api:
                 # Get real data from API
@@ -303,20 +315,13 @@ class DataLayer:
             
             # Update candles for each timeframe
             for timeframe in self.config.timeframes:
-                print(f"📊 [DEBUG] {pair}: Updating {timeframe.value} data...")
+                tf_name = timeframe.value if hasattr(timeframe, 'value') else timeframe
                 if self.use_real_data and self.oanda_api:
-                    # Get fresh real data from API
-                    print(f"📊 [DEBUG] {pair}: Getting fresh real data for {timeframe.value}")
                     new_candles = await self._get_real_candles(pair, timeframe, 50)
                     if new_candles:
-                        # Replace with fresh data, keeping only the latest candles
-                        self._candles[pair][timeframe] = new_candles[-1000:]  # Keep last 1000
-                        print(f"📊 [DEBUG] {pair}: {timeframe.value} - Updated with {len(new_candles)} candles")
+                        self._candles[pair][timeframe] = new_candles[-1000:]
                     else:
-                        print(f"⚠️ [DEBUG] {pair}: {timeframe.value} - No new candles received")
-                else:
-                    # No new data available - this is normal for real data
-                    print(f"📊 [DEBUG] {pair}: {timeframe.value} - No new data available")
+                        self.logger.debug(f"{pair}: {tf_name} — no new candles received")
             
             # Update market context
             print(f"🌍 [DEBUG] {pair}: Updating market context...")
@@ -512,20 +517,27 @@ class DataLayer:
         
         return result
 
-    async def _get_real_candles(self, pair: str, timeframe: TimeFrame, count: int) -> List[CandleData]:
+    async def _get_real_candles(self, pair: str, timeframe, count: int) -> List[CandleData]:
         """Get real candle data from OANDA API."""
         try:
+            # Normalise timeframe — accept both string and TimeFrame enum
+            if isinstance(timeframe, str):
+                try:
+                    timeframe = TimeFrame(timeframe)
+                except ValueError:
+                    pass  # leave as string, granularity_map lookup will fall back to M5
+
             # Convert TimeFrame enum to OANDA granularity
             granularity_map = {
                 TimeFrame.M1: "M1",
-                TimeFrame.M5: "M5", 
+                TimeFrame.M5: "M5",
                 TimeFrame.M15: "M15",
                 TimeFrame.M30: "M30",
                 TimeFrame.H1: "H1",
                 TimeFrame.H4: "H4",
                 TimeFrame.D1: "D"
             }
-            
+
             granularity = granularity_map.get(timeframe, "M5")
             
             # Fetch candles from OANDA

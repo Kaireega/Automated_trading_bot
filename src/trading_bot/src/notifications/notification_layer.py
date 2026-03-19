@@ -57,7 +57,7 @@ class NotificationLayer:
     def _init_telegram(self) -> None:
         """Initialize Telegram bot."""
         try:
-            if self.config.telegram_enabled:
+            if self.config.notifications.telegram_enabled:
                 self.telegram_bot = Bot(token=self.config.telegram_bot_token)
                 self.logger.info("Telegram bot initialized")
             else:
@@ -69,26 +69,26 @@ class NotificationLayer:
     def _init_email(self) -> None:
         """Initialize email configuration."""
         try:
-            print(f"📧 [DEBUG] Email enabled: {self.config.email_enabled}")
-            print(f"📧 [DEBUG] SMTP server: {self.config.smtp_server}")
-            print(f"📧 [DEBUG] SMTP port: {self.config.smtp_port}")
-            print(f"📧 [DEBUG] Email username: {self.config.email_username}")
-            print(f"📧 [DEBUG] Email password: {'*' * len(self.config.email_password) if self.config.email_password else 'None'}")
+            self.logger.debug(f"📧 [DEBUG] Email enabled: {self.config.notifications.email_enabled}")
+            self.logger.debug(f"📧 [DEBUG] SMTP server: {self.config.smtp_server}")
+            self.logger.debug(f"📧 [DEBUG] SMTP port: {self.config.smtp_port}")
+            self.logger.debug(f"📧 [DEBUG] Email username: {self.config.email_username}")
+            self.logger.debug(f"📧 [DEBUG] Email password: {'*' * len(self.config.email_password) if self.config.email_password else 'None'}")
             
-            if self.config.email_enabled:
+            if self.config.notifications.email_enabled:
                 self.smtp_server = self.config.smtp_server
                 self.smtp_port = self.config.smtp_port
                 self.email_username = self.config.email_username
                 self.email_password = self.config.email_password
                 self.logger.info("Email configuration initialized")
-                print(f"✅ [DEBUG] Email configuration initialized successfully")
+                self.logger.debug(f"✅ [DEBUG] Email configuration initialized successfully")
             else:
                 self.smtp_server = None
-                print(f"❌ [DEBUG] Email is disabled in configuration")
+                self.logger.debug(f"❌ [DEBUG] Email is disabled in configuration")
         except Exception as e:
             self.logger.error(f"Failed to initialize email configuration: {e}")
             self.smtp_server = None
-            print(f"❌ [DEBUG] Failed to initialize email configuration: {e}")
+            self.logger.debug(f"❌ [DEBUG] Failed to initialize email configuration: {e}")
     
     async def send_trade_alert(self, trade_decision: TradeDecision, chart_data: Optional[Dict] = None, custom_message: Optional[str] = None) -> bool:
         """Send trade alert notification."""
@@ -111,11 +111,11 @@ class NotificationLayer:
             # Send notifications
             success = True
             
-            if self.config.telegram_enabled and self.telegram_bot:
+            if self.config.notifications.telegram_enabled and self.telegram_bot:
                 telegram_success = await self._send_telegram_notification(notification)
                 success = success and telegram_success
             
-            if self.config.email_enabled and self.smtp_server:
+            if self.config.notifications.email_enabled and self.smtp_server:
                 email_success = await self._send_email_notification(notification)
                 success = success and email_success
             
@@ -376,14 +376,14 @@ class NotificationLayer:
             
             success = True
             
-            if self.config.telegram_enabled and self.telegram_bot:
+            if self.config.notifications.telegram_enabled and self.telegram_bot:
                 await self.telegram_bot.send_message(
                     chat_id=self.config.telegram_chat_id,
                     text=notification.message,
                     parse_mode='Markdown'
                 )
             
-            if self.config.email_enabled and self.smtp_server:
+            if self.config.notifications.email_enabled and self.smtp_server:
                 await self._send_email_notification(notification)
             
             return success
@@ -444,14 +444,14 @@ Please check the system logs for more details.
             
             success = True
             
-            if self.config.telegram_enabled and self.telegram_bot:
+            if self.config.notifications.telegram_enabled and self.telegram_bot:
                 await self.telegram_bot.send_message(
                     chat_id=self.config.telegram_chat_id,
                     text=notification.message,
                     parse_mode='Markdown'
                 )
             
-            if self.config.email_enabled and self.smtp_server:
+            if self.config.notifications.email_enabled and self.smtp_server:
                 await self._send_email_notification(notification)
             
             return success
@@ -473,12 +473,12 @@ Please check the system logs for more details.
     async def _initialize_email_config(self):
         """Initialize email configuration."""
         try:
-            if self.config.email_enabled:
-                print(f"📧 [DEBUG] Email enabled: {self.config.email_enabled}")
-                print(f"📧 [DEBUG] SMTP server: {self.config.smtp_server}")
-                print(f"📧 [DEBUG] SMTP port: {self.config.smtp_port}")
-                print(f"📧 [DEBUG] Email username: {self.config.email_username}")
-                print(f"📧 [DEBUG] Email password: {'*' * len(self.config.email_password) if self.config.email_password else 'None'}")
+            if self.config.notifications.email_enabled:
+                self.logger.debug(f"📧 [DEBUG] Email enabled: {self.config.notifications.email_enabled}")
+                self.logger.debug(f"📧 [DEBUG] SMTP server: {self.config.smtp_server}")
+                self.logger.debug(f"📧 [DEBUG] SMTP port: {self.config.smtp_port}")
+                self.logger.debug(f"📧 [DEBUG] Email username: {self.config.email_username}")
+                self.logger.debug(f"📧 [DEBUG] Email password: {'*' * len(self.config.email_password) if self.config.email_password else 'None'}")
                 
                 # Test email configuration
                 self.smtp_server = self.config.smtp_server
@@ -486,24 +486,24 @@ Please check the system logs for more details.
                 self.email_username = self.config.email_username
                 self.email_password = self.config.email_password
                 
-                print(f"✅ [DEBUG] Email configuration initialized successfully")
+                self.logger.debug(f"✅ [DEBUG] Email configuration initialized successfully")
                 self.logger.info("Email configuration initialized")
             else:
-                print(f"❌ [DEBUG] Email is disabled in configuration")
+                self.logger.debug(f"❌ [DEBUG] Email is disabled in configuration")
         except Exception as e:
-            print(f"❌ [DEBUG] Failed to initialize email configuration: {e}")
+            self.logger.debug(f"❌ [DEBUG] Failed to initialize email configuration: {e}")
             self.logger.error(f"Failed to initialize email configuration: {e}")
 
     async def start(self) -> None:
         """Start the notification layer."""
         try:
             # Initialize Telegram bot
-            if self.config.telegram_enabled and self.config.telegram_bot_token:
+            if self.config.notifications.telegram_enabled and self.config.telegram_bot_token:
                 self.telegram_bot = Bot(token=self.config.telegram_bot_token)
                 self.logger.info("Telegram bot initialized")
             
             # Initialize email configuration
-            if self.config.email_enabled:
+            if self.config.notifications.email_enabled:
                 await self._initialize_email_config()
             
             self.logger.info("Notification layer started successfully")
@@ -515,8 +515,8 @@ Please check the system logs for more details.
                 self.logger.error(f"Failed to start callback handler: {e}")
             
         except Exception as e:
-            print(f"❌ [DEBUG] Error starting notification layer: {e}")
-            print(f"❌ [DEBUG] Traceback: {traceback.format_exc()}")
+            self.logger.debug(f"❌ [DEBUG] Error starting notification layer: {e}")
+            self.logger.debug(f"❌ [DEBUG] Traceback: {traceback.format_exc()}")
             self.logger.error(f"Error starting notification layer: {e}")
             raise
     
@@ -584,17 +584,17 @@ Please check the system logs for more details.
                 )
                 self.logger.info("Telegram startup message sent successfully")
             
-            print(f"📧 [DEBUG] Checking email condition: smtp_server={self.smtp_server}, email_enabled={self.config.email_enabled}")
-            if self.smtp_server and self.config.email_enabled:
-                print(f"📧 [DEBUG] Email condition met, sending startup email...")
+            self.logger.debug(f"📧 [DEBUG] Checking email condition: smtp_server={self.smtp_server}, email_enabled={self.config.notifications.email_enabled}")
+            if self.smtp_server and self.config.notifications.email_enabled:
+                self.logger.debug(f"📧 [DEBUG] Email condition met, sending startup email...")
                 await self._send_email(
                     subject="🤖 Trading Bot Started",
                     body=message
                 )
                 self.logger.info("Email startup message sent successfully")
-                print(f"✅ [DEBUG] Email startup message sent successfully")
+                self.logger.debug(f"✅ [DEBUG] Email startup message sent successfully")
             else:
-                print(f"❌ [DEBUG] Email condition not met: smtp_server={self.smtp_server}, email_enabled={self.config.email_enabled}")
+                self.logger.debug(f"❌ [DEBUG] Email condition not met: smtp_server={self.smtp_server}, email_enabled={self.config.notifications.email_enabled}")
             
             return True
             
@@ -629,7 +629,7 @@ Please check the system logs for more details.
                 )
                 self.logger.info("Telegram loop report sent successfully")
             
-            if self.smtp_server and self.config.email_enabled:
+            if self.smtp_server and self.config.notifications.email_enabled:
                 await self._send_email(
                     subject="📊 Trading Loop Report",
                     body=message
