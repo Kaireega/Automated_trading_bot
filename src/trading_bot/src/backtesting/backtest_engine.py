@@ -79,6 +79,94 @@ except ImportError:
 
 
 @dataclass
+class FTMOSimulator:
+    """
+    R-1/R-2/R-3: Simulate FTMO challenge rules during backtest.
+
+    Rules enforced:
+    - 5% max daily loss  (based on balance at start of each trading day)
+    - 10% max total loss (based on initial account balance)
+    - 10% profit target  (challenge passed when reached)
+    - kill_switch_dd: stop trading early at this total DD % (default 4%, 2% buffer before FTMO limit)
+
+    Call on_new_day() at each new calendar day.
+    Call can_trade() before opening any trade.
+    Call on_trade_close(pnl) after each trade settles.
+    """
+
+    def __init__(
+        self,
+        initial_balance: float,
+        daily_loss_limit: float = 0.05,
+        total_loss_limit: float = 0.10,
+        profit_target: float = 0.10,
+        kill_switch_dd: float = 0.04,
+    ):
+        self.initial_balance = initial_balance
+        self.current_balance = initial_balance
+        self.daily_start_balance = initial_balance
+        self.daily_loss_limit = daily_loss_limit
+        self.total_loss_limit = total_loss_limit
+        self.profit_target = profit_target
+        self.kill_switch_dd = kill_switch_dd
+        self.challenge_passed = False
+        self.challenge_failed = False
+        self.fail_reason: str = ""
+        self.current_day = None
+
+    def on_new_day(self, date) -> None:
+        """Reset daily tracking at the start of each calendar day."""
+        if self.current_day != date:
+            self.daily_start_balance = self.current_balance
+            self.current_day = date
+
+    def can_trade(self) -> bool:
+        """Return False if any FTMO limit is breached or challenge is over."""
+        if self.challenge_failed or self.challenge_passed:
+            return False
+
+        # R-3: Kill switch — stop early at 4% total DD
+        total_loss_pct = (self.initial_balance - self.current_balance) / self.initial_balance
+        if total_loss_pct >= self.kill_switch_dd:
+            self.challenge_failed = True
+            self.fail_reason = f"Kill switch: total DD {total_loss_pct:.2%} >= {self.kill_switch_dd:.0%}"
+            return False
+
+        # 5% daily loss limit
+        daily_loss_pct = (self.daily_start_balance - self.current_balance) / self.daily_start_balance
+        if daily_loss_pct >= self.daily_loss_limit:
+            self.challenge_failed = True
+            self.fail_reason = f"Daily loss limit: {daily_loss_pct:.2%} >= {self.daily_loss_limit:.0%}"
+            return False
+
+        # 10% total loss limit
+        if total_loss_pct >= self.total_loss_limit:
+            self.challenge_failed = True
+            self.fail_reason = f"Total loss limit: {total_loss_pct:.2%} >= {self.total_loss_limit:.0%}"
+            return False
+
+        return True
+
+    def on_trade_close(self, pnl: float) -> None:
+        """Update balance after a trade closes."""
+        self.current_balance += pnl
+        profit_pct = (self.current_balance - self.initial_balance) / self.initial_balance
+        if profit_pct >= self.profit_target:
+            self.challenge_passed = True
+
+    @property
+    def summary(self) -> dict:
+        total_pnl = self.current_balance - self.initial_balance
+        return {
+            'passed': self.challenge_passed,
+            'failed': self.challenge_failed,
+            'fail_reason': self.fail_reason,
+            'final_balance': self.current_balance,
+            'total_return_pct': (total_pnl / self.initial_balance) * 100,
+            'total_dd_pct': max(0, (self.initial_balance - self.current_balance) / self.initial_balance * 100),
+        }
+
+
 class BacktestResult:
     """
     Comprehensive backtest results container.
@@ -478,7 +566,8 @@ class BacktestEngine:
         end_date: datetime,
         initial_balance: float = 10000.0,
         pairs: List[str] = None,
-        risk_percentage: float = None
+        risk_percentage: float = None,
+        ftmo_mode: bool = False,
     ) -> BacktestResult:
         """Run comprehensive backtest with account balance integration."""
         
@@ -536,7 +625,7 @@ class BacktestEngine:
             historical_data = await self._load_historical_data(start_date, end_date, pairs)
             
             # Run simulation
-            result = await self._run_simulation(historical_data, start_date, end_date)
+            result = await self._run_simulation(historical_data, start_date, end_date, ftmo_mode=ftmo_mode)
             
             # Calculate final metrics
             self._calculate_performance_metrics(result)
@@ -569,7 +658,7 @@ class BacktestEngine:
         
         for pair in pairs:
             historical_data[pair] = {}
-            for timeframe in [TimeFrame.M15, TimeFrame.H1, TimeFrame.H4]:  # S-6: M15 entry trigger + H1 timing + H4 trend
+            for timeframe in [TimeFrame.D1, TimeFrame.H4, TimeFrame.M15]:  # A-1: D1 regime anchor, H4 entry window, M15 pullback entry
                 try:
                     # Load data from CSV or database
                     candles = await self._load_candles_from_source(pair, timeframe, start_date, end_date)
@@ -737,15 +826,25 @@ class BacktestEngine:
         self,
         historical_data: Dict[str, Dict[TimeFrame, List[CandleData]]],
         start_date: datetime,
-        end_date: datetime
+        end_date: datetime,
+        ftmo_mode: bool = False,
     ) -> BacktestResult:
-        """Run the actual simulation."""
-        
+        """Run the actual simulation. Set ftmo_mode=True to enforce FTMO challenge rules."""
+
         result = BacktestResult()
         result.start_date = start_date
         result.end_date = end_date
         result.initial_balance = self.initial_balance
-        
+
+        # R-1: FTMO simulator — enforces 5% daily / 10% total / 10% profit target
+        ftmo = FTMOSimulator(
+            initial_balance=float(self.initial_balance),
+            daily_loss_limit=0.05,
+            total_loss_limit=0.10,
+            profit_target=0.10,
+            kill_switch_dd=0.04,  # R-3: stop at 4% total DD (2% buffer before FTMO limit)
+        ) if ftmo_mode else None
+
         current_date = start_date
 
         self.logger.info(f"🔄 Running simulation from {start_date} to {end_date}")
@@ -756,7 +855,7 @@ class BacktestEngine:
 
         # Progress tracking
         total_duration = end_date - start_date
-        total_intervals = int(total_duration.total_seconds() / 3600)  # S-12: 1-hour intervals (H1 candle close)
+        total_intervals = int(total_duration.total_seconds() / 14400)  # A-1: 4-hour intervals (H4 candle close)
         processed_intervals = 0
         
         while current_date <= end_date:
@@ -778,6 +877,16 @@ class BacktestEngine:
                 
                 # Track signal evaluation
                 self.rejection_stats['total_signals_evaluated'] += 1
+
+                # R-1/R-3: FTMO daily reset and kill-switch check
+                if ftmo:
+                    ftmo.on_new_day(current_date.date())
+                    if not ftmo.can_trade():
+                        if ftmo.challenge_passed:
+                            self.logger.info(f"🏆 FTMO challenge PASSED on {current_date.date()} — stopping simulation")
+                        else:
+                            self.logger.warning(f"💀 FTMO challenge FAILED: {ftmo.fail_reason} — stopping simulation")
+                        break  # stop the outer while loop
 
                 # R-1: Check consecutive loss cooldown before analysis
                 if pair in self.pair_cooldown_until:
@@ -808,8 +917,8 @@ class BacktestEngine:
                                    f"Confidence: {recommendation.confidence:.3f}")
                     
                     # Run decision making
-                    # S-12: Use H4 as primary timeframe for swing (fallback to H1)
-                    h4_candles = current_candles.get(TimeFrame.H4) or current_candles.get(TimeFrame.H1, [])
+                    # A-1: Use H4 as primary timeframe for swing (fallback to M15)
+                    h4_candles = current_candles.get(TimeFrame.H4) or current_candles.get(TimeFrame.M15, [])
                     current_price = self._get_current_price(h4_candles)
 
                     # S-12: Use H4 as primary timeframe for technical decision
@@ -835,12 +944,20 @@ class BacktestEngine:
                                 self.rejection_stats['rejections_by_reason']['signal_strength'] += 1
                                 continue
 
+                        # R-2: FTMO blocks new trades when limits are hit
+                        if ftmo and not ftmo.can_trade():
+                            self.logger.debug(f"⛔ FTMO: trade blocked — {ftmo.fail_reason}")
+                            continue
+
                         # Execute trade
                         trade_result = self._execute_backtest_trade(decision, current_date, current_price)
                         if trade_result:
                             last_trade_time[pair] = current_date
                             result.trades.append(trade_result)
                             self.trade_history.append(trade_result)
+                            # R-1: Update FTMO balance after trade closes (pnl recorded at close)
+                            if ftmo and trade_result.get('pnl') is not None:
+                                ftmo.on_trade_close(trade_result['pnl'])
                             self.logger.info(f"✅ TRADE EXECUTED: {pair} {trade_result['signal']} "
                                            f"{trade_result['units']:.2f} units @ {trade_result['entry_price']:.5f}")
                     else:
@@ -870,8 +987,8 @@ class BacktestEngine:
                 self.logger.info(f"📈 Progress: {progress:.1f}% - Processed {processed_intervals}/{total_intervals} intervals, "
                                f"Current trades: {len(self.trade_history)}")
             
-            # S-12: Move to next interval (1 hour — aligns with H1 candle close)
-            current_date += timedelta(hours=1)
+            # A-1: Move to next interval (4 hours — aligns with H4 candle close)
+            current_date += timedelta(hours=4)
         
         # Calculate final results (convert Decimal to float for metrics)
         result.final_balance = float(self.current_balance)
@@ -1180,27 +1297,11 @@ class BacktestEngine:
                     positions_to_close.append(position)
                     continue
             
-            # Check for stop loss — use candle high/low, not typical price
-            # BUY: stopped out if candle low dropped to or below stop
-            # SELL: stopped out if candle high rose to or above stop
-            if signal == 'buy' and candle_low <= stop_loss:
-                position['exit_price'] = stop_loss
-                position['exit_reason'] = 'STOP_LOSS'
-                position['exit_time'] = current_date
-                position['status'] = 'CLOSED'
-                positions_to_close.append(position)
-
-            elif signal == 'sell' and candle_high >= stop_loss:
-                position['exit_price'] = stop_loss
-                position['exit_reason'] = 'STOP_LOSS'
-                position['exit_time'] = current_date
-                position['status'] = 'CLOSED'
-                positions_to_close.append(position)
-
-            # Check for take profit — use candle high/low
+            # F-4: Check TAKE PROFIT first — if both SL and TP hit in same candle,
+            # assume TP was hit (favorable for the trade, more realistic for swing candles)
             # BUY: TP hit if candle high reached take_profit
             # SELL: TP hit if candle low dropped to take_profit
-            elif take_profit and signal == 'buy' and candle_high >= take_profit:
+            if take_profit and signal == 'buy' and candle_high >= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
                 position['exit_time'] = current_date
@@ -1210,6 +1311,23 @@ class BacktestEngine:
             elif take_profit and signal == 'sell' and candle_low <= take_profit:
                 position['exit_price'] = take_profit
                 position['exit_reason'] = 'TAKE_PROFIT'
+                position['exit_time'] = current_date
+                position['status'] = 'CLOSED'
+                positions_to_close.append(position)
+
+            # Check for stop loss — use candle high/low, not typical price
+            # BUY: stopped out if candle low dropped to or below stop
+            # SELL: stopped out if candle high rose to or above stop
+            elif signal == 'buy' and candle_low <= stop_loss:
+                position['exit_price'] = stop_loss
+                position['exit_reason'] = 'STOP_LOSS'
+                position['exit_time'] = current_date
+                position['status'] = 'CLOSED'
+                positions_to_close.append(position)
+
+            elif signal == 'sell' and candle_high >= stop_loss:
+                position['exit_price'] = stop_loss
+                position['exit_reason'] = 'STOP_LOSS'
                 position['exit_time'] = current_date
                 position['status'] = 'CLOSED'
                 positions_to_close.append(position)

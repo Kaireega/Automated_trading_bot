@@ -59,8 +59,12 @@ from trading_bot.src.utils.config import Config
 @debug_performance
 async def run_backtest(args):
     """Run standard backtest."""
+    # Silence debug_tracker for backtest — it fires on every CandleData init (thousands of times)
+    import logging
+    logging.getLogger("debug_tracker").setLevel(logging.WARNING)
+
     debug_entry_point("run_backtest")
-    
+
     with debug_context("Standard backtest execution") as context:
         pairs = args.pairs if args.pairs else ['EUR_USD', 'GBP_USD']
         debug_variable("backtest_pairs", pairs, context)
@@ -72,31 +76,39 @@ async def run_backtest(args):
         debug_variable("end_date", end_date, context)
         debug_variable("backtest_days", args.days, context)
         
+        ftmo_mode = getattr(args, 'ftmo', False)
+        # R-2: FTMO uses 0.5% risk per trade (half of normal 1%)
+        risk = 0.5 if ftmo_mode else args.risk
+
         print("\n" + "="*80)
-        print("🚀 BACKTEST ENGINE")
+        print("🚀 BACKTEST ENGINE" + (" — FTMO SIMULATION MODE" if ftmo_mode else ""))
         print("="*80)
         print(f"Period:     {start_date.date()} to {end_date.date()} ({args.days} days)")
         print(f"Balance:    ${args.balance:,.2f}")
         print(f"Pairs:      {', '.join(pairs)}")
-        print(f"Risk/Trade: {args.risk}%")
+        print(f"Risk/Trade: {risk}%" + (" (FTMO: 0.5% cap)" if ftmo_mode else ""))
+        if ftmo_mode:
+            print(f"FTMO Rules: 5% daily limit / 10% total limit / 10% profit target / 4% kill switch")
         print("="*80)
         print()
-        
+
         debug_data_flow("config_loading", "loading", "backtest_config")
         config = Config()
         debug_variable("config_loaded", True, context)
-        
+
         debug_data_flow("engine_creation", "creating", "backtest_engine")
         engine = BacktestEngine(config, use_historical_feed=True)
         debug_variable("engine_created", True, context)
         debug_variable("use_historical_feed", True, context)
-        
+
         debug_data_flow("backtest_execution", "starting", "backtest_run")
         result = await engine.run_backtest(
             start_date=start_date,
             end_date=end_date,
             pairs=pairs,
-            initial_balance=args.balance
+            initial_balance=args.balance,
+            risk_percentage=risk,
+            ftmo_mode=ftmo_mode,
         )
         debug_variable("backtest_result", result, context)
     
@@ -144,6 +156,8 @@ async def run_backtest(args):
 
 async def run_quiet_backtest(args):
     """Run quiet backtest (minimal output)."""
+    import logging
+    logging.getLogger("debug_tracker").setLevel(logging.WARNING)
     pairs = args.pairs if args.pairs else ['EUR_USD', 'GBP_USD']
     
     end_date = datetime.now(timezone.utc)
@@ -365,6 +379,7 @@ Examples:
         backtest_parser.add_argument('--quiet', action='store_true', help='Minimal output')
         backtest_parser.add_argument('--compare', action='store_true', help='Compare multi vs single strategy')
         backtest_parser.add_argument('--save', action='store_true', help='Save results to file')
+        backtest_parser.add_argument('--ftmo', action='store_true', help='Run FTMO challenge simulation (0.5%% risk, 5%% daily / 10%% total limits)')
         debug_variable("backtest_parser_configured", True, context)
         
         # Mock test command

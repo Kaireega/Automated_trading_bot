@@ -186,6 +186,68 @@ class FundamentalAnalyzer:
             self.logger.error(f"Error in fundamental analysis for {pair}: {e}")
             return self._get_fallback_analysis(pair, str(e))
     
+    # Fix 5: Static schedule of recurring high-impact USD/EUR/GBP events (UTC)
+    # Format: (weekday, hour, minute, description)
+    # weekday: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri
+    _RECURRING_HIGH_IMPACT = [
+        # FOMC announcement + press conference (Wednesday, variable weeks — block the window)
+        (2, 18, 0, "FOMC announcement window"),
+        (2, 19, 0, "FOMC press conference window"),
+        # NFP / US employment — first Friday of each month, 13:30 UTC
+        (4, 13, 0, "NFP/employment data window"),
+        (4, 13, 30, "NFP/employment data window"),
+        (4, 14, 0, "NFP aftermath window"),
+        # ECB rate decision — typically Thursday every 6 weeks, 13:15 UTC
+        (3, 13, 0, "ECB rate decision window"),
+        (3, 13, 15, "ECB rate decision window"),
+        (3, 14, 0, "ECB press conference window"),
+        # BOE rate decision — typically Thursday, 12:00 UTC
+        (3, 12, 0, "BOE rate decision window"),
+        (3, 12, 30, "BOE rate decision window"),
+    ]
+
+    async def should_block_trading(self, pair: str) -> bool:
+        """S-1: Block trading 30 minutes before and after high-impact news events.
+
+        Returns True if trading should be paused for this pair.
+        Never raises — fails open (returns False) so a data error never blocks the bot.
+        """
+        try:
+            now = datetime.now(timezone.utc)
+            block_window_minutes = 30
+
+            # Fix 5: Check static recurring schedule first (works even if external API is down)
+            for weekday, hour, minute, desc in self._RECURRING_HIGH_IMPACT:
+                if now.weekday() == weekday:
+                    event_dt = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+                    minutes_diff = (now - event_dt).total_seconds() / 60
+                    if -block_window_minutes <= minutes_diff <= block_window_minutes:
+                        self.logger.info(f"🚫 S-1 Static news block — {pair}: '{desc}' (±{block_window_minutes}min window)")
+                        return True
+
+            # Also check dynamic calendar events from external data source
+            economic_events = await self._get_relevant_economic_events(pair)
+
+            for event in economic_events:
+                if event.get('impact_level') != 'high':
+                    continue
+                time_to_event = event.get('time_to_event')
+                if time_to_event is None:
+                    continue
+                minutes_until = time_to_event.total_seconds() / 60
+                # Block if within [-30, +30] minutes of the event
+                if -block_window_minutes <= minutes_until <= block_window_minutes:
+                    event_name = event.get('event', 'Unknown event')
+                    self.logger.info(
+                        f"🚫 S-1 Dynamic news block — {pair}: '{event_name}' "
+                        f"in {minutes_until:.0f} min (±{block_window_minutes}min window)"
+                    )
+                    return True
+            return False
+        except Exception as e:
+            self.logger.warning(f"⚠️ S-1 News block check failed for {pair}: {e} — proceeding")
+            return False  # fail open
+
     async def _get_relevant_economic_events(self, pair: str) -> List[Dict[str, Any]]:
         """Get economic events relevant to the currency pair."""
         try:

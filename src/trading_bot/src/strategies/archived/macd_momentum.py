@@ -102,7 +102,7 @@ class MACDMomentumStrategy(BaseStrategy):
                 reasoning=f"MACD bullish crossover, histogram: {macd_hist:.5f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price - (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
-                take_profit=Decimal(str(current_price + (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
+                take_profit=Decimal(str(current_price + (2.5 * atr))),  # F-1: 2.5xATR TP  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'macd': macd,
                     'macd_signal': macd_signal,
@@ -128,7 +128,7 @@ class MACDMomentumStrategy(BaseStrategy):
                 reasoning=f"MACD bearish crossover, histogram: {macd_hist:.5f}",
                 entry_price=Decimal(str(current_price)),
                 stop_loss=Decimal(str(current_price + (2.0 * atr))),  # I-3: 2×ATR (was 1.5×ATR — too tight)
-                take_profit=Decimal(str(current_price - (4.0 * atr))),  # I-3: 2:1 R:R (was 2.5×ATR)
+                take_profit=Decimal(str(current_price - (2.5 * atr))),  # F-1: 2.5xATR TP  # I-3: 2:1 R:R (was 2.5×ATR)
                 metadata={
                     'macd': macd,
                     'macd_signal': macd_signal,

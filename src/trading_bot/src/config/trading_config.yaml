@@ -10,7 +10,8 @@ trading:
   pairs:
     - EUR_USD                       # Most liquid, lowest spread
     - GBP_USD                       # Good swing pair
-    - USD_JPY                       # Stable, good for H4/D1
+    # - USD_JPY                     # F-2: DISABLED — mean-reverting, trend strategy burned $753 over 730d
+  pre_trade_cooldown_seconds: 30    # S-3: Prevent rapid-fire entries after a trade
   # min_take_profit_pips: 80        # S-2: H4/D1 targets large enough to absorb spread
   # min_stop_loss_pips: 30          # S-2: Swing stops 50–200 pips
   hold_time_settings:
@@ -28,16 +29,19 @@ trading:
 # Multi-Timeframe Analysis Settings
 multi_timeframe:
   enabled: true
-  timeframes:                       # S-1: M15 (entry trigger), H1 (timing), H4 (primary trend)
-    - M15
-    - H1
+  timeframes:                       # A-1: D1 (regime/direction), H4 (entry window), M15 (pullback entry)
+    - D1
     - H4
+    - M15
+  primary_timeframe: D1             # A-1: D1 is the directional anchor
+  entry_timeframe: H4               # A-1: H4 confirms D1 direction and sets entry window
+  trigger_timeframe: M15            # A-1: M15 pullback to EMA = precision entry
   weights:
-    M15: 0.20  # 20% — precise entry trigger (Session 6: added)
-    H1: 0.30   # 30% — entry timing / confirmation
-    H4: 0.50   # 50% — primary analysis timeframe (trend anchor)
-  minimum_timeframes: 2             # S-8: Require at least H4 + one other
-  consensus_threshold: 0.60         # S-8: 60% — lower than 0.75; swing signals are rarer
+    D1: 0.60   # 60% — regime detection and directional anchor
+    H4: 0.30   # 30% — entry window confirmation
+    M15: 0.10  # 10% — pullback entry timing
+  minimum_timeframes: 2             # Require at least D1 + H4
+  consensus_threshold: 0.60         # Not used by new regime switch (kept for compatibility)
 
 # Market Conditions
 market_conditions:

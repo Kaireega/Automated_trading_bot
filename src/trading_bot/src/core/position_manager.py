@@ -3,11 +3,36 @@ Position Management & Execution Layer - Real-time position monitoring and execut
 Uses existing OANDA API and trade management components.
 """
 import asyncio
+import json
 import logging
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Dict, List, Optional, Any
 from decimal import Decimal
 import math
+
+
+class FileTradeJournal:
+    """Fix 3: File-based trade journal fallback when MongoDB is unavailable."""
+
+    def __init__(self, filepath: str = "results/trade_journal.jsonl"):
+        self.filepath = filepath
+        Path(filepath).parent.mkdir(parents=True, exist_ok=True)
+
+    def record_open(self, trade_data: dict) -> None:
+        trade_data = dict(trade_data)
+        trade_data['recorded_at'] = datetime.utcnow().isoformat()
+        trade_data['event'] = 'open'
+        with open(self.filepath, 'a') as f:
+            f.write(json.dumps(trade_data, default=str) + '\n')
+
+    def record_close(self, trade_id: str, exit_data: dict) -> None:
+        exit_data = dict(exit_data)
+        exit_data['trade_id'] = trade_id
+        exit_data['recorded_at'] = datetime.utcnow().isoformat()
+        exit_data['event'] = 'close'
+        with open(self.filepath, 'a') as f:
+            f.write(json.dumps(exit_data, default=str) + '\n')
 
 import sys
 from pathlib import Path
@@ -25,23 +50,23 @@ from ..utils.logger import get_logger
 
 class PositionManager:
     """Real-time position monitoring and execution system."""
-    
+
     def __init__(self, config: Config, oanda_api: OandaApi):
         self.config = config
         self.oanda_api = oanda_api
         self.logger = get_logger(__name__)
-        
+
         # Position tracking
         self.active_positions: Dict[str, Dict[str, Any]] = {}
         self.position_history: List[Dict[str, Any]] = []
         self.scaling_levels: Dict[str, List[Dict[str, Any]]] = {}
-        
+
         # Risk management
         self.max_daily_loss = config.risk_management.max_daily_loss
         self.max_open_trades = config.risk_management.max_open_trades
         self.daily_pnl = 0.0
         self.daily_trades = 0
-        
+
         # Execution tracking
         self.execution_stats = {
             'total_trades': 0,
@@ -50,13 +75,37 @@ class PositionManager:
             'total_slippage': 0.0,
             'avg_slippage': 0.0
         }
-        
+
         # Monitoring task
         self._monitoring_task = None
         self._is_running = False
-    
+
         # Trade execution locks (prevent concurrent trades for same pair)
         self._execution_locks: Dict[str, asyncio.Lock] = {}
+
+        # W-3: MongoDB trade journal (optional — only connects if MONGODB_URI is set)
+        self._mongo_collection = None
+        if getattr(config, 'mongodb_uri', ''):
+            try:
+                from pymongo import MongoClient
+                # Use same TLS params as DataDB to fix TLSV1_ALERT_INTERNAL_ERROR on macOS/Atlas
+                _client = MongoClient(
+                    config.mongodb_uri,
+                    tls=True,
+                    tlsAllowInvalidCertificates=True,
+                    serverSelectionTimeoutMS=20000,
+                    connectTimeoutMS=20000,
+                    socketTimeoutMS=20000,
+                    retryWrites=True,
+                )
+                _client.admin.command('ping')  # test connection
+                self._mongo_collection = _client['trading_bot']['trades']
+                self.logger.info("W-3: MongoDB trade journal connected ✅")
+            except Exception as e:
+                self.logger.warning(f"W-3: MongoDB unavailable — falling back to file journal: {e}")
+
+        # Fix 3: File-based fallback journal — always active, used when MongoDB is down
+        self._file_journal = FileTradeJournal("results/trade_journal.jsonl")
     
     async def start(self) -> None:
         """Start position monitoring."""
@@ -230,8 +279,27 @@ class PositionManager:
                 pair = position['pair']
                 if pair in self.active_positions:
                     del self.active_positions[pair]
-                
+
                 self.logger.info(f"✅ Closed position {trade_id} for {pair}")
+
+                # W-3 / Fix 3: Update MongoDB on close; fall back to file journal on failure
+                exit_data = {
+                    'exit_time': datetime.now(timezone.utc),
+                    'exit_reason': 'manual_close',
+                    'status': 'closed'
+                }
+                if self._mongo_collection is not None:
+                    try:
+                        self._mongo_collection.update_one(
+                            {'trade_id': str(trade_id)},
+                            {'$set': exit_data}
+                        )
+                    except Exception as e:
+                        self.logger.warning(f"W-3: MongoDB close update failed for {trade_id}: {e} — writing to file journal")
+                        self._file_journal.record_close(str(trade_id), exit_data)
+                else:
+                    self._file_journal.record_close(str(trade_id), exit_data)
+
                 return True
             else:
                 self.logger.error(f"❌ Failed to close position {trade_id}")
@@ -376,7 +444,33 @@ class PositionManager:
             })
             
             self.logger.info(f"📝 Trade recorded: {trade_id} for {decision.recommendation.pair}")
-            
+
+            # W-3 / Fix 3: Write to MongoDB; fall back to file journal on failure
+            trade_record = {
+                'trade_id': trade_id,
+                'pair': decision.recommendation.pair,
+                'direction': decision.recommendation.signal.value,
+                'entry_price': float(decision.recommendation.entry_price),
+                'stop_loss': float(decision.modified_stop_loss) if decision.modified_stop_loss else None,
+                'take_profit': float(decision.modified_take_profit) if decision.modified_take_profit else None,
+                'units': position_size,
+                'risk_amount': float(decision.risk_amount) if decision.risk_amount else None,
+                'regime': decision.recommendation.metadata.get('regime', 'unknown') if decision.recommendation.metadata else 'unknown',
+                'strategies': decision.recommendation.metadata.get('strategies_agreed', []) if decision.recommendation.metadata else [],
+                'confidence': decision.recommendation.confidence,
+                'adx_value': decision.recommendation.metadata.get('adx_value') if decision.recommendation.metadata else None,
+                'entry_time': datetime.now(timezone.utc),
+                'status': 'open'
+            }
+            if self._mongo_collection is not None:
+                try:
+                    self._mongo_collection.insert_one(trade_record)
+                except Exception as e:
+                    self.logger.warning(f"W-3: MongoDB write failed for {trade_id}: {e} — writing to file journal")
+                    self._file_journal.record_open(trade_record)
+            else:
+                self._file_journal.record_open(trade_record)
+
         except Exception as e:
             self.logger.error(f"Error recording trade: {e}")
     
@@ -602,37 +696,65 @@ class PositionManager:
             self.logger.error(f"Error in partial exit {pair}: {e}")
     
     async def _adjust_stop_losses(self) -> None:
-        """Dynamically adjust stop losses based on market conditions."""
+        """S-2: Pip-based trailing stop + breakeven stop for live positions."""
+        # Trailing stop config (matches backtest: activate at 80 pips, trail at 50 pips)
+        TRAIL_ACTIVATION_PIPS = getattr(self.config.risk_management, 'trailing_stop_activation_pips', 80)
+        TRAIL_DISTANCE_PIPS   = getattr(self.config.risk_management, 'trailing_stop_distance_pips', 50)
+
         for pair, position in self.active_positions.items():
-            # Only adjust if we have unrealized profit
             if position.get('unrealized_pl', 0) <= 0:
                 continue
-            
-            # Move stop loss to breakeven after 0.5R profit
-            entry_price = position['entry_price']
-            current_price = position.get('current_price', entry_price)
-            stop_loss = position['stop_loss']
-            
+
+            entry_price   = float(position['entry_price'])
+            current_price = float(position.get('current_price', entry_price))
+            stop_loss     = position.get('stop_loss')
             if not stop_loss:
                 continue
-            
-            risk = abs(float(entry_price - stop_loss))
-            profit = abs(float(current_price - entry_price))
-            
-            # Move to breakeven after 0.5R
-            if profit >= risk * 0.5 and float(stop_loss) != float(entry_price):
-                new_stop_loss = entry_price
-                trade_id = position.get('trade_id')
-                if trade_id:
-                    try:
-                        self.oanda_api.modify_trade(
-                            trade_id=trade_id,
-                            stop_loss=float(new_stop_loss)
-                        )
-                        position['stop_loss'] = new_stop_loss
-                        self.logger.info(f"🔄 Stop loss moved to breakeven for {pair}: {new_stop_loss}")
-                    except Exception as e:
-                        self.logger.error(f"Failed to update stop loss for {pair}: {e}")
+            stop_loss = float(stop_loss)
+
+            direction  = position.get('signal', 'buy')
+            pip_size   = 0.01 if 'JPY' in pair else 0.0001
+            trade_id   = position.get('trade_id')
+
+            activation = TRAIL_ACTIVATION_PIPS * pip_size
+            distance   = TRAIL_DISTANCE_PIPS * pip_size
+
+            new_stop = None
+
+            if direction == 'buy':
+                profit_price = current_price - entry_price
+                # Step 1: move to breakeven at 0.5R if not already there
+                risk = entry_price - stop_loss
+                if risk > 0 and profit_price >= risk * 0.5 and stop_loss < entry_price:
+                    new_stop = entry_price
+                # Step 2: trail once activation threshold reached
+                if profit_price >= activation:
+                    trail_stop = current_price - distance
+                    candidate = max(new_stop or stop_loss, trail_stop)
+                    if candidate > stop_loss:
+                        new_stop = candidate
+
+            else:  # sell
+                profit_price = entry_price - current_price
+                risk = stop_loss - entry_price
+                if risk > 0 and profit_price >= risk * 0.5 and stop_loss > entry_price:
+                    new_stop = entry_price
+                if profit_price >= activation:
+                    trail_stop = current_price + distance
+                    candidate = min(new_stop or stop_loss, trail_stop)
+                    if candidate < stop_loss:
+                        new_stop = candidate
+
+            if new_stop is not None and trade_id:
+                try:
+                    self.oanda_api.modify_trade(trade_id=trade_id, stop_loss=new_stop)
+                    position['stop_loss'] = Decimal(str(new_stop))
+                    self.logger.info(
+                        f"🔄 S-2 Trailing stop updated — {pair} {direction}: "
+                        f"SL {stop_loss:.5f} → {new_stop:.5f}"
+                    )
+                except Exception as e:
+                    self.logger.error(f"Failed to update trailing stop for {pair}: {e}")
     
     async def _update_daily_pnl(self) -> None:
         """Update daily P&L tracking including both unrealized and realized P&L."""
