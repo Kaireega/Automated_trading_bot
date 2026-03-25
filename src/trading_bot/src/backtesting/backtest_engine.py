@@ -78,7 +78,6 @@ except ImportError:
     from feeds_oanda import OandaHistoricalFeed
 
 
-@dataclass
 class FTMOSimulator:
     """
     R-1/R-2/R-3: Simulate FTMO challenge rules during backtest.
@@ -167,6 +166,7 @@ class FTMOSimulator:
         }
 
 
+@dataclass
 class BacktestResult:
     """
     Comprehensive backtest results container.

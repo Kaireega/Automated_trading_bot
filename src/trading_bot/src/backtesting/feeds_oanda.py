@@ -125,6 +125,49 @@ class OandaHistoricalFeed:
                         self._save_cache(pair, tf, df)
                 self.data[pair][tf] = self._to_candles(df, pair, tf)
 
+    def load_pair_date_range(
+        self,
+        pairs: List[str],
+        timeframes: List[TimeFrame],
+        start: datetime,
+        end: datetime,
+    ) -> None:
+        """
+        Load candles for specific pairs/timeframes between start and end dates.
+        Uses cache and tops up if stale — same caching logic as load_last_3y_until_prev_week.
+        Used by the intraday backtest engine which needs a specific date window.
+        """
+        import logging
+        log = logging.getLogger(__name__)
+        self.data.clear()
+        for pair in pairs:
+            self.data.setdefault(pair, {})
+            for tf in timeframes:
+                df = pd.DataFrame()
+                if self.use_cache:
+                    df = self._load_cache(pair, tf)
+                    if not df.empty:
+                        last_time = pd.to_datetime(df['time'].iloc[-1], utc=True).to_pydatetime()
+                        if last_time < end - timedelta(days=1):
+                            log.info(f"📡 Topping up {pair} {tf.value} from {last_time.date()} to {end.date()}...")
+                            topup = self._fetch_range(pair, tf, last_time, end)
+                            if not topup.empty:
+                                df = pd.concat([df, topup], ignore_index=True)
+                                df = df.drop_duplicates(subset=["time"]).sort_values("time").reset_index(drop=True)
+                                self._save_cache(pair, tf, df)
+                if df.empty:
+                    log.info(f"📡 Fetching {pair} {tf.value} from OANDA ({start.date()} to {end.date()})...")
+                    df = self._fetch_range(pair, tf, start, end)
+                    if self.use_cache and not df.empty:
+                        self._save_cache(pair, tf, df)
+                # Filter to requested date window and store
+                if not df.empty:
+                    df['time'] = pd.to_datetime(df['time'], utc=True)
+                    mask = (df['time'] >= pd.Timestamp(start)) & (df['time'] <= pd.Timestamp(end))
+                    df = df[mask].reset_index(drop=True)
+                log.info(f"✅ {pair} {tf.value}: {len(df)} candles")
+                self.data[pair][tf] = self._to_candles(df, pair, tf)
+
     def get_pair_timeframes(self, pair: str) -> Dict[TimeFrame, List[CandleData]]:
         return self.data.get(pair, {})
 
