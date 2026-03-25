@@ -70,20 +70,22 @@ async def run_backtest(args):
         debug_variable("backtest_pairs", pairs, context)
         debug_variable("backtest_args", vars(args), context)
         
-        end_date = datetime.now(timezone.utc)
+        end_offset = getattr(args, 'end_offset', 0) or 0
+        end_date = datetime.now(timezone.utc) - timedelta(days=end_offset)
         start_date = end_date - timedelta(days=args.days)
         debug_variable("start_date", start_date, context)
         debug_variable("end_date", end_date, context)
         debug_variable("backtest_days", args.days, context)
-        
+
         ftmo_mode = getattr(args, 'ftmo', False)
         # R-2: FTMO uses 0.5% risk per trade (half of normal 1%)
         risk = 0.5 if ftmo_mode else args.risk
 
+        period_label = f"TRAIN ({args.days}d, ends {end_offset}d ago)" if end_offset else f"{args.days} days"
         print("\n" + "="*80)
         print("🚀 BACKTEST ENGINE" + (" — FTMO SIMULATION MODE" if ftmo_mode else ""))
         print("="*80)
-        print(f"Period:     {start_date.date()} to {end_date.date()} ({args.days} days)")
+        print(f"Period:     {start_date.date()} to {end_date.date()} ({period_label})")
         print(f"Balance:    ${args.balance:,.2f}")
         print(f"Pairs:      {', '.join(pairs)}")
         print(f"Risk/Trade: {risk}%" + (" (FTMO: 0.5% cap)" if ftmo_mode else ""))
@@ -154,15 +156,56 @@ async def run_backtest(args):
         return result
 
 
+async def run_intraday_backtest(args):
+    """Run intraday backtest (session-based strategies: Asian Breakout, London ORB, NY Overlap)."""
+    import logging
+    logging.getLogger("debug_tracker").setLevel(logging.WARNING)
+
+    pairs = args.pairs if args.pairs else ['EUR_USD', 'GBP_USD']
+    end_offset = getattr(args, 'end_offset', 0) or 0
+    end_date = datetime.now(timezone.utc) - timedelta(days=end_offset)
+    start_date = end_date - timedelta(days=args.days)
+    spread = getattr(args, 'spread', 0.7)
+
+    period_label = f"TRAIN ({args.days}d)" if end_offset else f"{args.days} days"
+    print("\n" + "=" * 80)
+    print("🕐 INTRADAY BACKTEST — Session-Based Strategies")
+    print("=" * 80)
+    print(f"Period:     {start_date.date()} to {end_date.date()} ({period_label})")
+    print(f"Balance:    ${args.balance:,.2f}")
+    print(f"Pairs:      {', '.join(pairs)}")
+    print(f"Spread:     {spread} pips")
+    print(f"Strategies: Asian Range Breakout / London ORB / NY Overlap Momentum")
+    print("=" * 80)
+    print()
+
+    try:
+        from trading_bot.src.backtesting.intraday_backtest_engine import IntradayBacktestEngine
+    except ImportError:
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+        from trading_bot.src.backtesting.intraday_backtest_engine import IntradayBacktestEngine
+
+    engine = IntradayBacktestEngine(
+        pairs=pairs,
+        initial_balance=args.balance,
+        spread_pips=spread,
+    )
+    result = await engine.run(start_date=start_date, end_date=end_date)
+    engine.print_results(result)
+    return result
+
+
 async def run_quiet_backtest(args):
     """Run quiet backtest (minimal output)."""
     import logging
     logging.getLogger("debug_tracker").setLevel(logging.WARNING)
     pairs = args.pairs if args.pairs else ['EUR_USD', 'GBP_USD']
     
-    end_date = datetime.now(timezone.utc)
+    end_offset = getattr(args, 'end_offset', 0) or 0
+    end_date = datetime.now(timezone.utc) - timedelta(days=end_offset)
     start_date = end_date - timedelta(days=args.days)
-    
+
     print(f"Running backtest: {args.days} days, {len(pairs)} pairs...")
     
     config = Config()
@@ -380,8 +423,17 @@ Examples:
         backtest_parser.add_argument('--compare', action='store_true', help='Compare multi vs single strategy')
         backtest_parser.add_argument('--save', action='store_true', help='Save results to file')
         backtest_parser.add_argument('--ftmo', action='store_true', help='Run FTMO challenge simulation (0.5%% risk, 5%% daily / 10%% total limits)')
+        backtest_parser.add_argument('--end-offset', type=int, default=0, help='Shift end date back by N days (for train/test split, e.g. --days 500 --end-offset 230)')
         debug_variable("backtest_parser_configured", True, context)
         
+        # Intraday backtest command
+        intraday_parser = subparsers.add_parser('intraday', help='Run intraday backtest (session-based strategies)')
+        intraday_parser.add_argument('--days', type=int, default=365, help='Days to backtest (default: 365)')
+        intraday_parser.add_argument('--pairs', nargs='+', help='Pairs to test (default: EUR_USD GBP_USD)')
+        intraday_parser.add_argument('--balance', type=float, default=10000.0, help='Initial balance (default: 10000)')
+        intraday_parser.add_argument('--spread', type=float, default=0.7, help='Spread in pips (default: 0.7)')
+        intraday_parser.add_argument('--end-offset', type=int, default=0, help='Shift end date back N days (train/test split)')
+
         # Mock test command
         mock_parser = subparsers.add_parser('mock', help='Run mock tests')
         mock_parser.add_argument('--quick', action='store_true', help='Quick tests (reduced load)')
@@ -422,6 +474,8 @@ Examples:
             else:
                 debug_data_flow("standard_backtest", "starting", "standard_backtest")
                 asyncio.run(run_backtest(args))
+        elif args.command == 'intraday':
+            asyncio.run(run_intraday_backtest(args))
         elif args.command == 'mock':
             debug_data_flow("mock_tests", "starting", "mock_tests")
             asyncio.run(run_mock_tests(args))

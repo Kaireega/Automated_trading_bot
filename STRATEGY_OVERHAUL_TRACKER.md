@@ -16,9 +16,9 @@
 ## Phase 2: Risk & Sizing for FTMO
 | # | Description | Status |
 |---|-------------|--------|
-| R-1 | FTMO drawdown rules in backtest (5% daily, 10% total) | 🔄 In Progress |
-| R-2 | Position sizing for $10K FTMO account | 🔄 In Progress |
-| R-3 | Kill switch: halt trading if 4% total drawdown reached | 🔄 In Progress |
+| R-1 | FTMO drawdown rules in backtest (5% daily, 10% total) | ✅ Done |
+| R-2 | Position sizing for $10K FTMO account | ✅ Done |
+| R-3 | Kill switch: halt trading if 4% total drawdown reached | ✅ Done |
 
 ## Phase 3: Out-of-Sample Testing
 | # | Description | Status |
@@ -36,4 +36,5 @@
 | BT-3 GBP_USD | New 2-strategy | 51 | 47.0% | 1.70 | +20.43% | 9.58% | ✅ Best result yet |
 | Train (500d) | New 2-strategy | — | — | — | — | — | — |
 | Test (230d) | New 2-strategy (unchanged) | — | — | — | — | — | — |
-| FTMO sim | New + FTMO rules | — | — | — | — | — | — |
+| FTMO EUR_USD | New + FTMO rules (0.5% risk) | 36 | 44.4% | 1.50 | +4.88% | 1.49% | ✅ No kill switch triggered |
+| FTMO GBP_USD | New + FTMO rules (0.5% risk) | 51 | 47.1% | 1.72 | +9.91% | 4.97% | ✅ Near profit target, no breach |
