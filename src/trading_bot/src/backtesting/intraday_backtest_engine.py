@@ -90,11 +90,13 @@ class IntradayBacktestEngine:
         initial_balance: float = 10000.0,
         spread_pips: float = 0.7,
         risk_pct: float = 0.75,
+        enabled_strategies: Optional[List[str]] = None,
     ):
         self.pairs = pairs or ['EUR_USD', 'GBP_USD']
         self.initial_balance = initial_balance
         self.spread_pips = spread_pips
         self.risk_pct = risk_pct
+        self.enabled_strategies = enabled_strategies  # None = all; list = only these names
 
     def _pip_size(self, pair: str) -> float:
         return 0.01 if 'JPY' in pair else 0.0001
@@ -300,6 +302,11 @@ class IntradayBacktestEngine:
 
             if signal is None:
                 continue
+
+            # ── Filter by enabled strategies ─────────────────────────────────
+            if self.enabled_strategies is not None:
+                if signal.get('strategy') not in self.enabled_strategies:
+                    continue
 
             # ── Open position from signal ────────────────────────────────────
             direction = signal['direction']
