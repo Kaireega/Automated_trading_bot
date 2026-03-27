@@ -5,3 +5,5 @@ backtest_report_*.txt
 backtest_output*.txt
 logs/*.log
 data/
+session6_backtest.log
+*.log

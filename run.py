@@ -166,6 +166,11 @@ async def run_intraday_backtest(args):
     end_date = datetime.now(timezone.utc) - timedelta(days=end_offset)
     start_date = end_date - timedelta(days=args.days)
     spread = getattr(args, 'spread', 0.7)
+    strategies_arg = getattr(args, 'strategies', None)
+    enabled_strategies = [s.strip() for s in strategies_arg.split(',')] if strategies_arg else None
+
+    all_strategy_names = "Asian_Range_Breakout / London_ORB / NY_Overlap_Momentum"
+    strategy_label = ', '.join(enabled_strategies) if enabled_strategies else all_strategy_names
 
     period_label = f"TRAIN ({args.days}d)" if end_offset else f"{args.days} days"
     print("\n" + "=" * 80)
@@ -175,7 +180,7 @@ async def run_intraday_backtest(args):
     print(f"Balance:    ${args.balance:,.2f}")
     print(f"Pairs:      {', '.join(pairs)}")
     print(f"Spread:     {spread} pips")
-    print(f"Strategies: Asian Range Breakout / London ORB / NY Overlap Momentum")
+    print(f"Strategies: {strategy_label}")
     print("=" * 80)
     print()
 
@@ -190,6 +195,7 @@ async def run_intraday_backtest(args):
         pairs=pairs,
         initial_balance=args.balance,
         spread_pips=spread,
+        enabled_strategies=enabled_strategies,
     )
     result = await engine.run(start_date=start_date, end_date=end_date)
     engine.print_results(result)
@@ -433,6 +439,7 @@ Examples:
         intraday_parser.add_argument('--balance', type=float, default=10000.0, help='Initial balance (default: 10000)')
         intraday_parser.add_argument('--spread', type=float, default=0.7, help='Spread in pips (default: 0.7)')
         intraday_parser.add_argument('--end-offset', type=int, default=0, help='Shift end date back N days (train/test split)')
+        intraday_parser.add_argument('--strategies', type=str, default=None, help='Comma-separated strategy names (default: all). E.g. "Asian_Range_Breakout,London_ORB"')
 
         # Mock test command
         mock_parser = subparsers.add_parser('mock', help='Run mock tests')

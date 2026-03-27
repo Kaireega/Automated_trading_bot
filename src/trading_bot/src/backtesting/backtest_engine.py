@@ -1550,7 +1550,7 @@ class BacktestEngine:
         self.logger.info(report)
         
         # Save detailed report to file
-        report_file = f"backtest_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+        report_file = f"backtest_reports/backtest_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         with open(report_file, 'w') as f:
             f.write(report)
         
