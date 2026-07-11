@@ -1,178 +1,127 @@
 # Automated Trading Bot
 
-Professional intraday forex trading bot with multi-strategy framework.
+Multi-strategy OANDA forex trading bot with backtesting, risk management, and live execution. Evolved from the [swing-trader](https://github.com/Kaireega/swing-trader) codebase.
 
-## 🚀 Quick Start
-
-### 1. Run Backtest
-```bash
-python run.py backtest --days 30
-```
-
-### 2. Validate System
-```bash
-python run.py validate
-```
-
-### 3. Run Live Trading
-```bash
-python run.py live
-```
-
-## 📊 Features
-
-- **15 Professional Strategies** - Trend, mean reversion, breakout, scalping, session-based
-- **Multi-Strategy Consensus** - Weighted ensemble voting system
-- **Intraday Optimized** - M1/M5/M15 timeframes, 20-240 minute holds
-- **Auto Market Adaptation** - Right strategy for right conditions
-- **Session-Aware** - London/NY session trading
-- **Risk Management** - 1.5% per trade, 2.5% daily max loss
-- **Force Close** - All positions closed before 16:30 EST
-
-## 📁 Project Structure
-
-```
-├── src/trading_bot/          # Main bot code
-│   ├── config/               # Configuration files
-│   ├── src/
-│   │   ├── strategies/       # 15 trading strategies
-│   │   ├── ai/               # Technical analysis
-│   │   ├── core/             # Core models and managers
-│   │   ├── decision/         # Risk management
-│   │   └── backtesting/      # Backtest engine
-│   └── main.py               # Bot entry point
-│
-├── tests/                    # Test suite
-├── data/                     # Market data
-├── logs/                     # Trading logs
-├── run.py                    # Unified runner
-└── validate_strategies.py    # Validation script
-```
-
-## 🎯 Commands
-
-### Backtesting
-```bash
-# Standard backtest
-python run.py backtest --days 30
-
-# With specific pairs
-python run.py backtest --days 90 --pairs EUR_USD GBP_USD USD_JPY
-
-# Quiet mode (minimal output)
-python run.py backtest --quiet --days 7
-
-# Compare multi-strategy vs single-strategy
-python run.py backtest --compare
-```
-
-### Validation
-```bash
-# Validate all strategies and config
-python run.py validate
-```
-
-### Testing
-```bash
-# Run tests
-pytest tests/ -v
-```
-
-### Live Trading
-```bash
-# Start live trading
-python run.py live
-```
-
-## ⚙️ Configuration
-
-Main config: `src/trading_bot/config/trading_config.yaml`
-
-### Enable/Disable Multi-Strategy
-```yaml
-strategy_portfolio:
-  enabled: true  # Set to false for single-strategy mode
-```
-
-### Adjust Strategy Allocations
-Edit lines 139-310 in `trading_config.yaml`
-
-## 📈 Performance Expectations
-
-| Metric | Target |
-|--------|--------|
-| Win Rate | 55-60% |
-| Sharpe Ratio | 1.8-2.2 |
-| Max Drawdown | 8-10% |
-| Profit Factor | 1.7-2.0 |
-
-## 📚 Documentation
-
-- **Complete Guide**: `MULTI_STRATEGY_COMPLETE.md` - Everything you need to know
-- **Production Summary**: `PRODUCTION_READY_SUMMARY.md` - Current status and features
-
-## 🔧 Environment Setup
-
-1. Create virtual environment:
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Configure API keys in `config.env`:
-```env
-OANDA_API_KEY=your_key_here
-OANDA_ACCOUNT_ID=your_account_id
-```
-
-## ⚠️ Important Notes
-
-- **Paper Trade First** - Test on demo account before live
-- **Monitor Performance** - Watch for "Multi-strategy consensus" messages
-- **Risk Management** - Strict limits: 1.5% per trade, 2.5% daily max
-- **Intraday Only** - All positions closed before 16:30 EST
-
-## 📞 Support
-
-- Configuration issues: Check `trading_config.yaml`
-- Strategy issues: Run `python run.py validate`
-- API issues: Verify `config.env` settings
-
-## 🎓 Multi-Strategy System
-
-The bot uses **15 specialized strategies** that vote on each trade:
-
-**Trend (30%):** EMA, MACD, ADX, Ichimoku  
-**Mean Reversion (25%):** Bollinger, RSI, Stochastic  
-**Breakout (20%):** ATR, S/R, Donchian  
-**Scalping (15%):** Price Action, Spread, Order Flow  
-**Session (10%):** London Open, NY Open  
-
-Requires minimum 2 strategies to agree before trading.
-
-## 📊 Status
-
-✅ Production-ready  
-✅ 15 strategies implemented  
-✅ Full integration complete  
-✅ Comprehensive testing  
-⏳ Backtest validation recommended  
-⏳ Paper trading recommended  
+**Current mode:** Swing trading on H1/H4/D1 timeframes (converted from intraday in March 2026).
 
 ---
 
-*For complete documentation, see `MULTI_STRATEGY_COMPLETE.md`*
+## Quick start
 
+### 1. Install
 
+```bash
+git clone https://github.com/Kaireega/Automated_trading_bot.git
+cd Automated_trading_bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
+### 2. Configure
 
+```bash
+cp .env.example .env
+# Add your OANDA practice account credentials
+```
 
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OANDA_API_KEY` | Yes | OANDA API bearer token |
+| `OANDA_ACCOUNT_ID` | Yes | OANDA account ID |
+| `OANDA_URL` | No | Default: practice API |
+| `OPENAI_API_KEY` | No | AI analysis (optional) |
+| `TELEGRAM_BOT_TOKEN` | No | Trade alerts |
+| `TELEGRAM_CHAT_ID` | No | Alert destination |
 
+Active strategy config: `src/trading_bot/src/config/trading_config.yaml`
 
+### 3. Run
 
+```bash
+# Backtest (30 days)
+python run.py backtest --days 30
 
+# Backtest specific pairs
+python run.py backtest --days 90 --pairs EUR_USD GBP_USD
+
+# Validate configuration
+python run.py validate
+
+# Live trading (paper account recommended)
+python run.py live
+```
+
+---
+
+## Features
+
+- **Multi-strategy framework** — trend, mean reversion, breakout, session-based strategies with weighted consensus
+- **Swing trading** — H1/H4/D1 timeframes, 4-hour to 10-day hold windows
+- **Backtesting engine** — historical simulation with configurable pairs and date ranges
+- **Risk management** — per-trade risk %, daily loss limits, cooldown between entries
+- **Notifications** — optional Telegram and email alerts
+- **Market adaptation** — strategy selection based on detected market conditions
+
+---
+
+## Project structure
+
+```
+Automated_trading_bot/
+├── run.py                          # Unified CLI entry point
+├── requirements.txt                # Python dependencies
+├── src/trading_bot/
+│   ├── main.py                     # Live bot orchestrator
+│   ├── src/
+│   │   ├── config/trading_config.yaml   # Active strategy config
+│   │   ├── strategies/             # Trading strategy implementations
+│   │   ├── backtesting/            # Backtest engine
+│   │   ├── core/                   # Models and managers
+│   │   ├── decision/               # Risk management
+│   │   ├── ai/                     # Technical analysis
+│   │   └── notifications/          # Alert integrations
+│   └── requirements.txt            # Detailed dependency list
+├── src/technicals/                 # Shared indicators (from swing-trader)
+├── src/infrastructure/             # OANDA helpers
+└── docs/                           # Development session notes
+```
+
+---
+
+## Configuration
+
+Strategy parameters live in `src/trading_bot/src/config/trading_config.yaml`:
+
+- **Risk:** 1% per trade, max 2 trades/day
+- **Timeframes:** H4 primary, H1/D1 confirmation
+- **Pairs:** EUR_USD, GBP_USD (configurable)
+- **Hold times:** 4 hours minimum, 10 days maximum
+
+> **Note:** A legacy config stub exists at `src/trading_bot/config/trading_config.yaml` — do not edit it. Use the `src/config/` path above.
+
+---
+
+## Deep-dive documentation
+
+See [`docs/`](docs/) for development session notes and handoff reports, including `08_trading_bot_handoff_report.md`.
+
+---
+
+## Disclaimer
+
+Forex trading carries significant financial risk. This bot defaults to OANDA's **practice** API. Validate all strategies with backtesting before live deployment. The author is not responsible for financial losses.
+
+---
+
+## Related projects
+
+- [swing-trader](https://github.com/Kaireega/swing-trader) — ancestor codebase with Bollinger Band streaming bot
+- [notificactionn-bot](https://github.com/Kaireega/notificactionn-bot) — AI-assisted trading with Telegram notifications
+- [full_forex_box](https://github.com/Kaireega/full_forex_box) — full-stack platform with dashboards
+
+---
+
+## Author
+
+**Kai'ree Gay** — [GitHub](https://github.com/Kaireega)
