@@ -1,9 +1,33 @@
+# Environment
 config.env
 .env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Runtime artifacts
+logs/
+*.log
 results/
 backtest_report_*.txt
 backtest_output*.txt
-logs/*.log
-data/
 session6_backtest.log
-*.log
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Trade records (may contain account data)
+*.xlsx

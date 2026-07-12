@@ -1,6 +1,16 @@
 # Automated Trading Bot
 
-Multi-strategy OANDA forex trading bot with backtesting, risk management, and live execution. Evolved from the [swing-trader](https://github.com/Kaireega/swing-trader) codebase.
+[![CI](https://github.com/Kaireega/Automated_trading_bot/actions/workflows/ci.yml/badge.svg)](https://github.com/Kaireega/Automated_trading_bot/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+Multi-strategy OANDA forex trading platform with backtesting, regime-based strategy selection, risk management, and live execution.
+
+**Highlights for reviewers**
+- Unified CLI (`backtest` / `validate` / `live`) with YAML-driven configuration
+- Layered architecture: data → technical analysis → decision → notifications → position management
+- Swing-trading mode on H1/H4/D1 with documented backtest iteration (March 2026 strategy overhaul)
+- Telegram + email alerting, FTMO-oriented risk rules, 30k+ lines of Python across 120+ modules
 
 **Current mode:** Swing trading on H1/H4/D1 timeframes (converted from intraday in March 2026).
 
