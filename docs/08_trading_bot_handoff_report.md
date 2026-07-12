@@ -116,8 +116,8 @@ possible_paths = [
 
 **Real credentials are in `.env`:**
 ```
-OANDA_API_KEY=c7050cbd...
-OANDA_ACCOUNT_ID=101-001-23541205-001
+OANDA_API_KEY=your_oanda_api_key_here
+OANDA_ACCOUNT_ID=your_oanda_account_id_here
 OANDA_URL=https://api-fxpractice.oanda.com/v3
 ```
 
